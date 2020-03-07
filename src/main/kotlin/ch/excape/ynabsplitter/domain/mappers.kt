@@ -24,3 +24,6 @@ fun Date.toLocalDate() : LocalDate {
     // convert from java LocalDate to this weird threeten.bp.LocalDate
     return LocalDate.of(localDate.year, localDate.monthValue, localDate.dayOfMonth)
 }
+
+fun LocalDate.toJavaLocalDate() : java.time.LocalDate =
+        java.time.LocalDate.of(this.year, this.monthValue, this.dayOfMonth)
