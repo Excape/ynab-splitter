@@ -6,7 +6,13 @@ data class Transaction(
         val id: String,
         val date: LocalDate,
         val amount: Long,
+        val category: String?,
         val memo: String?,
         val isApproved: Boolean,
-        val payee: String?
-)
+        val payee: String?,
+        val actor: Actor?
+) {
+    fun matches(other: Transaction): Boolean {
+        return actor != other.actor && date == other.date && amount == other.amount && payee == other.payee
+    }
+}

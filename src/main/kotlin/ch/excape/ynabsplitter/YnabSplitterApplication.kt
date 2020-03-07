@@ -1,6 +1,6 @@
 package ch.excape.ynabsplitter
 
-import ch.excape.ynabsplitter.service.YnabClientIntegrationConfig
+import ch.excape.ynabsplitter.adapter.ynab.YnabClientIntegrationConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import

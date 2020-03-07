@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.service
+package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi

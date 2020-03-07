@@ -22,9 +22,17 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("ch.excape:swagger-ynab-client:0.0.1-SNAPSHOT")
+	implementation("com.opencsv:opencsv:4.6")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
+
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+}
+
+tasks.test {
+	useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {

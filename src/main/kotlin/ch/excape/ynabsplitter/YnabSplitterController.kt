@@ -1,0 +1,63 @@
+package ch.excape.ynabsplitter
+
+import ch.excape.ynabsplitter.adapter.persistence.InMemoryAuditLogRepository
+import ch.excape.ynabsplitter.adapter.rest.RestTransactionPresenter
+import ch.excape.ynabsplitter.adapter.rest.RestTransactionsListPresenter
+import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
+import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ApproveTransaction
+import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.IApproveTransaction
+import ch.excape.ynabsplitter.application.use_cases.get_transaction.GetTransaction
+import ch.excape.ynabsplitter.application.use_cases.get_transaction.ports.IGetTransaction
+import ch.excape.ynabsplitter.application.use_cases.list_transactions.ListUnapprovedTransactions
+import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.IListUnapprovedTransactions
+import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ListUnapprovedTransactionsInput
+import ch.excape.ynabsplitter.domain.Actor
+import ch.excape.ynabsplitter.domain.Transaction
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.HttpClientErrorException
+import java.nio.charset.Charset
+
+@RestController
+@RequestMapping("/api/v1")
+class YnabSplitterController {
+
+    private val transactionRepository = InMemoryTransactionRepository()
+
+    @GetMapping("/transactions")
+    fun getTransactions(): List<Transaction> {
+        val listUnapprovedTransactions: IListUnapprovedTransactions = ListUnapprovedTransactions(transactionRepository)
+        val transactionPresenter = RestTransactionsListPresenter()
+
+        val input = ListUnapprovedTransactionsInput(listOf(Actor.ROBIN, Actor.SOPHIE))
+
+        listUnapprovedTransactions.executeWith(input, transactionPresenter)
+
+        return transactionPresenter.presentation!!.flatMap { it.transactions }
+    }
+
+    @PostMapping("/transactions/{id}/approve")
+    fun approveTransaction(
+            @PathVariable("id") transactionId: String,
+            @RequestParam("actor") actor: Actor
+    ) {
+
+        val getTransaction: IGetTransaction = GetTransaction(transactionRepository)
+        val getTransactionPresenter = RestTransactionPresenter()
+        getTransaction.executeWith(actor, transactionId, getTransactionPresenter)
+        val transaction = getTransactionPresenter.presentation ?:
+            throw HttpClientErrorException.NotFound.create(
+                    HttpStatus.NOT_FOUND, "Transaction not found",
+                    HttpHeaders.EMPTY, ByteArray(0),
+                    Charset.defaultCharset())
+
+
+
+        val approveTransaction : IApproveTransaction = ApproveTransaction(transactionRepository, InMemoryAuditLogRepository())
+
+
+    }
+}
+
+class TransactionNotFoundException(message: String?) : RuntimeException(message)
