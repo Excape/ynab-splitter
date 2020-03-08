@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from "semantic-ui-react";
+import {Button, Card, Container, Icon, Table} from "semantic-ui-react";
 
 type Props = {
 };
@@ -13,10 +13,15 @@ type UnapprovedTransaction = {
     id: string,
     date: Date,
     amount: number,
-    category: string,
+    category: any,
     memo: string,
     payee: string;
 }
+//
+// type Category = {
+//     Robin?: string,
+//     Sophie?: string
+// }
 
 class UnapprovedTransactions extends React.Component<Props, State> {
     state: State = {
@@ -43,28 +48,33 @@ class UnapprovedTransactions extends React.Component<Props, State> {
             return "Loading..."
         }
         return (
-            <Table celled>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Date</Table.HeaderCell>
-                        <Table.HeaderCell>Payee</Table.HeaderCell>
-                        <Table.HeaderCell>Category</Table.HeaderCell>
-                        <Table.HeaderCell>Memo</Table.HeaderCell>
-                        <Table.HeaderCell>Amount</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {items!.map(item => (
-                        <Table.Row>
-                            <Table.Cell>{item.date}</Table.Cell>
-                            <Table.Cell>{item.payee}</Table.Cell>
-                            <Table.Cell>{item.category}</Table.Cell>
-                            <Table.Cell>{item.memo}</Table.Cell>
-                            <Table.Cell>{item.amount / 100}</Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
+
+            <Card.Group>
+                {items!.map(item => (
+                    <Card>
+                        <Card.Content>
+                            <Card.Header>{item.payee}</Card.Header>
+                            <Card.Meta>{item.date}</Card.Meta>
+                                <Card.Description>
+                                    <Icon name="folder" />
+                                    {"Robin" in item.category ? item.category.Robin : "?"} / {"Sophie" in item.category ? item.category.Sophie : "?"}
+                                </Card.Description>
+                            <Card.Description>
+                                <Icon name="dollar sign" />
+                                {item.amount / 100}
+                            </Card.Description>
+                        </Card.Content>
+                        <Card.Content extra fluid>
+                            <div className='approveButtons'>
+                            <Button basic color="teal" content={"Robin"}/>
+                            <Button basic color="orange" content={"Sophie"}/>
+                            <Button basic color="grey" content={"Split"}/>
+                            </div>
+                        </Card.Content>
+                    </Card>
+                ))}
+            </Card.Group>
+
         );
     }
 }

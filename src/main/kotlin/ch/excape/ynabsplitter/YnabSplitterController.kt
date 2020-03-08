@@ -59,5 +59,3 @@ class YnabSplitterController {
 
     }
 }
-
-class TransactionNotFoundException(message: String?) : RuntimeException(message)
