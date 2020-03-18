@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.application.outbound_ports.transactions
+package ch.excape.ynabsplitter.application.outbound_ports.ynab
 
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Transaction

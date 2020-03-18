@@ -1,7 +1,7 @@
 package ch.excape.ynabsplitter.application.use_cases.get_transaction
 
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.TransactionPresenter
-import ch.excape.ynabsplitter.application.outbound_ports.transactions.ReadTransactionsRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.use_cases.get_transaction.ports.IGetTransaction
 import ch.excape.ynabsplitter.domain.Actor
 

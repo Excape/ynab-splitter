@@ -1,7 +1,7 @@
 package ch.excape.ynabsplitter.adapter.ynab
 
-import ch.excape.ynabsplitter.application.outbound_ports.transactions.ReadTransactionsRepository
-import ch.excape.ynabsplitter.application.outbound_ports.transactions.SaveTransactionRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.threeten.bp.LocalDate

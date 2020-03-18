@@ -1,11 +1,11 @@
 package ch.excape.ynabsplitter.adapter.rest
 
+import ch.excape.ynabsplitter.adapter.rest.document.CategoryDocument
 import ch.excape.ynabsplitter.adapter.rest.document.UnapprovedTransactionDocument
+import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.TransactionListPresenter
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.MatchedTransaction
 import ch.excape.ynabsplitter.domain.Transaction
-import ch.excape.ynabsplitter.domain.toJavaLocalDate
 
 class RestTransactionsListPresenter : TransactionListPresenter {
 
@@ -29,8 +29,8 @@ private fun MatchedTransaction.toDocument(): UnapprovedTransactionDocument {
     )
 }
 
-fun mapCategory(transactions: MutableList<Transaction>): Map<Actor, String> =
+fun mapCategory(transactions: MutableList<Transaction>): List<CategoryDocument> =
         transactions
                 .filter { it.category != null }
-                .associateBy({ it.actor!! }, { it.category!! })
+                .map {CategoryDocument(it.actor!!.firstName, it.category)}
 

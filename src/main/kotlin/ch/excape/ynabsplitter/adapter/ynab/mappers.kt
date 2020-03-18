@@ -1,7 +1,10 @@
-package ch.excape.ynabsplitter.domain
+package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.model.TransactionDetail
 import ch.excape.ynabsplitter.adapter.csv.ChaseTransaction
+import ch.excape.ynabsplitter.domain.Actor
+import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.Transaction
 import org.threeten.bp.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -17,6 +20,8 @@ fun ChaseTransaction.toTransaction() = Transaction(
 
 private fun randomId() = Random().nextInt().toString()
 
+
+
 fun Date.toLocalDate() : LocalDate {
     val localDate = this.toInstant()
             .atZone(ZoneId.systemDefault())
@@ -27,3 +32,7 @@ fun Date.toLocalDate() : LocalDate {
 
 fun LocalDate.toJavaLocalDate() : java.time.LocalDate =
         java.time.LocalDate.of(this.year, this.monthValue, this.dayOfMonth)
+
+fun ch.excape.ynabclient.model.Category.toCategory(categoryGroup: String): Category {
+    return Category(id.toString(), name, categoryGroup, balance)
+}

@@ -2,7 +2,7 @@ package ch.excape.ynabsplitter.use_cases.approve_transaction
 
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionPresenter
-import ch.excape.ynabsplitter.application.outbound_ports.transactions.SaveTransactionRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ApproveTransaction
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.ApproveTransactionInput
 import ch.excape.ynabsplitter.domain.*

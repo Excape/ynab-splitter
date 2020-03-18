@@ -1,7 +1,7 @@
 import React from 'react';
-import {Container, Grid, GridColumn, Header, List} from 'semantic-ui-react'
+import {Grid, Header} from 'semantic-ui-react'
 import './App.css';
-import UnapprovedTransactions from "./UnapprovedTransactions";
+import UnapprovedTransactions from "./components/UnapprovedTransactions";
 
 const App = () => (
     <Grid columns={1} className={"App-Grid"}>

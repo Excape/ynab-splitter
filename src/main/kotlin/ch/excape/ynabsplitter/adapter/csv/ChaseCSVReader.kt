@@ -1,7 +1,7 @@
 package ch.excape.ynabsplitter.adapter.csv
 
 import ch.excape.ynabsplitter.domain.Transaction
-import ch.excape.ynabsplitter.domain.toTransaction
+import ch.excape.ynabsplitter.adapter.ynab.toTransaction
 import com.opencsv.bean.CsvBindByName
 import com.opencsv.bean.CsvDate
 import com.opencsv.bean.CsvToBean

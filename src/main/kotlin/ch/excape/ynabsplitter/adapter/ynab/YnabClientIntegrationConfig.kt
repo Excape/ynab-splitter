@@ -2,6 +2,7 @@ package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi
+import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabclient.invoker.ApiClient
 import org.springframework.context.annotation.Bean
@@ -19,6 +20,9 @@ class YnabClientIntegrationConfig {
 
     @Bean
     fun ynabTransactionsApi() : TransactionsApi = TransactionsApi(apiClient())
+
+    @Bean
+    fun ynabCategoriesApi() : CategoriesApi = CategoriesApi(apiClient())
 
     @Bean
     fun apiClient(): ApiClient {

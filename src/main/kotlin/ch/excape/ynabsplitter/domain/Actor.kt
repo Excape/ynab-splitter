@@ -11,14 +11,18 @@ enum class Actor(val firstName: String, val budgetId: String, val accountId: Str
         return firstName
     }
 
-    @JsonCreator
-    fun fromString(key: String?) : Actor? {
-        return if (key == null) null else Actor.valueOf(key)
-    }
-
     @JsonValue
     fun toJsonValue() : String {
         return firstName
+    }
+
+    // TODO this does not work
+    companion object {
+        @JsonCreator(mode=JsonCreator.Mode.DELEGATING)
+        @JvmStatic
+        fun fromString(key: String?) : Actor? {
+            return values().firstOrNull {it.firstName == key}
+        }
     }
 
 }
