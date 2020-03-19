@@ -3,6 +3,7 @@ package ch.excape.ynabsplitter.adapter.ynab
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.domain.Actor
+import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.Transaction
 import org.threeten.bp.LocalDate
 
@@ -32,7 +33,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         "t0",
                         LocalDate.ofYearDay(2019, 1),
                         10000,
-                        "Groceries",
+                        Category("catGroceries", "Groceries", "True Expenses", 2300),
                         null,
                         false,
                         "Migros",
@@ -42,7 +43,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         "t1",
                         LocalDate.ofYearDay(2019, 2),
                         1233,
-                        "Coffee",
+                        Category("catCoffee", "Coffee", "True Expenses", 2300),
                         "oops",
                         false,
                         "Starbucks",

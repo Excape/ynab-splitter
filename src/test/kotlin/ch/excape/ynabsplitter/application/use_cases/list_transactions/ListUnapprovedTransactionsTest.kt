@@ -1,8 +1,7 @@
-package ch.excape.ynabsplitter.use_cases.list_transactions
+package ch.excape.ynabsplitter.application.use_cases.list_transactions
 
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.TransactionListPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
-import ch.excape.ynabsplitter.application.use_cases.list_transactions.ListUnapprovedTransactions
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ListUnapprovedTransactionsInput
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.MatchedTransaction

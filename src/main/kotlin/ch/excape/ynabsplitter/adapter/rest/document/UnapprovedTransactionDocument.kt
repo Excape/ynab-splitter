@@ -6,7 +6,7 @@ data class UnapprovedTransactionDocument(
         val id: String,
         val date: LocalDate,
         val amount: Long,
-        val categoryMap: List<CategoryDocument>,
+        val categoryMap: List<ActorCategoryDocument>,
         val memo: String?,
         val payee: String?
 )

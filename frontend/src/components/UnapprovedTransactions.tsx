@@ -28,7 +28,7 @@ const UnapprovedTransactions = () => {
 
         <Card.Group>
             {items!.map(item => (
-                <TransactionCard transaction={item}/>
+                <TransactionCard transaction={item} key={item.id}/>
             ))}
         </Card.Group>
 

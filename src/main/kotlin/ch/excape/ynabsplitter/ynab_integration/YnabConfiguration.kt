@@ -1,16 +1,19 @@
-package ch.excape.ynabsplitter.adapter.ynab
+package ch.excape.ynabsplitter.ynab_integration
 
 import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabclient.invoker.ApiClient
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class YnabClientIntegrationConfig {
-    val AUTH_TOKEN = "0bd5cf5d6baf6c6f4f0f846e767ed78b03e7abc6ca0c17f169535c79c57f7f32"
+class YnabConfiguration {
+
+    @Value("\${ynab.auth.token}")
+    lateinit var AUTH_TOKEN: String
 
     @Bean
     fun ynabAccountsApi() : AccountsApi = AccountsApi(apiClient())

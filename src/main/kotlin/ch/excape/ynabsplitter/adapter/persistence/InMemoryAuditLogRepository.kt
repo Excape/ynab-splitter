@@ -5,13 +5,10 @@ import ch.excape.ynabsplitter.domain.AuditLog
 
 class InMemoryAuditLogRepository : AuditLogRepository {
 
-    private val auditLogs = emptyList<AuditLog>().toMutableList()
+    private val auditLogs: MutableList<AuditLog> = mutableListOf()
 
     override fun saveAuditLog(auditLog: AuditLog) {
         auditLogs.add(auditLog)
     }
-
-
-
 }
 

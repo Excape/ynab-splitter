@@ -1,10 +1,11 @@
-package ch.excape.ynabsplitter.use_cases.approve_transaction
+package ch.excape.ynabsplitter.application.use_cases.approve_transaction
 
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionPresenter
+import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionResult
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
-import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ApproveTransaction
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.ApproveTransactionInput
+import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
 import ch.excape.ynabsplitter.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -36,10 +37,15 @@ class ApproveTransactionTest {
                             Transaction("2", LocalDate.now(), 100, null, null, false, null, Actor.ROBIN)
                         )),
                 Actor.ROBIN,
-                TransactionSplit(Actor.ROBIN to 0.5, Actor.SOPHIE to 0.5)
+                TransactionSplit(Actor.ROBIN to 0.5, Actor.SOPHIE to 0.5),
+                CategoryPerActor(Actor.ROBIN to Category("k1"), Actor.SOPHIE to Category("k2"))
         )
 
-        val presenter = object : ApproveTransactionPresenter {}
+        val presenter = object : ApproveTransactionPresenter {
+            override fun present(result: ApproveTransactionResult) {
+                assertThat(result.success).isTrue()
+            }
+        }
 
         approveTransaction.executeWith(input, presenter)
 

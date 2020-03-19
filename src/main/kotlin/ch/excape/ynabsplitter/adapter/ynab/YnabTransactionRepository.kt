@@ -3,14 +3,14 @@ package ch.excape.ynabsplitter.adapter.ynab
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabclient.model.TransactionsResponse
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.threeten.bp.LocalDate
 
-@Service
-class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi) : ReadTransactionsRepository {
+class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi) : ReadTransactionsRepository, SaveTransactionRepository {
     override fun getTransaction(actor: Actor, id: String): Transaction? {
         val transactionResponse = transactionsApi.getTransactionById(actor.budgetId, id)
         return transactionResponse.data.transaction.toTransaction(actor)
@@ -34,4 +34,9 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
     }
 
     private fun lastWeek() : LocalDate = LocalDate.now().minusWeeks(1)
+
+
+    override fun saveTransaction(transaction: Transaction) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

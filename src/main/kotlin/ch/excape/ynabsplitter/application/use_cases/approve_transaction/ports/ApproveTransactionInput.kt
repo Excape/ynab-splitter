@@ -7,5 +7,6 @@ import ch.excape.ynabsplitter.domain.TransactionSplit
 data class ApproveTransactionInput(
         val transaction: MatchedTransaction,
         val executingActor: Actor,
-        val split: TransactionSplit
+        val split: TransactionSplit,
+        val categories: CategoryPerActor
 )
