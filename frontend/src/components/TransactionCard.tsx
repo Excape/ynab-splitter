@@ -48,7 +48,7 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    {transaction.amount / 100}
+                    {transaction.amount / 1000}
                 </Card.Description>
             </Card.Content>
             <Card.Content extra fluid="true">

@@ -13,6 +13,6 @@ data class Transaction(
         val actor: Actor
 ) {
     fun matches(other: Transaction): Boolean {
-        return actor != other.actor && date == other.date && amount == other.amount && payee == other.payee
+        return actor != other.actor && date == other.date && amount == other.amount
     }
 }

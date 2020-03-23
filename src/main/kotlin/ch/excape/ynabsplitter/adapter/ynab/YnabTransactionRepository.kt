@@ -1,18 +1,29 @@
 package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.api.TransactionsApi
+import ch.excape.ynabclient.model.SaveTransactionWrapper
+import ch.excape.ynabclient.model.TransactionResponse
 import ch.excape.ynabclient.model.TransactionsResponse
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.stereotype.Service
+import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpClientErrorException
 import org.threeten.bp.LocalDate
 
 class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi) : ReadTransactionsRepository, SaveTransactionRepository {
     override fun getTransaction(actor: Actor, id: String): Transaction? {
-        val transactionResponse = transactionsApi.getTransactionById(actor.budgetId, id)
+        val transactionResponse: TransactionResponse?
+        try {
+            transactionResponse = transactionsApi.getTransactionById(actor.budgetId, id)
+        } catch (ex: HttpClientErrorException) {
+            if (ex.statusCode == HttpStatus.NOT_FOUND) {
+                return null
+            }
+            throw ex
+        }
         return transactionResponse.data.transaction.toTransaction(actor)
     }
 
@@ -37,6 +48,10 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
 
 
     override fun saveTransaction(transaction: Transaction) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        transactionsApi.updateTransaction(wrapTransaction(transaction), transaction.actor.budgetId, transaction.id)
+    }
+
+    private fun wrapTransaction(transaction: Transaction): SaveTransactionWrapper {
+        return SaveTransactionWrapper().transaction(transaction.toSaveTransaction(transaction.actor.accountId))
     }
 }

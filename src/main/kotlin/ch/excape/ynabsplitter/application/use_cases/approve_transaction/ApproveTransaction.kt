@@ -36,7 +36,11 @@ class ApproveTransaction(
             val category = getCategory(transaction, input.categories)
             val approvedTransaction = createApprovedTransaction(transaction, split, category)
 
-            saveTransactionRepository.saveTransaction(approvedTransaction)
+            if (approvedTransaction.amount != 0L) {
+                saveTransactionRepository.saveTransaction(approvedTransaction)
+            } else {
+                // TODO delete transaction
+            }
 
             val auditLog = AuditLog(transaction, approvedTransaction, input.executingActor)
             auditLogRepository.saveAuditLog(auditLog)

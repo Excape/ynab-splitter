@@ -20,14 +20,20 @@ const UnapprovedTransactions = () => {
             );
     }, []);
 
+    function getTime(date?: Date) {
+        return date != null ? new Date(date).getTime() : 0;
+    }
+
 
     if (!isLoaded) {
-        return (<div>"Loading..."</div>)
+        return (<div>Loading...</div>)
     }
     return (
 
         <Card.Group>
-            {items!.map(item => (
+            {items!
+                .sort((a, b) => getTime(b.date) - getTime(a.date))
+                .map(item => (
                 <TransactionCard transaction={item} key={item.id}/>
             ))}
         </Card.Group>

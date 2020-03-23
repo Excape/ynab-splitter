@@ -17,10 +17,17 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
 
         val matchedTransactions = matchTransactions(allTransactions)
 
-        presenter.present(matchedTransactions)
+        val validTransactions = matchedTransactions.filter { it.transactions.size == 2 }
+        val unmatchedTransactions = matchedTransactions.filter {it.transactions.size < 2}
+        val overmatchedTransactions = matchedTransactions.filter { it.transactions.size > 2 }
+
+        unmatchedTransactions.forEach { println("Unmatched transaction: $it") }
+        overmatchedTransactions.forEach { println("Overmatched transaction: $it") }
+
+        presenter.present(validTransactions)
     }
 
     private fun readTransactions(actor: Actor): List<Transaction> {
-        return readTransactionsRepository.getAllTransactionsFromLastWeek(actor)
+        return readTransactionsRepository.getUnapprovedTransactionsFromLastWeek(actor)
     }
 }
