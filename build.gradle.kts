@@ -27,6 +27,8 @@ dependencies {
 	implementation("com.opencsv:opencsv:4.6")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	implementation(project(":frontend"))
+
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
