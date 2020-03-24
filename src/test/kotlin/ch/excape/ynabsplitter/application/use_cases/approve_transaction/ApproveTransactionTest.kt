@@ -8,7 +8,7 @@ import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.Ap
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
 import ch.excape.ynabsplitter.domain.*
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.threeten.bp.LocalDate
 
 class ApproveTransactionTest {

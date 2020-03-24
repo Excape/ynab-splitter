@@ -13,7 +13,9 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	mavenCentral()
-	mavenLocal()
+	maven {
+		url = uri("${projectDir}/repo")
+	}
 }
 
 dependencies {
