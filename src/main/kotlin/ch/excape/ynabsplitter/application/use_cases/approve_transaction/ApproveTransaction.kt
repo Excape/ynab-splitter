@@ -25,6 +25,7 @@ class ApproveTransaction(
         } catch (ex: Exception) {
             presenter.present(ApproveTransactionResult(false))
             println("Exception in ApproveTransaction use case: $ex")
+            ex.printStackTrace()
         }
     }
 
