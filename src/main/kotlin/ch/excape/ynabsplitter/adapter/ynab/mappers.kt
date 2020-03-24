@@ -32,8 +32,15 @@ fun Transaction.toSaveTransaction(accountId: String): SaveTransaction =
                 .accountId(UUID.fromString(accountId))
                 .date(date)
                 .amount(amount)
-                .categoryId(UUID.fromString(category?.id))
+                .categoryId(uuidFromString(category?.id))
                 .memo(memo)
                 .payeeName(payee)
                 .approved(isApproved)
                 .cleared(SaveTransaction.ClearedEnum.CLEARED)
+
+private fun uuidFromString(id: String?): UUID? {
+    return when (id) {
+        null -> null
+        else -> UUID.fromString(id)
+    }
+}
