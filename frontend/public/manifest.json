@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "YNAB Splitter",
+  "name": "Split YNAB transactions",
   "icons": [
     {
       "src": "favicon.ico",

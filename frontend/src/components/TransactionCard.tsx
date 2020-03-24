@@ -51,13 +51,14 @@ const TransactionCard = ({transaction}: Props) => {
                     {transaction.amount / 1000}
                 </Card.Description>
             </Card.Content>
+            {!approvalResult?.success && (
             <Card.Content extra fluid="true">
                 <div className='approveButtons'>
                     <Button basic color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
                     <Button basic color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
                     <Button basic color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
                 </div>
-            </Card.Content>
+            </Card.Content>)}
             {approvalOpen && (
                 <Card.Content extra fluid="true">
                     {approvalFor === ApprovalOption.Split ? (
