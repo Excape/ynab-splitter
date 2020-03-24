@@ -1,6 +1,14 @@
 import React, {useEffect} from "react";
 import CategoryDropdown from "./CategoryDropdown";
-import {ApprovalOption, ApprovalResult, Category, UnapprovedTransaction} from "../types";
+import {
+    ApprovalOption,
+    ApprovalResult,
+    Category,
+    CategoryRequest,
+    SplitRequest,
+    SplitTransactionRequest,
+    UnapprovedTransaction
+} from "../types";
 import {Button} from "semantic-ui-react";
 
 type Props = {
@@ -11,9 +19,9 @@ type Props = {
 }
 
 const SplitApproval = (props: Props) => {
-    const [selectedCategoryRobin, setSelectedCategoryRobin] = React.useState();
+    const [selectedCategoryRobin, setSelectedCategoryRobin] = React.useState<null | Category>();
     const [categoryOptionsRobin, setCategoryOptionsRobin] = React.useState([] as Category[]);
-    const [selectedCategorySophie, setSelectedCategorySophie] = React.useState();
+    const [selectedCategorySophie, setSelectedCategorySophie] = React.useState<null | Category>();
     const [categoryOptionsSophie, setCategoryOptionsSophie] = React.useState([] as Category[]);
 
 
@@ -23,22 +31,14 @@ const SplitApproval = (props: Props) => {
 
         fetchCategories(ApprovalOption.Robin)
             .then(result => setCategoryOptionsRobin(result));
+
+        function fetchCategories(actor: ApprovalOption) {
+            return fetch(`/api/v1/categories/${upperCase(actor)}`)
+                .then(result => result.json());
+
+        }
     }, []);
 
-    function fetchCategories(actor: ApprovalOption) {
-        return fetch(`/api/v1/categories/${upperCase(actor)}`)
-            .then(result => result.json());
-
-    }
-
-    function getCategory(actor: string): Category | undefined {
-        for (const entry of props.transaction.categoryMap) {
-            if (entry.actor === actor) {
-                return entry.category;
-            }
-        }
-        return undefined;
-    }
 
     function upperCase(option: ApprovalOption) {
         return option.toString().toUpperCase()
@@ -51,6 +51,43 @@ const SplitApproval = (props: Props) => {
     //         .then(result => props.onApprove(result))
     // }
 
+    function approveSplit(split: SplitRequest[]) {
+        const request: SplitTransactionRequest = {categories: createCategoryRequest(), split}
+        // TODO set "from" correctly
+        fetch(`/api/v1/transactions/${props.transaction.id}/approveSplit?from=ROBIN`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(request)
+        })
+            .then(result => result.json())
+            .then(result => props.onApprove(result))
+    }
+
+    function checkCategoriesSelected() {
+        if (selectedCategorySophie == null) {
+            alert("Set category for Sophie!")
+        } else if (selectedCategoryRobin === null) {
+            alert("Set category for Robin!")
+        } else return;
+        throw "category not set"
+    }
+
+    function approveEvenSplit() {
+        checkCategoriesSelected();
+        const split: SplitRequest[] = [
+            {actor: "ROBIN", split: 0.5},
+            {actor: "SOPHIE", split: 0.5}
+        ];
+        approveSplit(split)
+    }
+
+    function createCategoryRequest(): CategoryRequest[] {
+        return [
+            {actor: "ROBIN", categoryId: selectedCategoryRobin!.id},
+            {actor: "SOPHIE", categoryId: selectedCategorySophie!.id}
+        ]
+    }
+
     return (
         <div>
             <span>Select category for Robin:</span>
@@ -60,7 +97,10 @@ const SplitApproval = (props: Props) => {
             <CategoryDropdown defaultCategory={props.presetCategorySophie} categoryOptions={categoryOptionsSophie}
                               onChange={setSelectedCategorySophie}/>
             <div>
-                <Button basic color={"blue"} content={"Split 50/50"}/>
+                <Button basic color={"blue"}
+                        content={"Split 50/50"}
+                        disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
+                        onClick={() => approveEvenSplit()}/>
                 <Button basic color={"grey"} disabled content={"Custom split"}/>
             </div>
         </div>

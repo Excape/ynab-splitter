@@ -33,6 +33,7 @@ fun Transaction.toSaveTransaction(accountId: String): SaveTransaction =
                 .date(date)
                 .amount(amount)
                 .categoryId(UUID.fromString(category?.id))
+                .memo(memo)
                 .payeeName(payee)
                 .approved(isApproved)
                 .cleared(SaveTransaction.ClearedEnum.CLEARED)

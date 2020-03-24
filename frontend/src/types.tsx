@@ -19,3 +19,18 @@ export type Category = {
 export enum ApprovalOption {Undefined, Robin = "Robin", Sophie = "Sophie", Split = "Split"}
 
 export type ApprovalResult = {success: boolean}
+
+export type SplitTransactionRequest = {
+    categories: CategoryRequest[]
+    split: SplitRequest[]
+}
+
+export type CategoryRequest = {
+    actor: String,
+    categoryId: String
+}
+
+export type SplitRequest = {
+    actor: String,
+    split: number
+}

@@ -36,11 +36,7 @@ class ApproveTransaction(
             val category = getCategory(transaction, input.categories)
             val approvedTransaction = createApprovedTransaction(transaction, split, category)
 
-            if (approvedTransaction.amount != 0L) {
-                saveTransactionRepository.saveTransaction(approvedTransaction)
-            } else {
-                // TODO delete transaction
-            }
+            saveTransactionRepository.saveTransaction(approvedTransaction)
 
             val auditLog = AuditLog(transaction, approvedTransaction, input.executingActor)
             auditLogRepository.saveAuditLog(auditLog)
@@ -57,6 +53,10 @@ class ApproveTransaction(
     }
 
     private fun createApprovedTransaction(transaction: Transaction, split: Long, category: Category?): Transaction {
-        return transaction.copy(isApproved = true, amount = split, category = category)
+        var memo = transaction.memo
+        if (split == 0L) {
+            memo = "You can delete me!"
+        }
+        return transaction.copy(isApproved = true, amount = split, category = category, memo = memo)
     }
 }

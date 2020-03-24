@@ -60,7 +60,7 @@ const TransactionCard = ({transaction}: Props) => {
             </Card.Content>
             {approvalOpen && (
                 <Card.Content extra fluid="true">
-                    {approvalFor == ApprovalOption.Split ? (
+                    {approvalFor === ApprovalOption.Split ? (
                         <SplitApproval transaction={transaction} onApprove={onApprove} presetCategoryRobin={getCategory(ApprovalOption.Robin)}
                             presetCategorySophie={getCategory(ApprovalOption.Sophie)}/>
                     ) : (
