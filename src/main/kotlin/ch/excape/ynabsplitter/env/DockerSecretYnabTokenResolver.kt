@@ -24,7 +24,7 @@ class DockerSecretYnabTokenResolver : EnvironmentPostProcessor {
         val resource: Resource = FileSystemResource(System.getenv(YNAB_TOKEN_SECRET_PROPERTY))
         if (resource.exists()) {
             try {
-                val ynabToken = StreamUtils.copyToString(resource.inputStream, Charset.defaultCharset())
+                val ynabToken = StreamUtils.copyToString(resource.inputStream, Charsets.UTF_8)
                 val props = Properties()
                 props[YNAB_TOKEN_PROPERTY] = ynabToken
                 environment.propertySources.addLast(PropertiesPropertySource("ynabAuth", props))
