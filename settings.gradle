@@ -11,3 +11,4 @@ pluginManagement {
 
 rootProject.name='ynab-splitter'
 include 'frontend'
+include 'ynab-swagger-client'

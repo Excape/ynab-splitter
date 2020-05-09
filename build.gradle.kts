@@ -23,11 +23,11 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("ch.excape:swagger-ynab-client:0.0.1-SNAPSHOT")
 	implementation("com.opencsv:opencsv:4.6")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	implementation(project(":frontend"))
+	implementation(project(":ynab-swagger-client"))
 
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 
