@@ -69,7 +69,7 @@ const SplitApproval = (props: Props) => {
         } else if (selectedCategoryRobin === null) {
             alert("Set category for Robin!")
         } else return;
-        throw "category not set"
+        throw new Error("category not set")
     }
 
     function approveEvenSplit() {
