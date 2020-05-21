@@ -25,9 +25,9 @@ task start(type: NpmTask) {
     args = ['start']
 }
 
-task test(type: NpmTask) {
-    args = ['test']
-}
+//task test(type: NpmTask) {
+//    args = ['test']
+//}
 
 task packageClient(type: Zip) {
     dependsOn npm_run_build

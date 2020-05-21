@@ -31,7 +31,7 @@ internal class ListUnapprovedTransactionsTest {
 
         val transactionRepository = mockReadRepository(testTransactions)
 
-        val testee = ListAuditLog(transactionRepository)
+        val testee = ListUnapprovedTransactions(transactionRepository)
 
         testee.executeWith(ListUnapprovedTransactionsInput(listOf(Actor.SOPHIE, Actor.ROBIN)), presenter)
     }
@@ -54,7 +54,7 @@ internal class ListUnapprovedTransactionsTest {
 
         val transactionRepository = mockReadRepository(testTransactions)
 
-        val testee = ListAuditLog(transactionRepository)
+        val testee = ListUnapprovedTransactions(transactionRepository)
 
         testee.executeWith(ListUnapprovedTransactionsInput(listOf(Actor.SOPHIE, Actor.ROBIN)), presenter)
     }
@@ -77,7 +77,7 @@ internal class ListUnapprovedTransactionsTest {
 
         val transactionRepository = mockReadRepository(testTransactions)
 
-        val testee = ListAuditLog(transactionRepository)
+        val testee = ListUnapprovedTransactions(transactionRepository)
 
         testee.executeWith(ListUnapprovedTransactionsInput(listOf(Actor.SOPHIE, Actor.ROBIN)), presenter)
 

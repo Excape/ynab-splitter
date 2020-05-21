@@ -28,6 +28,10 @@ class ApproveTransactionTest {
             override fun saveAuditLog(auditLog: AuditLog) {
                 auditLogEntries.add(auditLog)
             }
+
+            override fun getAllAuditLogs(): List<AuditLog> {
+                TODO("not implemented")
+            }
         }
         val approveTransaction = ApproveTransaction(saveTransactionRepository, auditLogRepository)
 
