@@ -14,7 +14,7 @@ export type Transaction = {
     actor: string,
     date: Date,
     amount: number,
-    category: Category,
+    category: Category | undefined,
     memo: string,
     payee: string
 }

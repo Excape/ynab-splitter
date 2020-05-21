@@ -49,7 +49,7 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
                 <Card.Meta>Approved by {renderActor(auditlog.executingActor)}</Card.Meta>
                 <Card.Description>
                     <Icon name="folder"/>
-                    {auditlog.oldTransaction.category.name} -> {auditlog.newTransaction.category.name}
+                    {auditlog.oldTransaction.category?.name} -> {auditlog.newTransaction.category?.name}
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>

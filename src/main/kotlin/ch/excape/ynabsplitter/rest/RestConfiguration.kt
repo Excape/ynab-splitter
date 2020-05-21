@@ -2,7 +2,9 @@ package ch.excape.ynabsplitter.rest
 
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
+import ch.excape.ynabsplitter.adapter.persistence.AuditLogCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.InMemoryAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.RedisAuditLogRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
 import ch.excape.ynabsplitter.adapter.ynab.YnabCategoriesRepository
@@ -19,7 +21,8 @@ import org.springframework.context.annotation.Profile
 @Configuration
 class RestConfiguration(
        private val ynabTransactionsApi: TransactionsApi,
-       private val ynabCategoriesApi: CategoriesApi
+       private val ynabCategoriesApi: CategoriesApi,
+       private val auditLogCrudRepository: AuditLogCrudRepository
 ) {
 
     @Bean
@@ -36,8 +39,12 @@ class RestConfiguration(
     fun saveTransactionRepositoryDev(): SaveTransactionRepository = InMemoryTransactionRepository()
 
     @Bean
-    @Profile("dev", "prod")
-    fun auditLogRepository() : AuditLogRepository = InMemoryAuditLogRepository();
+    @Profile("dev")
+    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository();
+
+    @Bean
+    @Profile("prod")
+    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository);
 
     @Bean
     @Profile("prod")
