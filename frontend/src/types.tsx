@@ -9,6 +9,22 @@ export type UnapprovedTransaction = {
     payee: string;
 }
 
+export type Transaction = {
+    id: string,
+    actor: string,
+    date: Date,
+    amount: number,
+    category: Category,
+    memo: string,
+    payee: string
+}
+
+export type AuditLog = {
+    oldTransaction: Transaction,
+    newTransaction: Transaction,
+    executingActor: string
+}
+
 export type Category = {
     id: string,
     name: string,

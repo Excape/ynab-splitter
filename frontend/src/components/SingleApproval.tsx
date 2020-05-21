@@ -28,8 +28,7 @@ const SingleApproval = (props: Props) => {
     }
 
     function onApprove() {
-        // TODO set "from" correctly
-        fetch(`/api/v1/transactions/${props.transaction.id}/approveSingle?from=ROBIN&for=${upperCase(props.for)}&categoryId=${selectedCategory?.id}`)
+        fetch(`/api/v1/transactions/${props.transaction.id}/approveSingle?for=${upperCase(props.for)}&categoryId=${selectedCategory?.id}`)
             .then(result => result.json())
             .then(result => props.onApprove(result))
     }

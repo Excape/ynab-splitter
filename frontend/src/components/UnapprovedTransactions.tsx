@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import {Card} from "semantic-ui-react";
 import {UnapprovedTransaction} from "../types";
 import TransactionCard from "./TransactionCard";
+import {RouteComponentProps} from '@reach/router';
 
 
-const UnapprovedTransactions = () => {
+const UnapprovedTransactions = (props: RouteComponentProps) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [items, setItems] = React.useState([] as UnapprovedTransaction[]);
 

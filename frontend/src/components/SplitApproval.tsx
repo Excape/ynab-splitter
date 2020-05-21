@@ -19,9 +19,9 @@ type Props = {
 }
 
 const SplitApproval = (props: Props) => {
-    const [selectedCategoryRobin, setSelectedCategoryRobin] = React.useState<null | Category>();
+    const [selectedCategoryRobin, setSelectedCategoryRobin] = React.useState(props.presetCategoryRobin);
     const [categoryOptionsRobin, setCategoryOptionsRobin] = React.useState([] as Category[]);
-    const [selectedCategorySophie, setSelectedCategorySophie] = React.useState<null | Category>();
+    const [selectedCategorySophie, setSelectedCategorySophie] = React.useState(props.presetCategorySophie);
     const [categoryOptionsSophie, setCategoryOptionsSophie] = React.useState([] as Category[]);
 
 
@@ -53,8 +53,7 @@ const SplitApproval = (props: Props) => {
 
     function approveSplit(split: SplitRequest[]) {
         const request: SplitTransactionRequest = {categories: createCategoryRequest(), split}
-        // TODO set "from" correctly
-        fetch(`/api/v1/transactions/${props.transaction.id}/approveSplit?from=ROBIN`, {
+        fetch(`/api/v1/transactions/${props.transaction.id}/approveSplit`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(request)
