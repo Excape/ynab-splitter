@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.server.ResponseStatusException
 import java.lang.RuntimeException
 import javax.servlet.http.HttpServletRequest
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 @Profile("prod")
 class LoginManagerProd: LoginManager {
 
-    private val LOGGER = LoggerFactory.getLogger(LoginManagerProd::class.java)
+    private val logger = LoggerFactory.getLogger(LoginManagerProd::class.java)
 
     private val userNameMap: Map<String, Actor> = mapOf(
             "excape" to Actor.ROBIN,
@@ -27,7 +26,7 @@ class LoginManagerProd: LoginManager {
 
         val actor = userNameMap[userAttribute]
         return if (actor != null) actor else {
-            LOGGER.error("Unauthorized user: $userAttribute")
+            logger.error("Unauthorized user: $userAttribute")
             throw ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized")
         }
     }
