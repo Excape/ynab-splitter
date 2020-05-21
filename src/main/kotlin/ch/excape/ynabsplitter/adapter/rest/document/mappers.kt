@@ -1,6 +1,7 @@
 package ch.excape.ynabsplitter.adapter.rest.document
 
 import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
+import ch.excape.ynabsplitter.domain.AuditLog
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.MatchedTransaction
 import ch.excape.ynabsplitter.domain.Transaction
@@ -13,4 +14,8 @@ fun MatchedTransaction.toDocument(): MatchedTransactionDocument {
 
 fun Transaction.toDocument(): TransactionDocument {
     return TransactionDocument(id, actor, date.toJavaLocalDate(), amount, category?.toDocument(), memo, payee)
+}
+
+fun AuditLog.toDocument(): AuditLogDocument {
+    return AuditLogDocument(oldTransaction.toDocument(), newTransaction.toDocument(), executingActor)
 }

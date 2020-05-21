@@ -10,5 +10,9 @@ class InMemoryAuditLogRepository : AuditLogRepository {
     override fun saveAuditLog(auditLog: AuditLog) {
         auditLogs.add(auditLog)
     }
+
+    override fun getAllAuditLogs(): List<AuditLog> {
+        return auditLogs.toList()
+    }
 }
 

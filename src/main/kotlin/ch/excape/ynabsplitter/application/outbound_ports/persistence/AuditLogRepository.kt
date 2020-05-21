@@ -4,4 +4,5 @@ import ch.excape.ynabsplitter.domain.AuditLog
 
 interface AuditLogRepository {
     fun saveAuditLog(auditLog: AuditLog)
+    fun getAllAuditLogs(): List<AuditLog>
 }
