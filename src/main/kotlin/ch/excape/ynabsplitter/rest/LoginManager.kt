@@ -1,6 +1,7 @@
 package ch.excape.ynabsplitter.rest
 
 import ch.excape.ynabsplitter.domain.Actor
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest
 @Profile("prod")
 class LoginManagerProd: LoginManager {
 
+    private val LOGGER = LoggerFactory.getLogger(LoginManagerProd::class.java)
+
     private val userNameMap: Map<String, Actor> = mapOf(
             "excape" to Actor.ROBIN,
             "sophie" to Actor.SOPHIE
@@ -22,8 +25,11 @@ class LoginManagerProd: LoginManager {
             throw RuntimeException("X-Forwarded-User header must be set")
         val userAttribute = session.getAttribute(USER_ATTRIBUTE).toString()
 
-        return userNameMap[userAttribute] ?:
+        val actor = userNameMap[userAttribute]
+        return if (actor != null) actor else {
+            LOGGER.error("Unauthorized user: $userAttribute")
             throw ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized")
+        }
     }
 }
 
