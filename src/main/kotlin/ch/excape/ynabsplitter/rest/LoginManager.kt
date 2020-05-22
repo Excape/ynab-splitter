@@ -20,15 +20,17 @@ class LoginManagerProd: LoginManager {
             "sophie" to Actor.SOPHIE
     )
     override fun getLoggedInActor(request: HttpServletRequest): Actor {
-        val session = request.getSession(false) ?:
-            throw RuntimeException("X-Forwarded-User header must be set")
-        val userAttribute = session.getAttribute(USER_ATTRIBUTE).toString()
-
-        val actor = userNameMap[userAttribute]
-        return if (actor != null) actor else {
-            logger.error("Unauthorized user: $userAttribute")
-            throw ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized")
-        }
+        // TODO temporarily disabled
+        return Actor.ROBIN
+//        val session = request.getSession(false) ?:
+//            throw RuntimeException("X-Forwarded-User header must be set")
+//        val userAttribute = session.getAttribute(USER_ATTRIBUTE).toString()
+//
+//        val actor = userNameMap[userAttribute]
+//        return if (actor != null) actor else {
+//            logger.error("Unauthorized user: $userAttribute")
+//            throw ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized")
+//        }
     }
 }
 
