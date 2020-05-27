@@ -27,4 +27,11 @@ class InMemoryCategoriesRepository : ReadCategoriesRepository {
             Actor.ROBIN -> categoriesRobin
         }
     }
+
+    override fun findCategory(actor: Actor, categoryId: String): Category? {
+        return when (actor) {
+            Actor.ROBIN -> categoriesRobin.find { it.id == categoryId }
+            Actor.SOPHIE -> categoriesSophie.find { it.id == categoryId }
+        }
+    }
 }

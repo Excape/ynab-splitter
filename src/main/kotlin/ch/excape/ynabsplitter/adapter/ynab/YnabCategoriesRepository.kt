@@ -25,6 +25,11 @@ class YnabCategoriesRepository(
                     .map(this::toCategories)
                     .flatten()
 
+    override fun findCategory(actor: Actor, categoryId: String): Category? {
+        val category = categoriesApi.getCategoryById(actor.budgetId, categoryId).data.category
+        return category.toCategory()
+    }
+
     private fun toCategories(categoryGroup: CategoryGroupWithCategories): List<Category> =
             categoryGroup.categories
                     .filter { !it.isDeleted }

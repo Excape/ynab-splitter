@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpClientErrorException
 import org.threeten.bp.LocalDate
 
-class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi) : ReadTransactionsRepository, SaveTransactionRepository {
+class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi)
+    : ReadTransactionsRepository, SaveTransactionRepository {
     override fun getTransaction(actor: Actor, id: String): Transaction? {
         val transactionResponse: TransactionResponse?
         try {

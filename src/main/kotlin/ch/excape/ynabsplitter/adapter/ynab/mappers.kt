@@ -27,6 +27,10 @@ fun ch.excape.ynabclient.model.Category.toCategory(categoryGroup: String): Categ
     return Category(id.toString(), name, categoryGroup, balance)
 }
 
+fun ch.excape.ynabclient.model.Category.toCategory(): Category {
+    return Category(id.toString(), name, null, balance)
+}
+
 fun Transaction.toSaveTransaction(accountId: String): SaveTransaction =
         SaveTransaction()
                 .accountId(UUID.fromString(accountId))

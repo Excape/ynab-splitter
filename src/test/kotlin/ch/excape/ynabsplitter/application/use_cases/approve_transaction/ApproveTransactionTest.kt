@@ -3,6 +3,7 @@ package ch.excape.ynabsplitter.application.use_cases.approve_transaction
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionResult
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.ApproveTransactionInput
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
@@ -33,7 +34,17 @@ class ApproveTransactionTest {
                 TODO("not implemented")
             }
         }
-        val approveTransaction = ApproveTransaction(saveTransactionRepository, auditLogRepository)
+        val categoriesRepository = object: ReadCategoriesRepository {
+            override fun getCategories(actor: Actor): List<Category> {
+                return emptyList()
+            }
+
+            override fun findCategory(actor: Actor, categoryId: String): Category? {
+                return null
+            }
+
+        }
+        val approveTransaction = ApproveTransaction(saveTransactionRepository, categoriesRepository, auditLogRepository)
 
         val input = ApproveTransactionInput(
                 MatchedTransaction(mutableListOf(

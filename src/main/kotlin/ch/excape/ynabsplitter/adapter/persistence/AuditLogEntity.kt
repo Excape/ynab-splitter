@@ -28,7 +28,8 @@ data class TransactionEntity(
         val actor: Actor,
         val date: LocalDate,
         val amount: Long,
-        val category: String?,
+        val categoryId: String?,
+        val categoryName: String?,
         val memo: String?,
         val payee: String?
 ) {
@@ -36,7 +37,7 @@ data class TransactionEntity(
             id,
             date.toThreetenLocalDate(),
             amount,
-            Category(null, category, null, null),
+            if (categoryId != null) Category(categoryId, categoryName, null, null) else null,
             memo,
             true,
             payee,
@@ -55,6 +56,7 @@ fun Transaction.toEntity() = TransactionEntity(
         actor,
         date.toJavaLocalDate(),
         amount,
+        category?.id,
         category?.name,
         memo,
         payee

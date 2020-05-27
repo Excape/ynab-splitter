@@ -3,6 +3,7 @@ package ch.excape.ynabsplitter.application.use_cases.approve_transaction
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionResult
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.ApproveTransactionInput
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
@@ -15,6 +16,7 @@ import kotlin.math.roundToLong
 
 class ApproveTransaction(
         private val saveTransactionRepository: SaveTransactionRepository,
+        private val categoriesRepository: ReadCategoriesRepository,
         private val auditLogRepository: AuditLogRepository
 ) : IApproveTransaction {
 
@@ -44,8 +46,12 @@ class ApproveTransaction(
         }
     }
 
-    private fun getCategory(transaction: Transaction, categories: CategoryPerActor) =
-            categories[transaction.actor] ?: transaction.category
+    private fun getCategory(transaction: Transaction, categories: CategoryPerActor): Category? {
+        val inputCategory = categories[transaction.actor] ?: transaction.category
+        return if (inputCategory != null) {
+            categoriesRepository.findCategory(transaction.actor, inputCategory.id)
+        } else null
+    }
 
     private fun splitTransaction(transaction: Transaction, splits: TransactionSplit): Long {
         val split: Double = splits[transaction.actor]

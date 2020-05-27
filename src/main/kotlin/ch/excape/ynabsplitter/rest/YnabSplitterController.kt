@@ -4,7 +4,6 @@ import ch.excape.ynabsplitter.adapter.rest.*
 import ch.excape.ynabsplitter.adapter.rest.document.*
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionResult
-import ch.excape.ynabsplitter.application.outbound_ports.presentation.AuditLogPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
@@ -103,7 +102,8 @@ class YnabSplitterController(
                 fromActor,
                 TransactionSplit.allOnOne(forActor),
                 CategoryPerActor(forActor to Category(categoryId)))
-        val approveTransaction: IApproveTransaction = ApproveTransaction(saveTransactionRepository, auditLogRepository)
+        val approveTransaction: IApproveTransaction = ApproveTransaction(saveTransactionRepository, readCategoriesRepository,
+                auditLogRepository)
 
         approveTransaction.executeWith(input, presenter)
         return presenter.presentation!!
@@ -136,7 +136,7 @@ class YnabSplitterController(
                 splitRequest.categories.toDomain()
         )
 
-        val approveTransaction: IApproveTransaction = ApproveTransaction(saveTransactionRepository, auditLogRepository)
+        val approveTransaction: IApproveTransaction = ApproveTransaction(saveTransactionRepository, readCategoriesRepository, auditLogRepository)
 
         approveTransaction.executeWith(input, presenter)
         return presenter.presentation!!

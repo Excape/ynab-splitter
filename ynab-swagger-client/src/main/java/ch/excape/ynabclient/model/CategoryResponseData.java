@@ -17,17 +17,18 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * CategoryResponse
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
-public class CategoryResponse {
-  @JsonProperty("data")
-  private CategoryResponseData data = null;
+public class CategoryResponseData {
+  @JsonProperty("category")
+  private Category category = null;
 
-  public CategoryResponse data(CategoryResponseData data) {
-    this.data = data;
+  public CategoryResponseData data(Category category) {
+    this.category = category;
     return this;
   }
 
@@ -36,39 +37,39 @@ public class CategoryResponse {
    * @return data
   **/
   @Schema(required = true, description = "")
-  public CategoryResponseData getData() {
-    return data;
+  public Category getCategory() {
+    return category;
   }
 
-  public void setData(CategoryResponseData data) {
-    this.data = data;
+  public void setCategory(Category category) {
+    this.category = category;
   }
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CategoryResponse categoryResponse = (CategoryResponse) o;
-    return Objects.equals(this.data, categoryResponse.data);
+    CategoryResponseData categoryResponse = (CategoryResponseData) o;
+    return Objects.equals(this.category, categoryResponse.category);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data);
+    return Objects.hash(category);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CategoryResponse {\n");
+    sb.append("class CategoryResponseData {\n");
     
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -77,7 +78,7 @@ public class CategoryResponse {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

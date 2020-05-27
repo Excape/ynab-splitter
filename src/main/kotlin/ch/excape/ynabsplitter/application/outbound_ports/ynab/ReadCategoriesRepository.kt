@@ -5,4 +5,5 @@ import ch.excape.ynabsplitter.domain.Category
 
 interface ReadCategoriesRepository {
     fun getCategories(actor: Actor): List<Category>
+    fun findCategory(actor: Actor, categoryId: String): Category?
 }

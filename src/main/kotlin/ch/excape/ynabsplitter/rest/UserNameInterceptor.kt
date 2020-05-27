@@ -21,10 +21,7 @@ class SecurityContextConfigurer : WebMvcConfigurer {
 }
 
 class UsernameInterceptor : HandlerInterceptor {
-    private val logger = LoggerFactory.getLogger(UsernameInterceptor::class.java)
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        logger.info("Request: " + request.requestURL.toString())
-        logger.info("Headers: " + request.headerNames.toList().map { it + ": " + request.getHeader(it) }.joinToString())
         val userHeader = request.getHeader("X-Forwarded-User")
         if (userHeader != null && userHeader.isNotEmpty()) {
             val session = request.getSession(true)
