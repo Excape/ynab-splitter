@@ -10,3 +10,4 @@ Name | Type | Description | Notes
 **lastMonth** | [**LocalDate**](LocalDate.md) | The latest budget month |  [optional]
 **dateFormat** | [**DateFormat**](DateFormat.md) |  |  [optional]
 **currencyFormat** | [**CurrencyFormat**](CurrencyFormat.md) |  |  [optional]
+**accounts** | [**List&lt;Account&gt;**](Account.md) | The budget accounts (only included if &#x60;include_accounts&#x3D;true&#x60; specified as query parameter) |  [optional]

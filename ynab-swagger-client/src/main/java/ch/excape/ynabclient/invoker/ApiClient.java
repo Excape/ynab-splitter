@@ -55,7 +55,7 @@ import ch.excape.ynabclient.invoker.auth.HttpBasicAuth;
 import ch.excape.ynabclient.invoker.auth.ApiKeyAuth;
 import ch.excape.ynabclient.invoker.auth.OAuth;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.invoker.ApiClient")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.invoker.ApiClient")
 public class ApiClient {
     public enum CollectionFormat {
         CSV(","), TSV("\t"), SSV(" "), PIPES("|"), MULTI(null);

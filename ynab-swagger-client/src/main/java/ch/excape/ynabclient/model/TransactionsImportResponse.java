@@ -19,15 +19,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 /**
- * ScheduledTransactionResponse
+ * TransactionsImportResponse
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
-public class ScheduledTransactionResponse {
+public class TransactionsImportResponse {
   @JsonProperty("data")
   private Object data = null;
 
-  public ScheduledTransactionResponse data(Object data) {
+  public TransactionsImportResponse data(Object data) {
     this.data = data;
     return this;
   }
@@ -54,8 +54,8 @@ public class ScheduledTransactionResponse {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ScheduledTransactionResponse scheduledTransactionResponse = (ScheduledTransactionResponse) o;
-    return Objects.equals(this.data, scheduledTransactionResponse.data);
+    TransactionsImportResponse transactionsImportResponse = (TransactionsImportResponse) o;
+    return Objects.equals(this.data, transactionsImportResponse.data);
   }
 
   @Override
@@ -67,7 +67,7 @@ public class ScheduledTransactionResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ScheduledTransactionResponse {\n");
+    sb.append("class TransactionsImportResponse {\n");
     
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");

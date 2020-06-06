@@ -14,17 +14,20 @@ package ch.excape.ynabclient.model;
 
 import java.util.Objects;
 import java.util.Arrays;
+import ch.excape.ynabclient.model.SaveSubTransaction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.threeten.bp.LocalDate;
 /**
  * SaveTransaction
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class SaveTransaction {
   @JsonProperty("account_id")
   private UUID accountId = null;
@@ -126,6 +129,9 @@ public class SaveTransaction {
   @JsonProperty("import_id")
   private String importId = null;
 
+  @JsonProperty("subtransactions")
+  private List<SaveSubTransaction> subtransactions = null;
+
   public SaveTransaction accountId(UUID accountId) {
     this.accountId = accountId;
     return this;
@@ -186,10 +192,10 @@ public class SaveTransaction {
   }
 
    /**
-   * The payee for the transaction.  To create a transfer between two accounts, use the account transfer payee pointing to the target account.  Account transfer payees are specified as tranfer_payee_id on the account resource.
+   * The payee for the transaction.  To create a transfer between two accounts, use the account transfer payee pointing to the target account.  Account transfer payees are specified as &#x60;tranfer_payee_id&#x60; on the account resource.
    * @return payeeId
   **/
-  @Schema(description = "The payee for the transaction.  To create a transfer between two accounts, use the account transfer payee pointing to the target account.  Account transfer payees are specified as tranfer_payee_id on the account resource.")
+  @Schema(description = "The payee for the transaction.  To create a transfer between two accounts, use the account transfer payee pointing to the target account.  Account transfer payees are specified as `tranfer_payee_id` on the account resource.")
   public UUID getPayeeId() {
     return payeeId;
   }
@@ -204,10 +210,10 @@ public class SaveTransaction {
   }
 
    /**
-   * The payee name.  If a payee_name value is provided and payee_id has a null value, the payee_name value will be used to resolve the payee by either (1) a matching payee rename rule (only if import_id is also specified) or (2) a payee with the same name or (3) creation of a new payee.
+   * The payee name.  If a &#x60;payee_name&#x60; value is provided and &#x60;payee_id&#x60; has a null value, the &#x60;payee_name&#x60; value will be used to resolve the payee by either (1) a matching payee rename rule (only if &#x60;import_id&#x60; is also specified) or (2) a payee with the same name or (3) creation of a new payee.
    * @return payeeName
   **/
-  @Schema(description = "The payee name.  If a payee_name value is provided and payee_id has a null value, the payee_name value will be used to resolve the payee by either (1) a matching payee rename rule (only if import_id is also specified) or (2) a payee with the same name or (3) creation of a new payee.")
+  @Schema(description = "The payee name.  If a `payee_name` value is provided and `payee_id` has a null value, the `payee_name` value will be used to resolve the payee by either (1) a matching payee rename rule (only if `import_id` is also specified) or (2) a payee with the same name or (3) creation of a new payee.")
   public String getPayeeName() {
     return payeeName;
   }
@@ -222,10 +228,10 @@ public class SaveTransaction {
   }
 
    /**
-   * The category for the transaction.  Split and Credit Card Payment categories are not permitted and will be ignored if supplied.  If an existing transaction has a Split category it cannot be changed.
+   * The category for the transaction.  To configure a split transaction, you can specify null for &#x60;category_id&#x60; and provide a &#x60;subtransactions&#x60; array as part of the transaction object.  If an existing transaction is a split, the &#x60;category_id&#x60; cannot be changed.  Credit Card Payment categories are not permitted and will be ignored if supplied.
    * @return categoryId
   **/
-  @Schema(description = "The category for the transaction.  Split and Credit Card Payment categories are not permitted and will be ignored if supplied.  If an existing transaction has a Split category it cannot be changed.")
+  @Schema(description = "The category for the transaction.  To configure a split transaction, you can specify null for `category_id` and provide a `subtransactions` array as part of the transaction object.  If an existing transaction is a split, the `category_id` cannot be changed.  Credit Card Payment categories are not permitted and will be ignored if supplied.")
   public UUID getCategoryId() {
     return categoryId;
   }
@@ -312,16 +318,42 @@ public class SaveTransaction {
   }
 
    /**
-   * If specified, the new transaction will be assigned this import_id and considered \&quot;imported\&quot;.  We will also attempt to match this imported transaction to an existing \&quot;user-entered\&quot; transation on the same account, with the same amount, and with a date +/-10 days from the imported transaction date.&lt;br&gt;&lt;br&gt;Transactions imported through File Based Import or Direct Import (not through the API) are assigned an import_id in the format: &#x27;YNAB:[milliunit_amount]:[iso_date]:[occurrence]&#x27;. For example, a transaction dated 2015-12-30 in the amount of -$294.23 USD would have an import_id of &#x27;YNAB:-294230:2015-12-30:1&#x27;.  If a second transaction on the same account was imported and had the same date and same amount, its import_id would be &#x27;YNAB:-294230:2015-12-30:2&#x27;.  Using a consistent format will prevent duplicates through Direct Import and File Based Import.&lt;br&gt;&lt;br&gt;If import_id is omitted or specified as null, the transaction will be treated as a \&quot;user-entered\&quot; transaction. As such, it will be eligible to be matched against transactions later being imported (via DI, FBI, or API).
+   * If specified, the new transaction will be assigned this &#x60;import_id&#x60; and considered \&quot;imported\&quot;.  We will also attempt to match this imported transaction to an existing \&quot;user-entered\&quot; transation on the same account, with the same amount, and with a date +/-10 days from the imported transaction date.&lt;br&gt;&lt;br&gt;Transactions imported through File Based Import or Direct Import (not through the API) are assigned an import_id in the format: &#x27;YNAB:[milliunit_amount]:[iso_date]:[occurrence]&#x27;. For example, a transaction dated 2015-12-30 in the amount of -$294.23 USD would have an import_id of &#x27;YNAB:-294230:2015-12-30:1&#x27;.  If a second transaction on the same account was imported and had the same date and same amount, its import_id would be &#x27;YNAB:-294230:2015-12-30:2&#x27;.  Using a consistent format will prevent duplicates through Direct Import and File Based Import.&lt;br&gt;&lt;br&gt;If import_id is omitted or specified as null, the transaction will be treated as a \&quot;user-entered\&quot; transaction. As such, it will be eligible to be matched against transactions later being imported (via DI, FBI, or API).
    * @return importId
   **/
-  @Schema(description = "If specified, the new transaction will be assigned this import_id and considered \"imported\".  We will also attempt to match this imported transaction to an existing \"user-entered\" transation on the same account, with the same amount, and with a date +/-10 days from the imported transaction date.<br><br>Transactions imported through File Based Import or Direct Import (not through the API) are assigned an import_id in the format: 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'. For example, a transaction dated 2015-12-30 in the amount of -$294.23 USD would have an import_id of 'YNAB:-294230:2015-12-30:1'.  If a second transaction on the same account was imported and had the same date and same amount, its import_id would be 'YNAB:-294230:2015-12-30:2'.  Using a consistent format will prevent duplicates through Direct Import and File Based Import.<br><br>If import_id is omitted or specified as null, the transaction will be treated as a \"user-entered\" transaction. As such, it will be eligible to be matched against transactions later being imported (via DI, FBI, or API).")
+  @Schema(description = "If specified, the new transaction will be assigned this `import_id` and considered \"imported\".  We will also attempt to match this imported transaction to an existing \"user-entered\" transation on the same account, with the same amount, and with a date +/-10 days from the imported transaction date.<br><br>Transactions imported through File Based Import or Direct Import (not through the API) are assigned an import_id in the format: 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'. For example, a transaction dated 2015-12-30 in the amount of -$294.23 USD would have an import_id of 'YNAB:-294230:2015-12-30:1'.  If a second transaction on the same account was imported and had the same date and same amount, its import_id would be 'YNAB:-294230:2015-12-30:2'.  Using a consistent format will prevent duplicates through Direct Import and File Based Import.<br><br>If import_id is omitted or specified as null, the transaction will be treated as a \"user-entered\" transaction. As such, it will be eligible to be matched against transactions later being imported (via DI, FBI, or API).")
   public String getImportId() {
     return importId;
   }
 
   public void setImportId(String importId) {
     this.importId = importId;
+  }
+
+  public SaveTransaction subtransactions(List<SaveSubTransaction> subtransactions) {
+    this.subtransactions = subtransactions;
+    return this;
+  }
+
+  public SaveTransaction addSubtransactionsItem(SaveSubTransaction subtransactionsItem) {
+    if (this.subtransactions == null) {
+      this.subtransactions = new ArrayList<SaveSubTransaction>();
+    }
+    this.subtransactions.add(subtransactionsItem);
+    return this;
+  }
+
+   /**
+   * An array of subtransactions to configure a transaction as a split.  Updating &#x60;subtransactions&#x60; on an existing split transaction is not supported.
+   * @return subtransactions
+  **/
+  @Schema(description = "An array of subtransactions to configure a transaction as a split.  Updating `subtransactions` on an existing split transaction is not supported.")
+  public List<SaveSubTransaction> getSubtransactions() {
+    return subtransactions;
+  }
+
+  public void setSubtransactions(List<SaveSubTransaction> subtransactions) {
+    this.subtransactions = subtransactions;
   }
 
 
@@ -344,12 +376,13 @@ public class SaveTransaction {
         Objects.equals(this.cleared, saveTransaction.cleared) &&
         Objects.equals(this.approved, saveTransaction.approved) &&
         Objects.equals(this.flagColor, saveTransaction.flagColor) &&
-        Objects.equals(this.importId, saveTransaction.importId);
+        Objects.equals(this.importId, saveTransaction.importId) &&
+        Objects.equals(this.subtransactions, saveTransaction.subtransactions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accountId, date, amount, payeeId, payeeName, categoryId, memo, cleared, approved, flagColor, importId);
+    return Objects.hash(accountId, date, amount, payeeId, payeeName, categoryId, memo, cleared, approved, flagColor, importId, subtransactions);
   }
 
 
@@ -369,6 +402,7 @@ public class SaveTransaction {
     sb.append("    approved: ").append(toIndentedString(approved)).append("\n");
     sb.append("    flagColor: ").append(toIndentedString(flagColor)).append("\n");
     sb.append("    importId: ").append(toIndentedString(importId)).append("\n");
+    sb.append("    subtransactions: ").append(toIndentedString(subtransactions)).append("\n");
     sb.append("}");
     return sb.toString();
   }

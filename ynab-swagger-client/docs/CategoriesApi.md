@@ -36,7 +36,7 @@ bearer.setApiKey("YOUR API KEY");
 
 CategoriesApi apiInstance = new CategoriesApi();
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
-Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included.
 try {
     CategoriesResponse result = apiInstance.getCategories(budgetId, lastKnowledgeOfServer);
     System.out.println(result);
@@ -51,7 +51,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
- **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included. | [optional]
+ **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included. | [optional]
 
 ### Return type
 
@@ -188,7 +188,7 @@ Name | Type | Description  | Notes
 
 Update a category for a specific month
 
-Update a category for a specific month
+Update a category for a specific month.  Only &#x60;budgeted&#x60; amount can be updated.
 
 ### Example
 ```java
@@ -208,7 +208,7 @@ bearer.setApiKey("YOUR API KEY");
 //bearer.setApiKeyPrefix("Token");
 
 CategoriesApi apiInstance = new CategoriesApi();
-SaveMonthCategoryWrapper body = new SaveMonthCategoryWrapper(); // SaveMonthCategoryWrapper | The category to update
+SaveMonthCategoryWrapper body = new SaveMonthCategoryWrapper(); // SaveMonthCategoryWrapper | The category to update.  Only `budgeted` amount can be updated and any other fields specified will be ignored.
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 LocalDate month = new LocalDate(); // LocalDate | The budget month in ISO format (e.g. 2016-12-01) (\"current\" can also be used to specify the current calendar month (UTC))
 String categoryId = "categoryId_example"; // String | The id of the category
@@ -225,7 +225,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**SaveMonthCategoryWrapper**](SaveMonthCategoryWrapper.md)| The category to update |
+ **body** | [**SaveMonthCategoryWrapper**](SaveMonthCategoryWrapper.md)| The category to update.  Only &#x60;budgeted&#x60; amount can be updated and any other fields specified will be ignored. |
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
  **month** | **LocalDate**| The budget month in ISO format (e.g. 2016-12-01) (\&quot;current\&quot; can also be used to specify the current calendar month (UTC)) |
  **categoryId** | **String**| The id of the category |

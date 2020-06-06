@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**getTransactionsByAccount**](TransactionsApi.md#getTransactionsByAccount) | **GET** /budgets/{budget_id}/accounts/{account_id}/transactions | List account transactions
 [**getTransactionsByCategory**](TransactionsApi.md#getTransactionsByCategory) | **GET** /budgets/{budget_id}/categories/{category_id}/transactions | List category transactions
 [**getTransactionsByPayee**](TransactionsApi.md#getTransactionsByPayee) | **GET** /budgets/{budget_id}/payees/{payee_id}/transactions | List payee transactions
+[**importTransactions**](TransactionsApi.md#importTransactions) | **POST** /budgets/{budget_id}/transactions/import | Import transactions
 [**updateTransaction**](TransactionsApi.md#updateTransaction) | **PUT** /budgets/{budget_id}/transactions/{transaction_id} | Updates an existing transaction
 [**updateTransactions**](TransactionsApi.md#updateTransactions) | **PATCH** /budgets/{budget_id}/transactions | Update multiple transactions
 
@@ -19,7 +20,7 @@ Method | HTTP request | Description
 
 Create a single transaction or multiple transactions
 
-Creates a single transaction or multiple transactions.  If you provide a body containing a &#x27;transaction&#x27; object, a single transaction will be created and if you provide a body containing a &#x27;transactions&#x27; array, multiple transactions will be created.  Scheduled transactions cannot be created on this endpoint.
+Creates a single transaction or multiple transactions.  If you provide a body containing a &#x60;transaction&#x60; object, a single transaction will be created and if you provide a body containing a &#x60;transactions&#x60; array, multiple transactions will be created.  Scheduled transactions cannot be created on this endpoint.
 
 ### Example
 ```java
@@ -39,7 +40,7 @@ bearer.setApiKey("YOUR API KEY");
 //bearer.setApiKeyPrefix("Token");
 
 TransactionsApi apiInstance = new TransactionsApi();
-SaveTransactionsWrapper body = new SaveTransactionsWrapper(); // SaveTransactionsWrapper | The transaction or transactions to create.  To create a single transaction you can specify a value for the 'transaction' object and to create multiple transactions you can specify an array of 'transactions'.  It is expected that you will only provide a value for one of these objects.
+SaveTransactionsWrapper body = new SaveTransactionsWrapper(); // SaveTransactionsWrapper | The transaction or transactions to create.  To create a single transaction you can specify a value for the `transaction` object and to create multiple transactions you can specify an array of `transactions`.  It is expected that you will only provide a value for one of these objects.
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 try {
     SaveTransactionsResponse result = apiInstance.createTransaction(body, budgetId);
@@ -54,7 +55,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**SaveTransactionsWrapper**](SaveTransactionsWrapper.md)| The transaction or transactions to create.  To create a single transaction you can specify a value for the &#x27;transaction&#x27; object and to create multiple transactions you can specify an array of &#x27;transactions&#x27;.  It is expected that you will only provide a value for one of these objects. |
+ **body** | [**SaveTransactionsWrapper**](SaveTransactionsWrapper.md)| The transaction or transactions to create.  To create a single transaction you can specify a value for the &#x60;transaction&#x60; object and to create multiple transactions you can specify an array of &#x60;transactions&#x60;.  It is expected that you will only provide a value for one of these objects. |
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
 
 ### Return type
@@ -155,8 +156,8 @@ bearer.setApiKey("YOUR API KEY");
 TransactionsApi apiInstance = new TransactionsApi();
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 LocalDate sinceDate = new LocalDate(); // LocalDate | If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-String type = "type_example"; // String | If specified, only transactions of the specified type will be included. 'uncategorized' and 'unapproved' are currently supported.
-Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+String type = "type_example"; // String | If specified, only transactions of the specified type will be included. \"uncategorized\" and \"unapproved\" are currently supported.
+Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included.
 try {
     TransactionsResponse result = apiInstance.getTransactions(budgetId, sinceDate, type, lastKnowledgeOfServer);
     System.out.println(result);
@@ -172,8 +173,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
  **sinceDate** | **LocalDate**| If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30). | [optional]
- **type** | **String**| If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported. | [optional] [enum: uncategorized, unapproved]
- **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included. | [optional]
+ **type** | **String**| If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported. | [optional] [enum: uncategorized, unapproved]
+ **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included. | [optional]
 
 ### Return type
 
@@ -217,8 +218,8 @@ TransactionsApi apiInstance = new TransactionsApi();
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 String accountId = "accountId_example"; // String | The id of the account
 LocalDate sinceDate = new LocalDate(); // LocalDate | If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-String type = "type_example"; // String | If specified, only transactions of the specified type will be included. 'uncategorized' and 'unapproved' are currently supported.
-Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+String type = "type_example"; // String | If specified, only transactions of the specified type will be included. \"uncategorized\" and \"unapproved\" are currently supported.
+Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included.
 try {
     TransactionsResponse result = apiInstance.getTransactionsByAccount(budgetId, accountId, sinceDate, type, lastKnowledgeOfServer);
     System.out.println(result);
@@ -235,8 +236,8 @@ Name | Type | Description  | Notes
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
  **accountId** | **String**| The id of the account |
  **sinceDate** | **LocalDate**| If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30). | [optional]
- **type** | **String**| If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported. | [optional] [enum: uncategorized, unapproved]
- **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included. | [optional]
+ **type** | **String**| If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported. | [optional] [enum: uncategorized, unapproved]
+ **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included. | [optional]
 
 ### Return type
 
@@ -280,8 +281,8 @@ TransactionsApi apiInstance = new TransactionsApi();
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 String categoryId = "categoryId_example"; // String | The id of the category
 LocalDate sinceDate = new LocalDate(); // LocalDate | If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-String type = "type_example"; // String | If specified, only transactions of the specified type will be included. 'uncategorized' and 'unapproved' are currently supported.
-Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+String type = "type_example"; // String | If specified, only transactions of the specified type will be included. \"uncategorized\" and \"unapproved\" are currently supported.
+Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included.
 try {
     HybridTransactionsResponse result = apiInstance.getTransactionsByCategory(budgetId, categoryId, sinceDate, type, lastKnowledgeOfServer);
     System.out.println(result);
@@ -298,8 +299,8 @@ Name | Type | Description  | Notes
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
  **categoryId** | **String**| The id of the category |
  **sinceDate** | **LocalDate**| If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30). | [optional]
- **type** | **String**| If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported. | [optional] [enum: uncategorized, unapproved]
- **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included. | [optional]
+ **type** | **String**| If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported. | [optional] [enum: uncategorized, unapproved]
+ **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included. | [optional]
 
 ### Return type
 
@@ -343,8 +344,8 @@ TransactionsApi apiInstance = new TransactionsApi();
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 String payeeId = "payeeId_example"; // String | The id of the payee
 LocalDate sinceDate = new LocalDate(); // LocalDate | If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-String type = "type_example"; // String | If specified, only transactions of the specified type will be included. 'uncategorized' and 'unapproved' are currently supported.
-Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+String type = "type_example"; // String | If specified, only transactions of the specified type will be included. \"uncategorized\" and \"unapproved\" are currently supported.
+Long lastKnowledgeOfServer = 789L; // Long | The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included.
 try {
     HybridTransactionsResponse result = apiInstance.getTransactionsByPayee(budgetId, payeeId, sinceDate, type, lastKnowledgeOfServer);
     System.out.println(result);
@@ -361,12 +362,67 @@ Name | Type | Description  | Notes
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
  **payeeId** | **String**| The id of the payee |
  **sinceDate** | **LocalDate**| If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30). | [optional]
- **type** | **String**| If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported. | [optional] [enum: uncategorized, unapproved]
- **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included. | [optional]
+ **type** | **String**| If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported. | [optional] [enum: uncategorized, unapproved]
+ **lastKnowledgeOfServer** | **Long**| The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included. | [optional]
 
 ### Return type
 
 [**HybridTransactionsResponse**](HybridTransactionsResponse.md)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+<a name="importTransactions"></a>
+# **importTransactions**
+> TransactionsImportResponse importTransactions(budgetId)
+
+Import transactions
+
+Imports transactions.
+
+### Example
+```java
+// Import classes:
+//import ch.excape.ynabclient.invoker.ApiClient;
+//import ch.excape.ynabclient.invoker.ApiException;
+//import ch.excape.ynabclient.invoker.Configuration;
+//import ch.excape.ynabclient.invoker.auth.*;
+//import ch.excape.ynabclient.api.TransactionsApi;
+
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+// Configure API key authorization: bearer
+ApiKeyAuth bearer = (ApiKeyAuth) defaultClient.getAuthentication("bearer");
+bearer.setApiKey("YOUR API KEY");
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//bearer.setApiKeyPrefix("Token");
+
+TransactionsApi apiInstance = new TransactionsApi();
+String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
+try {
+    TransactionsImportResponse result = apiInstance.importTransactions(budgetId);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling TransactionsApi#importTransactions");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
+
+### Return type
+
+[**TransactionsImportResponse**](TransactionsImportResponse.md)
 
 ### Authorization
 
@@ -442,7 +498,7 @@ Name | Type | Description  | Notes
 
 Update multiple transactions
 
-Updates multiple transactions, by &#x27;id&#x27; or &#x27;import_id&#x27;.
+Updates multiple transactions, by &#x60;id&#x60; or &#x60;import_id&#x60;.
 
 ### Example
 ```java
@@ -462,7 +518,7 @@ bearer.setApiKey("YOUR API KEY");
 //bearer.setApiKeyPrefix("Token");
 
 TransactionsApi apiInstance = new TransactionsApi();
-UpdateTransactionsWrapper body = new UpdateTransactionsWrapper(); // UpdateTransactionsWrapper | The transactions to update. Each transaction must have either an 'id' or 'import_id' specified. If 'id' is specified as null an 'import_id' value can be provided which will allow transaction(s) to be updated by their import_id. If an id is specified, it will always be used for lookup.
+UpdateTransactionsWrapper body = new UpdateTransactionsWrapper(); // UpdateTransactionsWrapper | The transactions to update. Each transaction must have either an `id` or `import_id` specified. If `id` is specified as null an `import_id` value can be provided which will allow transaction(s) to be updated by their `import_id`. If an `id` is specified, it will always be used for lookup.
 String budgetId = "budgetId_example"; // String | The id of the budget (\"last-used\" can be used to specify the last used budget and \"default\" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
 try {
     SaveTransactionsResponse result = apiInstance.updateTransactions(body, budgetId);
@@ -477,7 +533,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UpdateTransactionsWrapper**](UpdateTransactionsWrapper.md)| The transactions to update. Each transaction must have either an &#x27;id&#x27; or &#x27;import_id&#x27; specified. If &#x27;id&#x27; is specified as null an &#x27;import_id&#x27; value can be provided which will allow transaction(s) to be updated by their import_id. If an id is specified, it will always be used for lookup. |
+ **body** | [**UpdateTransactionsWrapper**](UpdateTransactionsWrapper.md)| The transactions to update. Each transaction must have either an &#x60;id&#x60; or &#x60;import_id&#x60; specified. If &#x60;id&#x60; is specified as null an &#x60;import_id&#x60; value can be provided which will allow transaction(s) to be updated by their &#x60;import_id&#x60;. If an &#x60;id&#x60; is specified, it will always be used for lookup. |
  **budgetId** | **String**| The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget) |
 
 ### Return type

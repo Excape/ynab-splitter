@@ -9,6 +9,7 @@ import ch.excape.ynabclient.model.SaveTransactionWrapper;
 import ch.excape.ynabclient.model.SaveTransactionsResponse;
 import ch.excape.ynabclient.model.SaveTransactionsWrapper;
 import ch.excape.ynabclient.model.TransactionResponse;
+import ch.excape.ynabclient.model.TransactionsImportResponse;
 import ch.excape.ynabclient.model.TransactionsResponse;
 import ch.excape.ynabclient.model.UpdateTransactionsWrapper;
 
@@ -31,7 +32,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.TransactionsApi")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.TransactionsApi")
 public class TransactionsApi {
     private ApiClient apiClient;
 
@@ -54,11 +55,11 @@ public class TransactionsApi {
 
     /**
      * Create a single transaction or multiple transactions
-     * Creates a single transaction or multiple transactions.  If you provide a body containing a &#x27;transaction&#x27; object, a single transaction will be created and if you provide a body containing a &#x27;transactions&#x27; array, multiple transactions will be created.  Scheduled transactions cannot be created on this endpoint.
+     * Creates a single transaction or multiple transactions.  If you provide a body containing a &#x60;transaction&#x60; object, a single transaction will be created and if you provide a body containing a &#x60;transactions&#x60; array, multiple transactions will be created.  Scheduled transactions cannot be created on this endpoint.
      * <p><b>201</b> - The transaction or transactions were successfully created
      * <p><b>400</b> - The request could not be understood due to malformed syntax or validation error(s).
-     * <p><b>409</b> - A transaction on the same account with the same import_id already exists.
-     * @param body The transaction or transactions to create.  To create a single transaction you can specify a value for the &#x27;transaction&#x27; object and to create multiple transactions you can specify an array of &#x27;transactions&#x27;.  It is expected that you will only provide a value for one of these objects.
+     * <p><b>409</b> - A transaction on the same account with the same &#x60;import_id&#x60; already exists.
+     * @param body The transaction or transactions to create.  To create a single transaction you can specify a value for the &#x60;transaction&#x60; object and to create multiple transactions you can specify an array of &#x60;transactions&#x60;.  It is expected that you will only provide a value for one of these objects.
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @return SaveTransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
@@ -147,8 +148,8 @@ public class TransactionsApi {
      * <p><b>404</b> - No transactions were found
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @param sinceDate If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-     * @param type If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported.
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param type If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return TransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -191,8 +192,8 @@ public class TransactionsApi {
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @param accountId The id of the account
      * @param sinceDate If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-     * @param type If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported.
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param type If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return TransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -240,8 +241,8 @@ public class TransactionsApi {
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @param categoryId The id of the category
      * @param sinceDate If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-     * @param type If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported.
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param type If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return HybridTransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -289,8 +290,8 @@ public class TransactionsApi {
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @param payeeId The id of the payee
      * @param sinceDate If specified, only transactions on or after this date will be included.  The date should be ISO formatted (e.g. 2016-12-30).
-     * @param type If specified, only transactions of the specified type will be included. &#x27;uncategorized&#x27; and &#x27;unapproved&#x27; are currently supported.
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param type If specified, only transactions of the specified type will be included. \&quot;uncategorized\&quot; and \&quot;unapproved\&quot; are currently supported.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return HybridTransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -328,6 +329,43 @@ public class TransactionsApi {
 
         ParameterizedTypeReference<HybridTransactionsResponse> returnType = new ParameterizedTypeReference<HybridTransactionsResponse>() {};
         return apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     * Import transactions
+     * Imports transactions.
+     * <p><b>200</b> - The request was successful but there were no transactions to import
+     * <p><b>201</b> - One or more transactions were imported successfully
+     * <p><b>400</b> - The request could not be understood due to malformed syntax or validation error(s)
+     * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
+     * @return TransactionsImportResponse
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public TransactionsImportResponse importTransactions(String budgetId) throws RestClientException {
+        Object postBody = null;
+        // verify the required parameter 'budgetId' is set
+        if (budgetId == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'budgetId' when calling importTransactions");
+        }
+        // create path and map variables
+        final Map<String, Object> uriVariables = new HashMap<String, Object>();
+        uriVariables.put("budget_id", budgetId);
+        String path = UriComponentsBuilder.fromPath("/budgets/{budget_id}/transactions/import").buildAndExpand(uriVariables).toUriString();
+        
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = { 
+            "application/json"
+         };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = {  };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] { "bearer" };
+
+        ParameterizedTypeReference<TransactionsImportResponse> returnType = new ParameterizedTypeReference<TransactionsImportResponse>() {};
+        return apiClient.invokeAPI(path, HttpMethod.POST, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
     /**
      * Updates an existing transaction
@@ -378,10 +416,10 @@ public class TransactionsApi {
     }
     /**
      * Update multiple transactions
-     * Updates multiple transactions, by &#x27;id&#x27; or &#x27;import_id&#x27;.
+     * Updates multiple transactions, by &#x60;id&#x60; or &#x60;import_id&#x60;.
      * <p><b>209</b> - The transactions were successfully updated
      * <p><b>400</b> - The request could not be understood due to malformed syntax or validation error(s).
-     * @param body The transactions to update. Each transaction must have either an &#x27;id&#x27; or &#x27;import_id&#x27; specified. If &#x27;id&#x27; is specified as null an &#x27;import_id&#x27; value can be provided which will allow transaction(s) to be updated by their import_id. If an id is specified, it will always be used for lookup.
+     * @param body The transactions to update. Each transaction must have either an &#x60;id&#x60; or &#x60;import_id&#x60; specified. If &#x60;id&#x60; is specified as null an &#x60;import_id&#x60; value can be provided which will allow transaction(s) to be updated by their &#x60;import_id&#x60;. If an &#x60;id&#x60; is specified, it will always be used for lookup.
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @return SaveTransactionsResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API

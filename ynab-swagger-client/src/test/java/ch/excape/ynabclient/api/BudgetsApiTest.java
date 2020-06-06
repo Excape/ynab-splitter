@@ -12,17 +12,12 @@
 
 package ch.excape.ynabclient.api;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import ch.excape.ynabclient.model.BudgetDetailResponse;
 import ch.excape.ynabclient.model.BudgetSettingsResponse;
 import ch.excape.ynabclient.model.BudgetSummaryResponse;
-import ch.excape.ynabclient.model.ErrorResponse;
-import org.junit.Test;
-import org.junit.Ignore;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * API tests for BudgetsApi
@@ -73,7 +68,7 @@ public class BudgetsApiTest {
      */
     @Test
     public void getBudgetsTest() {
-        BudgetSummaryResponse response = api.getBudgets();
+        BudgetSummaryResponse response = api.getBudgets(false);
 
         // TODO: test validations
     }

@@ -23,7 +23,7 @@ import java.util.UUID;
  * Payee
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class Payee {
   @JsonProperty("id")
   private UUID id = null;
@@ -79,10 +79,10 @@ public class Payee {
   }
 
    /**
-   * If a transfer payee, the account_id to which this payee transfers to
+   * If a transfer payee, the &#x60;account_id&#x60; to which this payee transfers to
    * @return transferAccountId
   **/
-  @Schema(description = "If a transfer payee, the account_id to which this payee transfers to")
+  @Schema(description = "If a transfer payee, the `account_id` to which this payee transfers to")
   public String getTransferAccountId() {
     return transferAccountId;
   }

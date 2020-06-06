@@ -23,7 +23,7 @@ import java.util.UUID;
  * SubTransaction
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class SubTransaction {
   @JsonProperty("id")
   private String id = null;
@@ -40,8 +40,14 @@ public class SubTransaction {
   @JsonProperty("payee_id")
   private UUID payeeId = null;
 
+  @JsonProperty("payee_name")
+  private String payeeName = null;
+
   @JsonProperty("category_id")
   private UUID categoryId = null;
+
+  @JsonProperty("category_name")
+  private String categoryName = null;
 
   @JsonProperty("transfer_account_id")
   private UUID transferAccountId = null;
@@ -139,6 +145,24 @@ public class SubTransaction {
     this.payeeId = payeeId;
   }
 
+  public SubTransaction payeeName(String payeeName) {
+    this.payeeName = payeeName;
+    return this;
+  }
+
+   /**
+   * Get payeeName
+   * @return payeeName
+  **/
+  @Schema(description = "")
+  public String getPayeeName() {
+    return payeeName;
+  }
+
+  public void setPayeeName(String payeeName) {
+    this.payeeName = payeeName;
+  }
+
   public SubTransaction categoryId(UUID categoryId) {
     this.categoryId = categoryId;
     return this;
@@ -155,6 +179,24 @@ public class SubTransaction {
 
   public void setCategoryId(UUID categoryId) {
     this.categoryId = categoryId;
+  }
+
+  public SubTransaction categoryName(String categoryName) {
+    this.categoryName = categoryName;
+    return this;
+  }
+
+   /**
+   * Get categoryName
+   * @return categoryName
+  **/
+  @Schema(description = "")
+  public String getCategoryName() {
+    return categoryName;
+  }
+
+  public void setCategoryName(String categoryName) {
+    this.categoryName = categoryName;
   }
 
   public SubTransaction transferAccountId(UUID transferAccountId) {
@@ -208,14 +250,16 @@ public class SubTransaction {
         Objects.equals(this.amount, subTransaction.amount) &&
         Objects.equals(this.memo, subTransaction.memo) &&
         Objects.equals(this.payeeId, subTransaction.payeeId) &&
+        Objects.equals(this.payeeName, subTransaction.payeeName) &&
         Objects.equals(this.categoryId, subTransaction.categoryId) &&
+        Objects.equals(this.categoryName, subTransaction.categoryName) &&
         Objects.equals(this.transferAccountId, subTransaction.transferAccountId) &&
         Objects.equals(this.deleted, subTransaction.deleted);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, transactionId, amount, memo, payeeId, categoryId, transferAccountId, deleted);
+    return Objects.hash(id, transactionId, amount, memo, payeeId, payeeName, categoryId, categoryName, transferAccountId, deleted);
   }
 
 
@@ -229,7 +273,9 @@ public class SubTransaction {
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    memo: ").append(toIndentedString(memo)).append("\n");
     sb.append("    payeeId: ").append(toIndentedString(payeeId)).append("\n");
+    sb.append("    payeeName: ").append(toIndentedString(payeeName)).append("\n");
     sb.append("    categoryId: ").append(toIndentedString(categoryId)).append("\n");
+    sb.append("    categoryName: ").append(toIndentedString(categoryName)).append("\n");
     sb.append("    transferAccountId: ").append(toIndentedString(transferAccountId)).append("\n");
     sb.append("    deleted: ").append(toIndentedString(deleted)).append("\n");
     sb.append("}");

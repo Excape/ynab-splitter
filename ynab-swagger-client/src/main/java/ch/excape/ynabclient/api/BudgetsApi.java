@@ -26,7 +26,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.BudgetsApi")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.BudgetsApi")
 public class BudgetsApi {
     private ApiClient apiClient;
 
@@ -54,7 +54,7 @@ public class BudgetsApi {
      * <p><b>404</b> - The specified budget was not found
      * <p><b>0</b> - An error occurred
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return BudgetDetailResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -129,16 +129,18 @@ public class BudgetsApi {
      * <p><b>200</b> - The list of budgets
      * <p><b>404</b> - No budgets were found
      * <p><b>0</b> - An error occurred
+     * @param includeAccounts Whether to include the list of budget accounts
      * @return BudgetSummaryResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public BudgetSummaryResponse getBudgets() throws RestClientException {
+    public BudgetSummaryResponse getBudgets(Boolean includeAccounts) throws RestClientException {
         Object postBody = null;
         String path = UriComponentsBuilder.fromPath("/budgets").build().toUriString();
         
         final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+        queryParams.putAll(apiClient.parameterToMultiValueMap(null, "include_accounts", includeAccounts));
 
         final String[] accepts = { 
             "application/json"

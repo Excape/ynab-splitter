@@ -14,12 +14,15 @@ package ch.excape.ynabclient.model;
 
 import java.util.Objects;
 import java.util.Arrays;
+import ch.excape.ynabclient.model.Account;
 import ch.excape.ynabclient.model.CurrencyFormat;
 import ch.excape.ynabclient.model.DateFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
@@ -27,7 +30,7 @@ import org.threeten.bp.OffsetDateTime;
  * BudgetSummary
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class BudgetSummary {
   @JsonProperty("id")
   private UUID id = null;
@@ -49,6 +52,9 @@ public class BudgetSummary {
 
   @JsonProperty("currency_format")
   private CurrencyFormat currencyFormat = null;
+
+  @JsonProperty("accounts")
+  private List<Account> accounts = null;
 
   public BudgetSummary id(UUID id) {
     this.id = id;
@@ -176,6 +182,32 @@ public class BudgetSummary {
     this.currencyFormat = currencyFormat;
   }
 
+  public BudgetSummary accounts(List<Account> accounts) {
+    this.accounts = accounts;
+    return this;
+  }
+
+  public BudgetSummary addAccountsItem(Account accountsItem) {
+    if (this.accounts == null) {
+      this.accounts = new ArrayList<Account>();
+    }
+    this.accounts.add(accountsItem);
+    return this;
+  }
+
+   /**
+   * The budget accounts (only included if &#x60;include_accounts&#x3D;true&#x60; specified as query parameter)
+   * @return accounts
+  **/
+  @Schema(description = "The budget accounts (only included if `include_accounts=true` specified as query parameter)")
+  public List<Account> getAccounts() {
+    return accounts;
+  }
+
+  public void setAccounts(List<Account> accounts) {
+    this.accounts = accounts;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -192,12 +224,13 @@ public class BudgetSummary {
         Objects.equals(this.firstMonth, budgetSummary.firstMonth) &&
         Objects.equals(this.lastMonth, budgetSummary.lastMonth) &&
         Objects.equals(this.dateFormat, budgetSummary.dateFormat) &&
-        Objects.equals(this.currencyFormat, budgetSummary.currencyFormat);
+        Objects.equals(this.currencyFormat, budgetSummary.currencyFormat) &&
+        Objects.equals(this.accounts, budgetSummary.accounts);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, lastModifiedOn, firstMonth, lastMonth, dateFormat, currencyFormat);
+    return Objects.hash(id, name, lastModifiedOn, firstMonth, lastMonth, dateFormat, currencyFormat, accounts);
   }
 
 
@@ -213,6 +246,7 @@ public class BudgetSummary {
     sb.append("    lastMonth: ").append(toIndentedString(lastMonth)).append("\n");
     sb.append("    dateFormat: ").append(toIndentedString(dateFormat)).append("\n");
     sb.append("    currencyFormat: ").append(toIndentedString(currencyFormat)).append("\n");
+    sb.append("    accounts: ").append(toIndentedString(accounts)).append("\n");
     sb.append("}");
     return sb.toString();
   }

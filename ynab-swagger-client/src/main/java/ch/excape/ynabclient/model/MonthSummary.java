@@ -23,7 +23,7 @@ import org.threeten.bp.LocalDate;
  * MonthSummary
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class MonthSummary {
   @JsonProperty("month")
   private LocalDate month = null;
@@ -91,10 +91,10 @@ public class MonthSummary {
   }
 
    /**
-   * The total amount in transactions categorized to &#x27;Inflow: To be Budgeted&#x27; in the month
+   * The total amount of transactions categorized to &#x27;Inflow: To be Budgeted&#x27; in the month
    * @return income
   **/
-  @Schema(required = true, description = "The total amount in transactions categorized to 'Inflow: To be Budgeted' in the month")
+  @Schema(required = true, description = "The total amount of transactions categorized to 'Inflow: To be Budgeted' in the month")
   public Long getIncome() {
     return income;
   }
@@ -127,10 +127,10 @@ public class MonthSummary {
   }
 
    /**
-   * The total amount in transactions in the month, excluding those categorized to &#x27;Inflow: To be Budgeted&#x27;
+   * The total amount of transactions in the month, excluding those categorized to &#x27;Inflow: To be Budgeted&#x27;
    * @return activity
   **/
-  @Schema(required = true, description = "The total amount in transactions in the month, excluding those categorized to 'Inflow: To be Budgeted'")
+  @Schema(required = true, description = "The total amount of transactions in the month, excluding those categorized to 'Inflow: To be Budgeted'")
   public Long getActivity() {
     return activity;
   }

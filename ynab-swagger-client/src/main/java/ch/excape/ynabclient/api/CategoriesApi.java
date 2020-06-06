@@ -28,7 +28,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.CategoriesApi")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")@Component("ch.excape.ynabclient.api.CategoriesApi")
 public class CategoriesApi {
     private ApiClient apiClient;
 
@@ -56,7 +56,7 @@ public class CategoriesApi {
      * <p><b>404</b> - No categories were found
      * <p><b>0</b> - An error occurred
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
-     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since last_knowledge_of_server will be included.
+     * @param lastKnowledgeOfServer The starting server knowledge.  If provided, only entities that have changed since &#x60;last_knowledge_of_server&#x60; will be included.
      * @return CategoriesResponse
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
@@ -182,10 +182,10 @@ public class CategoriesApi {
     }
     /**
      * Update a category for a specific month
-     * Update a category for a specific month
+     * Update a category for a specific month.  Only &#x60;budgeted&#x60; amount can be updated.
      * <p><b>200</b> - The month category was successfully updated
      * <p><b>400</b> - The request could not be understood due to malformed syntax or validation error(s)
-     * @param body The category to update
+     * @param body The category to update.  Only &#x60;budgeted&#x60; amount can be updated and any other fields specified will be ignored.
      * @param budgetId The id of the budget (\&quot;last-used\&quot; can be used to specify the last used budget and \&quot;default\&quot; can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget)
      * @param month The budget month in ISO format (e.g. 2016-12-01) (\&quot;current\&quot; can also be used to specify the current calendar month (UTC))
      * @param categoryId The id of the category

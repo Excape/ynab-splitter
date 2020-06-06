@@ -24,7 +24,7 @@ import org.threeten.bp.LocalDate;
  * Category
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2019-09-07T14:51:52.476+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class Category {
   @JsonProperty("id")
   private UUID id = null;
@@ -54,7 +54,7 @@ public class Category {
   private Long balance = null;
 
   /**
-   * The type of goal, if the category has a goal (TB&#x3D;Target Category Balance, TBD&#x3D;Target Category Balance by Date, MF&#x3D;Monthly Funding)
+   * The type of goal, if the category has a goal (TB&#x3D;&#x27;Target Category Balance&#x27;, TBD&#x3D;&#x27;Target Category Balance by Date&#x27;, MF&#x3D;&#x27;Monthly Funding&#x27;, NEED&#x3D;&#x27;Plan Your Spending&#x27;)
    */
   public enum GoalTypeEnum {
     TB("TB"),
@@ -272,10 +272,10 @@ public class Category {
   }
 
    /**
-   * The type of goal, if the category has a goal (TB&#x3D;Target Category Balance, TBD&#x3D;Target Category Balance by Date, MF&#x3D;Monthly Funding)
+   * The type of goal, if the category has a goal (TB&#x3D;&#x27;Target Category Balance&#x27;, TBD&#x3D;&#x27;Target Category Balance by Date&#x27;, MF&#x3D;&#x27;Monthly Funding&#x27;, NEED&#x3D;&#x27;Plan Your Spending&#x27;)
    * @return goalType
   **/
-  @Schema(description = "The type of goal, if the category has a goal (TB=Target Category Balance, TBD=Target Category Balance by Date, MF=Monthly Funding)")
+  @Schema(description = "The type of goal, if the category has a goal (TB='Target Category Balance', TBD='Target Category Balance by Date', MF='Monthly Funding', NEED='Plan Your Spending')")
   public GoalTypeEnum getGoalType() {
     return goalType;
   }
@@ -326,10 +326,10 @@ public class Category {
   }
 
    /**
-   * If the goal type is &#x27;TBD&#x27; (Target Category Balance by Date), this is the target month for the goal to be completed
+   * The target month for the goal to be completed.  Only some goal types specify this date.
    * @return goalTargetMonth
   **/
-  @Schema(description = "If the goal type is 'TBD' (Target Category Balance by Date), this is the target month for the goal to be completed")
+  @Schema(description = "The target month for the goal to be completed.  Only some goal types specify this date.")
   public LocalDate getGoalTargetMonth() {
     return goalTargetMonth;
   }
