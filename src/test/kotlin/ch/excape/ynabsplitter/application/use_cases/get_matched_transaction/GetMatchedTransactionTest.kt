@@ -70,6 +70,10 @@ internal class GetMatchedTransactionTest {
         override fun getTransaction(actor: Actor, id: String): Transaction? {
             return testTransactions.find { it.id == id && it.actor == actor }
         }
+
+        override fun triggerTransactionImport(actor: Actor) {
+            throw NotImplementedError()
+        }
     }
 
     fun testTransaction(id: String, amount: Long, payee: String, actor: Actor) = Transaction(

@@ -12,6 +12,10 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
         return transactions[id]
     }
 
+    override fun triggerTransactionImport(actor: Actor) {
+        println("Transactions for ${actor.name} would be imported here")
+    }
+
     private val transactions: MutableMap<String, Transaction> = createFakeTransactions()
 
     override fun getAllTransactionsFromLastWeek(actor: Actor): List<Transaction> =

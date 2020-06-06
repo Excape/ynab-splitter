@@ -9,4 +9,5 @@ interface ReadTransactionsRepository {
     fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction>
     fun getUnapprovedTransactionsFromLastWeek(actor: Actor): List<Transaction>
     fun getTransaction(actor: Actor, id: String): Transaction?
+    fun triggerTransactionImport(actor: Actor)
 }

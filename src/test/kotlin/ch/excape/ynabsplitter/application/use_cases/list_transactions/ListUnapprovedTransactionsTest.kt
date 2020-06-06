@@ -90,6 +90,10 @@ internal class ListUnapprovedTransactionsTest {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
+            override fun triggerTransactionImport(actor: Actor) {
+                TODO("not implemented")
+            }
+
             override fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction> {
                 return emptyList()
             }

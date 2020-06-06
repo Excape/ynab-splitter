@@ -11,6 +11,8 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
     : IListUnapprovedTransactions {
 
     override fun executeWith(input: ListUnapprovedTransactionsInput, presenter: TransactionListPresenter) {
+        triggerYnabImport(input.actors);
+
         val allTransactions = input.actors
                 .map { readTransactions(it) }
                 .flatten()
@@ -25,6 +27,12 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
         overmatchedTransactions.forEach { println("Overmatched transaction: $it") }
 
         presenter.present(validTransactions)
+    }
+
+    private fun triggerYnabImport(actors: List<Actor>) {
+        actors.forEach {
+            readTransactionsRepository.triggerTransactionImport(it)
+        }
     }
 
     private fun readTransactions(actor: Actor): List<Transaction> {

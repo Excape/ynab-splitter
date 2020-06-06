@@ -28,6 +28,10 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
         return transactionResponse.data.transaction.toTransaction(actor)
     }
 
+    override fun triggerTransactionImport(actor: Actor) {
+        transactionsApi.importTransactions(actor.budgetId)
+    }
+
     override fun getAllTransactionsFromLastWeek(actor: Actor): List<Transaction> = getTransactions(actor, false, lastWeek())
 
     override fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction> {
