@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {AuditLog} from "../types";
 import {RouteComponentProps} from '@reach/router';
-import {Card, Icon} from 'semantic-ui-react';
+import {Card, Icon, Loader} from 'semantic-ui-react';
 
 const AuditLogList = (props: RouteComponentProps) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
@@ -21,10 +21,8 @@ const AuditLogList = (props: RouteComponentProps) => {
             );
     }, []);
 
-
-
     if (!isLoaded) {
-        return (<div>Loading...</div>)
+        return (<Loader active inline='centered' />)
     }
 
     return (

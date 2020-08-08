@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Card} from "semantic-ui-react";
+import {Card, Loader} from "semantic-ui-react";
 import {UnapprovedTransaction} from "../types";
 import TransactionCard from "./TransactionCard";
 import {RouteComponentProps} from '@reach/router';
@@ -27,7 +27,11 @@ const UnapprovedTransactions = (props: RouteComponentProps) => {
 
 
     if (!isLoaded) {
-        return (<div>Loading...</div>)
+        return (<Loader active inline='centered' />)
+    }
+
+    if (isLoaded && items!.length === 0) {
+        return (<div>No unapproved transactions</div>)
     }
     return (
 

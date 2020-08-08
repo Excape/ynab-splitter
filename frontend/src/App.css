@@ -2,3 +2,11 @@
   background-color: white;
   box-shadow: 2px 2px 8px 0px rgba(0, 0, 50, 0.75);
 }
+
+.approveBtn {
+  margin-top: 0.5em;
+}
+
+.categorySelect {
+  margin-bottom: 0.5em;
+}

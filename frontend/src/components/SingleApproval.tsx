@@ -44,11 +44,12 @@ const SingleApproval = (props: Props) => {
             <span>Select category:</span>
             <CategoryDropdown defaultCategory={props.presetCategory} categoryOptions={categoryOptions}
                               onChange={setSelectedCategory}/>
-
+            <div className="approveBtn">
             {approveVisible
                 ? <Button positive content={"Approve"} onClick={() => onApprove()}/>
                 : <Loader active inline />
             }
+            </div>
         </div>
     );
 };

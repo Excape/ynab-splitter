@@ -87,24 +87,32 @@ const SplitApproval = (props: Props) => {
 
     return (
         <div>
-            <span>Select category for Robin:</span>
-            <CategoryDropdown defaultCategory={props.presetCategoryRobin} categoryOptions={categoryOptionsRobin}
-                              onChange={setSelectedCategoryRobin}/>
+            <div className="categorySelect">
+                <span>Select category for Robin:</span>
+                <CategoryDropdown defaultCategory={props.presetCategoryRobin} categoryOptions={categoryOptionsRobin}
+                                  onChange={setSelectedCategoryRobin}/>
+            </div>
+
+            <div className="categorySelect">
             <span>Select category for Sophie:</span>
             <CategoryDropdown defaultCategory={props.presetCategorySophie} categoryOptions={categoryOptionsSophie}
                               onChange={setSelectedCategorySophie}/>
-            { approveVisible
-            ? (
-                <div>
-                <Button basic color={"blue"}
-                        content={"Split 50/50"}
-                        disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
-                        onClick={() => approveEvenSplit()}/>
-                <Button basic color={"grey"} disabled content={"Custom split"}/>
-                </div>
-                )
-            : <Loader active inline />
-            }
+            </div>
+
+            <div className="approveBtn">
+                { approveVisible
+                ? (
+                    <div>
+                    <Button basic color={"blue"}
+                            content={"Split 50/50"}
+                            disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
+                            onClick={() => approveEvenSplit()}/>
+                    <Button basic color={"grey"} disabled content={"Custom split"}/>
+                    </div>
+                    )
+                : <Loader active inline />
+                }
+            </div>
         </div>
     );
 };
