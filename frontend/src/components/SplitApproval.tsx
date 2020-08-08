@@ -9,7 +9,7 @@ import {
     SplitTransactionRequest,
     UnapprovedTransaction
 } from "../types";
-import {Button} from "semantic-ui-react";
+import {Button, Loader} from "semantic-ui-react";
 
 type Props = {
     transaction: UnapprovedTransaction,
@@ -23,14 +23,18 @@ const SplitApproval = (props: Props) => {
     const [categoryOptionsRobin, setCategoryOptionsRobin] = React.useState([] as Category[]);
     const [selectedCategorySophie, setSelectedCategorySophie] = React.useState(props.presetCategorySophie);
     const [categoryOptionsSophie, setCategoryOptionsSophie] = React.useState([] as Category[]);
+    const [approveVisible, setApproveVisible] = React.useState(false);
 
 
     useEffect(() => {
-        fetchCategories(ApprovalOption.Sophie)
+        let promiseSophie = fetchCategories(ApprovalOption.Sophie)
             .then(result => setCategoryOptionsSophie(result));
 
-        fetchCategories(ApprovalOption.Robin)
+        let promiseRobin = fetchCategories(ApprovalOption.Robin)
             .then(result => setCategoryOptionsRobin(result));
+
+        Promise.all([promiseRobin, promiseSophie])
+            .then(() => setApproveVisible(true));
 
         function fetchCategories(actor: ApprovalOption) {
             return fetch(`/api/v1/categories/${upperCase(actor)}`)
@@ -44,14 +48,8 @@ const SplitApproval = (props: Props) => {
         return option.toString().toUpperCase()
     }
 
-    // function onApprove() {
-    //     // TODO set "from" correctly
-    //     fetch(`/api/v1/transactions/${props.transaction.id}/approveSingle?from=ROBIN&for=${upperCase(props.for)}&categoryId=${selectedCategoryRobin?.id}`)
-    //         .then(result => result.json())
-    //         .then(result => props.onApprove(result))
-    // }
-
     function approveSplit(split: SplitRequest[]) {
+        setApproveVisible(false)
         const request: SplitTransactionRequest = {categories: createCategoryRequest(), split}
         fetch(`/api/v1/transactions/${props.transaction.id}/approveSplit`, {
             method: "POST",
@@ -95,13 +93,18 @@ const SplitApproval = (props: Props) => {
             <span>Select category for Sophie:</span>
             <CategoryDropdown defaultCategory={props.presetCategorySophie} categoryOptions={categoryOptionsSophie}
                               onChange={setSelectedCategorySophie}/>
-            <div>
+            { approveVisible
+            ? (
+                <div>
                 <Button basic color={"blue"}
                         content={"Split 50/50"}
                         disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
                         onClick={() => approveEvenSplit()}/>
                 <Button basic color={"grey"} disabled content={"Custom split"}/>
-            </div>
+                </div>
+                )
+            : <Loader active inline />
+            }
         </div>
     );
 };
