@@ -20,6 +20,7 @@ export type Transaction = {
 }
 
 export type AuditLog = {
+    date: Date,
     oldTransaction: Transaction,
     newTransaction: Transaction,
     executingActor: string

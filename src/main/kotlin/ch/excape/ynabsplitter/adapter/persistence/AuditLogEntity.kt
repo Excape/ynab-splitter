@@ -8,15 +8,18 @@ import ch.excape.ynabsplitter.domain.Transaction
 import ch.excape.ynabsplitter.rest.toThreetenLocalDate
 import org.springframework.data.redis.core.RedisHash
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @RedisHash("AuditLog")
 data class AuditLogEntity(
         val id: String,
+        val date: LocalDateTime,
         val oldTransaction: TransactionEntity,
         val newTransaction: TransactionEntity,
         val executingActor: Actor
 ) {
     fun toDomain() = AuditLog(
+            date,
             oldTransaction.toDomain(),
             newTransaction.toDomain(),
             executingActor
@@ -47,6 +50,7 @@ data class TransactionEntity(
 
 fun AuditLog.toEntity() = AuditLogEntity(
         newTransaction.id,
+        date,
         oldTransaction.toEntity(),
         newTransaction.toEntity(),
         executingActor

@@ -17,5 +17,5 @@ fun Transaction.toDocument(): TransactionDocument {
 }
 
 fun AuditLog.toDocument(): AuditLogDocument {
-    return AuditLogDocument(oldTransaction.toDocument(), newTransaction.toDocument(), executingActor)
+    return AuditLogDocument(date, oldTransaction.toDocument(), newTransaction.toDocument(), executingActor)
 }

@@ -12,6 +12,7 @@ import ch.excape.ynabsplitter.domain.AuditLog
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.Transaction
 import ch.excape.ynabsplitter.domain.TransactionSplit
+import java.time.LocalDateTime
 import kotlin.math.roundToLong
 
 class ApproveTransaction(
@@ -41,7 +42,7 @@ class ApproveTransaction(
 
             saveTransactionRepository.saveTransaction(approvedTransaction)
 
-            val auditLog = AuditLog(transaction, approvedTransaction, input.executingActor)
+            val auditLog = AuditLog(LocalDateTime.now(), transaction, approvedTransaction, input.executingActor)
             auditLogRepository.saveAuditLog(auditLog)
         }
     }

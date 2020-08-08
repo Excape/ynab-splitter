@@ -11,7 +11,10 @@ const AuditLogList = (props: RouteComponentProps) => {
         fetch("/api/v1/auditlog")
             .then(result => result.json())
             .then(result => {
-                    setItems(result);
+                    let sortedItems = [...result]
+                    sortedItems.sort((a: AuditLog, b: AuditLog) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime())
+                    setItems(sortedItems);
                     setIsLoaded(true)
                 },
                 error => setIsLoaded(false)
