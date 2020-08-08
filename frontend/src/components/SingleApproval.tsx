@@ -46,7 +46,8 @@ const SingleApproval = (props: Props) => {
                               onChange={setSelectedCategory}/>
             <div className="approveBtn">
             {approveVisible
-                ? <Button positive content={"Approve"} onClick={() => onApprove()}/>
+                ? <Button positive content={"Approve"} disabled={selectedCategory === undefined}
+                    onClick={() => onApprove()}/>
                 : <Loader active inline />
             }
             </div>
