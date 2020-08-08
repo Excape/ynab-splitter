@@ -37,6 +37,10 @@ const TransactionCard = ({transaction}: Props) => {
         setApprovalOpen(false);
     }
 
+    function approveOpenFor(option: ApprovalOption) {
+        return approvalFor === option;
+    }
+
     return (
         <Card>
             <Card.Content>
@@ -54,9 +58,9 @@ const TransactionCard = ({transaction}: Props) => {
             {!approvalResult?.success && (
             <Card.Content extra fluid="true">
                 <div className='approveButtons'>
-                    <Button basic color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
-                    <Button basic color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
-                    <Button basic color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
+                    <Button basic={!approveOpenFor(ApprovalOption.Robin)} color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
+                    <Button basic={!approveOpenFor(ApprovalOption.Sophie)} color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
+                    <Button basic={!approveOpenFor(ApprovalOption.Split)} color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
                 </div>
             </Card.Content>)}
             {approvalOpen && (
