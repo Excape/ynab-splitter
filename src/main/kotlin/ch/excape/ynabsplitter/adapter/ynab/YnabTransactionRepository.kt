@@ -57,6 +57,7 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
     }
 
     private fun wrapTransaction(transaction: Transaction): SaveTransactionWrapper {
-        return SaveTransactionWrapper().transaction(transaction.toSaveTransaction(transaction.actor.accountId))
+        return SaveTransactionWrapper()
+                .transaction(transaction.toSaveTransaction())
     }
 }

@@ -31,9 +31,9 @@ fun ch.excape.ynabclient.model.Category.toCategory(): Category {
     return Category(id.toString(), name, null, balance)
 }
 
-fun Transaction.toSaveTransaction(accountId: String): SaveTransaction =
+fun Transaction.toSaveTransaction(): SaveTransaction =
         SaveTransaction()
-                .accountId(UUID.fromString(accountId))
+                .accountId(UUID.fromString(actor.accountId))
                 .date(date)
                 .amount(amount)
                 .categoryId(uuidFromString(category?.id))

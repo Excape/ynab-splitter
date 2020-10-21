@@ -10,3 +10,8 @@
 .categorySelect {
   margin-bottom: 0.5em;
 }
+
+.splitLabel {
+  display: flex;
+  justify-content: space-between;
+}

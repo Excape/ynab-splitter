@@ -10,6 +10,7 @@ import {
     UnapprovedTransaction
 } from "../types";
 import {Button, Loader} from "semantic-ui-react";
+import CustomSplitApproval from './CustomSplitApproval';
 
 type Props = {
     transaction: UnapprovedTransaction,
@@ -24,6 +25,7 @@ const SplitApproval = (props: Props) => {
     const [selectedCategorySophie, setSelectedCategorySophie] = React.useState(props.presetCategorySophie);
     const [categoryOptionsSophie, setCategoryOptionsSophie] = React.useState([] as Category[]);
     const [approveVisible, setApproveVisible] = React.useState(false);
+    const [customSplitVisible, setCustomSplitVisible] = React.useState(false);
 
 
     useEffect(() => {
@@ -78,6 +80,15 @@ const SplitApproval = (props: Props) => {
         approveSplit(split)
     }
 
+    function approveCustomSplit(splitRobin: number) {
+        checkCategoriesSelected();
+        const split: SplitRequest[] = [
+            {actor: "ROBIN", split: splitRobin},
+            {actor: "SOPHIE", split: 1 - splitRobin}
+        ];
+        approveSplit(split)
+    }
+
     function createCategoryRequest(): CategoryRequest[] {
         return [
             {actor: "ROBIN", categoryId: selectedCategoryRobin!.id},
@@ -107,11 +118,20 @@ const SplitApproval = (props: Props) => {
                             content={"Split 50/50"}
                             disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
                             onClick={() => approveEvenSplit()}/>
-                    <Button basic color={"grey"} disabled content={"Custom split"}/>
+                    <Button basic color={"grey"}
+                            disabled={customSplitVisible}
+                            content={"Custom split"}
+                            onClick={() => setCustomSplitVisible(true)}
+                    />
                     </div>
                     )
                 : <Loader active inline />
                 }
+            </div>
+            <div>
+                {customSplitVisible && (
+                    <CustomSplitApproval amount={props.transaction.amount} onApprove={approveCustomSplit}/>
+                )}
             </div>
         </div>
     );
