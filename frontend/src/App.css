@@ -11,7 +11,18 @@
   margin-bottom: 0.5em;
 }
 
+.slider {
+  margin-top: 10pt;
+}
+
 .splitLabel {
   display: flex;
   justify-content: space-between;
+}
+
+.splitInput {
+  width: 80pt;
+}
+.splitInput .right {
+  margin-right: 18pt;
 }

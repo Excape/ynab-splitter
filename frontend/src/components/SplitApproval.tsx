@@ -96,6 +96,11 @@ const SplitApproval = (props: Props) => {
         ]
     }
 
+    function shouldDisableApproveButtons() {
+        return selectedCategoryRobin === undefined || selectedCategorySophie === undefined
+            || customSplitVisible;
+    }
+
     return (
         <div>
             <div className="categorySelect">
@@ -116,10 +121,10 @@ const SplitApproval = (props: Props) => {
                     <div>
                     <Button basic color={"blue"}
                             content={"Split 50/50"}
-                            disabled={selectedCategoryRobin === undefined || selectedCategorySophie === undefined}
+                            disabled={shouldDisableApproveButtons()}
                             onClick={() => approveEvenSplit()}/>
                     <Button basic color={"grey"}
-                            disabled={customSplitVisible}
+                            disabled={shouldDisableApproveButtons()}
                             content={"Custom split"}
                             onClick={() => setCustomSplitVisible(true)}
                     />

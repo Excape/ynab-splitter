@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from '@material-ui/core/Slider';
-import {Button, Icon} from 'semantic-ui-react';
+import {Button, Input, InputOnChangeData, InputProps} from 'semantic-ui-react';
 
 type Props = {
     amount: number;
@@ -9,51 +9,99 @@ type Props = {
 
 const CustomSplitApproval = (props: Props) => {
     const [splitValue, setSplitValue] = React.useState(50)
+    const [amountLeft, setAmountLeft] = React.useState(calculateSplitAmount(50))
+    const [amountRight, setAmountRight] = React.useState(calculateSplitAmount(50))
 
-    function updateSplitValue(value: number | number[]) {
-        if (typeof value === 'number') {
-            setSplitValue(value as number)
-        }
+    function updateSplitValueFromSlider(value: number) {
+        setSplitValue(value);
+        setAmountLeft(calculateSplitAmount(value))
+        setAmountRight(calculateSplitAmount(100 - value));
     }
 
-    function calculateSplitAmount(splitValue: number): string {
+    function calculateSplitAmount(splitValue: number): number {
         let share = props.amount * (splitValue / 100);
-        let roundedShare = Math.round(share/10) * 10
-        return `${roundedShare / 1000}`
+        let roundedShare = Math.round(share / 10) * 10
+        return roundedShare / 1000;
+    }
+
+    function calculateReverseSplitAmount(amount: number): number {
+        let share = (amount * 1000) / props.amount
+        return Math.round(share * 100);
     }
 
     function handleApprove() {
         props.onApprove(splitValue / 100)
     }
 
+    function onUpdateSplitValueLeft(event: React.ChangeEvent<HTMLInputElement>) {
+        const amount = Number(event.target.value);
+        if (amountIsValid(amount)) {
+            const splitPercentage = calculateReverseSplitAmount(amount);
+            setAmountLeft(amount)
+            setSplitValue(splitPercentage)
+            setAmountRight(calculateSplitAmount(100 - splitPercentage))
+        }
+    }
+
+    function onUpdateSplitValueRight(event: React.ChangeEvent<HTMLInputElement>) {
+        const amount = Number(event.target.value);
+        if (amountIsValid(amount)) {
+            const splitPercentage = calculateReverseSplitAmount(amount);
+            setAmountRight(amount)
+            setSplitValue(splitPercentage)
+            setAmountLeft(calculateSplitAmount(100 - splitPercentage))
+        }
+    }
+
+    function amountIsValid(amount: number) {
+        return amount <= props.amount / 1000
+    }
+
+    const splitInputProps: InputProps = {
+        type: 'number',
+        fluid: true,
+        icon: 'dollar',
+        iconPosition: 'left',
+        step: 0.05
+    }
+
     return (
         <div>
-            <Slider
-                color={"secondary"}
-                defaultValue={50}
-                step={5}
-                marks
-                min={0}
-                max={100}
-                valueLabelDisplay={'auto'}
-                valueLabelFormat={(n) => `${n}%`}
-                onChange={(_, value) => updateSplitValue(value)}
-            />
+            <div className={"slider"}>
+                <Slider
+                    color={"primary"}
+                    value={splitValue}
+                    step={5}
+                    marks
+                    min={0}
+                    max={100}
+                    valueLabelDisplay={'on'}
+                    valueLabelFormat={(n) => `${n}%`}
+                    onChange={(_, value) => updateSplitValueFromSlider(value as number)}
+                />
+            </div>
             <div className="splitLabel">
-                <div>
-                    <Icon name="dollar sign"/>
-                    {calculateSplitAmount(splitValue)}
+                <div className='splitInput'>
+                    <Input
+                        {...splitInputProps}
+                        value={amountLeft}
+                        onChange={onUpdateSplitValueLeft}
+                    />
+
                 </div>
-                <div>
-                    <Icon name="dollar sign"/>
-                    {calculateSplitAmount(100 - splitValue)}
+                <div className='splitInput right'>
+                    <Input
+                        {...splitInputProps}
+                        value={amountRight}
+                        onChange={onUpdateSplitValueRight}
+                    />
                 </div>
             </div>
             <div className="splitLabel">
                 <div>Robin</div>
                 <div>Sophie</div>
             </div>
-            <div>
+            <div className={'approveBtn'}>
                 <Button color={"green"}
                         content={"Approve"}
                         onClick={() => handleApprove()}
