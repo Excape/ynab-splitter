@@ -36,7 +36,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                 Transaction(
                         "t0",
                         LocalDate.ofYearDay(2019, 1),
-                        10000,
+                        -10000,
                         Category("catGroceries", "Groceries", "True Expenses", 2300),
                         null,
                         false,
@@ -46,7 +46,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                 Transaction(
                         "t1",
                         LocalDate.ofYearDay(2019, 2),
-                        1233,
+                        -1233,
                         Category("catCoffee", "Coffee", "True Expenses", 2300),
                         "oops",
                         false,
@@ -56,11 +56,21 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                 Transaction(
                         "t2",
                         LocalDate.ofYearDay(2019, 3),
-                        52055,
+                        -52055,
                         null,
                         null,
                         false,
                         "Delta Airways",
+                        Actor.ROBIN
+                ),
+                Transaction(
+                        "t3",
+                        LocalDate.ofYearDay(2019, 4),
+                        134000,
+                        null,
+                        null,
+                        false,
+                        "Clothes refund",
                         Actor.ROBIN
                 )
         )

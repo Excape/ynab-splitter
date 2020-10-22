@@ -135,7 +135,7 @@ const SplitApproval = (props: Props) => {
             </div>
             <div>
                 {customSplitVisible && (
-                    <CustomSplitApproval amount={props.transaction.amount} onApprove={approveCustomSplit}/>
+                    <CustomSplitApproval amountPositive={Math.abs(props.transaction.amount)} onApprove={approveCustomSplit}/>
                 )}
             </div>
         </div>

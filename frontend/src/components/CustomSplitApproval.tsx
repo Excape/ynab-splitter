@@ -3,7 +3,7 @@ import Slider from '@material-ui/core/Slider';
 import {Button, Input, InputProps} from 'semantic-ui-react';
 
 type Props = {
-    amount: number;
+    amountPositive: number;
     onApprove: (splitValueRobin: number) => void;
 }
 
@@ -19,13 +19,13 @@ const CustomSplitApproval = (props: Props) => {
     }
 
     function calculateSplitAmount(splitValue: number): number {
-        let share = props.amount * (splitValue / 100);
+        let share = props.amountPositive * (splitValue / 100);
         let roundedShare = Math.round(share / 10) * 10
         return roundedShare / 1000;
     }
 
     function calculateReverseSplitAmount(amount: number): number {
-        let share = (amount * 1000) / props.amount
+        let share = (amount * 1000) / props.amountPositive
         return Math.round(share * 100);
     }
 
@@ -54,7 +54,7 @@ const CustomSplitApproval = (props: Props) => {
     }
 
     function amountIsValid(amount: number) {
-        return amount <= props.amount / 1000
+        return amount <= props.amountPositive / 1000
     }
 
     const splitInputProps: InputProps = {
