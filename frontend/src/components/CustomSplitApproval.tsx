@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from '@material-ui/core/Slider';
-import {Button, Input, InputOnChangeData, InputProps} from 'semantic-ui-react';
+import {Button, Input, InputProps} from 'semantic-ui-react';
 
 type Props = {
     amount: number;
