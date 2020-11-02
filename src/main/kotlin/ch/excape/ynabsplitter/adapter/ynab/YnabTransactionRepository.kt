@@ -32,14 +32,14 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
         transactionsApi.importTransactions(actor.budgetId)
     }
 
-    override fun getAllTransactionsFromLastWeek(actor: Actor): List<Transaction> = getTransactions(actor, false, lastWeek())
+    override fun getAllTransactionsFromLastWeek(actor: Actor): List<Transaction> = getTransactions(actor, false, lastMonth())
 
     override fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction> {
         val transactionsSinceStart = getTransactions(actor, false, startDate)
         return transactionsSinceStart.filter { it.date <= endDate }
     }
 
-    override fun getUnapprovedTransactionsFromLastWeek(actor: Actor): List<Transaction> = getTransactions(actor, true, lastWeek())
+    override fun getUnapprovedTransactionsFromLastMonth(actor: Actor): List<Transaction> = getTransactions(actor, true, lastMonth())
 
     private fun getTransactions(actor: Actor, unapprovedOnly: Boolean, startDate: LocalDate): List<Transaction> {
         val response: TransactionsResponse = transactionsApi.getTransactionsByAccount(
@@ -49,7 +49,7 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
         return response.data.transactions.map {it.toTransaction(actor)}
     }
 
-    private fun lastWeek() : LocalDate = LocalDate.now().minusWeeks(1)
+    private fun lastMonth() : LocalDate = LocalDate.now().minusMonths(1)
 
 
     override fun saveTransaction(transaction: Transaction) {

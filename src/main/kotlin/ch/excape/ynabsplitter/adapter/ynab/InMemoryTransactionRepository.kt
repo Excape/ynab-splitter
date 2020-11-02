@@ -24,7 +24,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     override fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction> =
             transactions.values.filter { it.date in startDate..endDate }
 
-    override fun getUnapprovedTransactionsFromLastWeek(actor: Actor): List<Transaction> =
+    override fun getUnapprovedTransactionsFromLastMonth(actor: Actor): List<Transaction> =
             getAllTransactionsFromLastWeek(actor).filter { !it.isApproved }
 
     override fun saveTransaction(transaction: Transaction) {

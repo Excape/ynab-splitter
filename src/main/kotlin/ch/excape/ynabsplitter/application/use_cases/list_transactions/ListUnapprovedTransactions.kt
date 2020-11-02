@@ -36,6 +36,6 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
     }
 
     private fun readTransactions(actor: Actor): List<Transaction> {
-        return readTransactionsRepository.getUnapprovedTransactionsFromLastWeek(actor)
+        return readTransactionsRepository.getUnapprovedTransactionsFromLastMonth(actor)
     }
 }

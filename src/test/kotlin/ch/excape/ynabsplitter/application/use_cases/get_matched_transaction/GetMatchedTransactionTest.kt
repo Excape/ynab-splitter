@@ -63,7 +63,7 @@ internal class GetMatchedTransactionTest {
             throw NotImplementedError()
         }
 
-        override fun getUnapprovedTransactionsFromLastWeek(actor: Actor): List<Transaction> {
+        override fun getUnapprovedTransactionsFromLastMonth(actor: Actor): List<Transaction> {
             throw NotImplementedError()
         }
 
