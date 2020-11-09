@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
-import {AuditLog} from "../types";
-import {RouteComponentProps} from '@reach/router';
-import {Card, Icon, Loader} from 'semantic-ui-react';
+import {AuditLog, Transaction} from "../types";
+import {Card, Grid, Icon, Loader} from 'semantic-ui-react';
 
-const AuditLogList = (props: RouteComponentProps) => {
+const AuditLogList = () => {
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [items, setItems] = React.useState([] as AuditLog[])
 
@@ -26,13 +25,14 @@ const AuditLogList = (props: RouteComponentProps) => {
     }
 
     return (
-        <Card.Group>
-            {/* TODO sort*/}
+        <Grid stackable columns={3}>
             {items!
                 .map(item => (
-                    <AuditLogCard auditlog={item} key={item.newTransaction.id}/>
+                    <Grid.Column  key={item.newTransaction.id}>
+                        <AuditLogCard auditlog={item}/>
+                    </Grid.Column>
                 ))}
-        </Card.Group>
+        </Grid>
     );
 }
 
@@ -42,15 +42,19 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
         return actor.charAt(0) + actor.toLowerCase().slice(1);
     }
 
+    function renderCategory(transaction: Transaction ) {
+        return transaction.category ? transaction.category.name : "Uncategorized";
+    }
+
     return (
-        <Card>
+        <Card fluid>
             <Card.Content>
                 <Card.Header>{auditlog.newTransaction.payee} ({renderActor(auditlog.newTransaction.actor)})</Card.Header>
                 <Card.Meta>{auditlog.newTransaction.date}</Card.Meta>
                 <Card.Meta>Approved by {renderActor(auditlog.executingActor)}</Card.Meta>
                 <Card.Description>
                     <Icon name="folder"/>
-                    {auditlog.oldTransaction.category?.name} -> {auditlog.newTransaction.category?.name}
+                    {renderCategory(auditlog.oldTransaction)} -> {renderCategory(auditlog.newTransaction)}
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
