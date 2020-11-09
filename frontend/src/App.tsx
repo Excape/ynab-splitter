@@ -7,7 +7,7 @@ import AuditLogList from './components/AuditLogList';
 
 const App = () => {
     const defaultMenu = 'transactions'
-    const [activeMenu, setActiveMenu] = React.useState()
+    const [activeMenu, setActiveMenu] = React.useState(defaultMenu)
 
 
     function handleMenuClick(event: any, {name}: MenuItemProps) {
@@ -18,7 +18,7 @@ const App = () => {
         <Grid columns={1} className={"App-Grid"}>
             <Grid.Row>
                 <Grid.Column>
-                    <Menu>
+                    <Menu fluid widths={2}>
                         <Menu.Item
                             name={"transactions"}
                             onClick={handleMenuClick}

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Card, Loader} from "semantic-ui-react";
+import {Grid, Loader} from "semantic-ui-react";
 import {UnapprovedTransaction} from "../types";
 import TransactionCard from "./TransactionCard";
 import {RouteComponentProps} from '@reach/router';
@@ -34,15 +34,15 @@ const UnapprovedTransactions = (props: RouteComponentProps) => {
         return (<div>No unapproved transactions</div>)
     }
     return (
-
-        <Card.Group>
+        <Grid stackable columns={2}>
             {items!
                 .sort((a, b) => getTime(b.date) - getTime(a.date))
                 .map(item => (
-                <TransactionCard transaction={item} key={item.id}/>
-            ))}
-        </Card.Group>
-
+                    <Grid.Column>
+                        <TransactionCard transaction={item} key={item.id}/>
+                    </Grid.Column>
+                ))}
+        </Grid>
     );
 };
 

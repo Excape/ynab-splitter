@@ -42,7 +42,7 @@ const TransactionCard = ({transaction}: Props) => {
     }
 
     return (
-        <Card>
+        <Card fluid>
             <Card.Content>
                 <Card.Header>{transaction.payee}</Card.Header>
                 <Card.Meta>{transaction.date}</Card.Meta>
@@ -56,15 +56,15 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Description>
             </Card.Content>
             {!approvalResult?.success && (
-            <Card.Content extra fluid="true">
+            <Card.Content extra fluid>
                 <div className='approveButtons'>
-                    <Button basic={!approveOpenFor(ApprovalOption.Robin)} color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
-                    <Button basic={!approveOpenFor(ApprovalOption.Sophie)} color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
-                    <Button basic={!approveOpenFor(ApprovalOption.Split)} color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
+                    <Button fluid basic={!approveOpenFor(ApprovalOption.Robin)} color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
+                    <Button fluid basic={!approveOpenFor(ApprovalOption.Sophie)} color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
+                    <Button fluid basic={!approveOpenFor(ApprovalOption.Split)} color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
                 </div>
             </Card.Content>)}
             {approvalOpen && (
-                <Card.Content extra fluid="true">
+                <Card.Content extra fluid>
                     {approvalFor === ApprovalOption.Split ? (
                         <SplitApproval transaction={transaction} onApprove={onApprove} presetCategoryRobin={getCategory(ApprovalOption.Robin)}
                             presetCategorySophie={getCategory(ApprovalOption.Sophie)}/>

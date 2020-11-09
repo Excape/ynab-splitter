@@ -3,6 +3,11 @@
   box-shadow: 2px 2px 8px 0px rgba(0, 0, 50, 0.75);
 }
 
+.approveButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .approveBtn {
   margin-top: 0.5em;
 }
