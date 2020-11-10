@@ -25,7 +25,7 @@ class GetMatchedTransaction(private val transactionRepository: ReadTransactionsR
         val transaction = Actor.values().asSequence() // asSequence causes lazy evaluation :)
                 .mapNotNull { transactionRepository.getTransaction(it, transactionId) }
                 .firstOrNull()
-        return transaction ?: throw IllegalArgumentException("Transaction ${transactionId} not found")
+        return transaction ?: throw IllegalArgumentException("Transaction $transactionId not found")
     }
 
     private fun untangleTransactionId(concatTransactionId: String): List<String> =

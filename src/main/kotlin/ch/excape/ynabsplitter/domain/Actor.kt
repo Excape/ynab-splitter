@@ -8,23 +8,4 @@ enum class Actor(val firstName: String, val budgetId: String, val accountId: Str
         return firstName
     }
 
-//    @JsonValue
-//    fun toJsonValue() : String {
-//        return firstName
-//    }
-
-    // TODO this only works if it's deserializing a type in the body of a request, not as a path variable
-//    @JsonValue
-//    fun toJsonValue() : String {
-//        return firstName
-//    }
-
-//    companion object {
-//        @JsonCreator(mode=JsonCreator.Mode.DELEGATING)
-//        @JvmStatic
-//        fun fromString(key: String?) : Actor? {
-//            return values().firstOrNull {it.firstName == key}
-//        }
-//    }
-
 }

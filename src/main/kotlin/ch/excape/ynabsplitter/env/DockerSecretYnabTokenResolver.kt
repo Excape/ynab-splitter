@@ -8,7 +8,6 @@ import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import org.springframework.util.StreamUtils
 import java.io.IOException
-import java.nio.charset.Charset
 import java.util.*
 
 class DockerSecretYnabTokenResolver : EnvironmentPostProcessor {

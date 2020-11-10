@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.application.use_cases.list_transactions.ports
+package ch.excape.ynabsplitter.application.use_cases.list_auditlog.ports
 
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.AuditLogPresenter
 

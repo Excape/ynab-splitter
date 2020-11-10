@@ -11,7 +11,7 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
     : IListUnapprovedTransactions {
 
     override fun executeWith(input: ListUnapprovedTransactionsInput, presenter: TransactionListPresenter) {
-        triggerYnabImport(input.actors);
+        triggerYnabImport(input.actors)
 
         val allTransactions = input.actors
                 .map { readTransactions(it) }

@@ -17,9 +17,9 @@ import ch.excape.ynabsplitter.application.use_cases.get_categories.ports.IGetCat
 import ch.excape.ynabsplitter.application.use_cases.get_matched_transaction.GetMatchedTransaction
 import ch.excape.ynabsplitter.application.use_cases.get_matched_transaction.ports.GetMatchedTransactionInput
 import ch.excape.ynabsplitter.application.use_cases.get_matched_transaction.ports.IGetMatchedTransaction
-import ch.excape.ynabsplitter.application.use_cases.list_transactions.ListAuditLog
+import ch.excape.ynabsplitter.application.use_cases.list_auditlog.ListAuditLog
+import ch.excape.ynabsplitter.application.use_cases.list_auditlog.ports.IListAuditLog
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ListUnapprovedTransactions
-import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.IListAuditLog
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.IListUnapprovedTransactions
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ListUnapprovedTransactionsInput
 import ch.excape.ynabsplitter.domain.Actor

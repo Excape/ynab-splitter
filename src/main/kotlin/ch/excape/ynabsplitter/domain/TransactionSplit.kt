@@ -20,8 +20,6 @@ class TransactionSplit(private val splits: Map<Actor, Double>) {
         }
     }
 
-    fun containsKey(actor: Actor?): Boolean = splits.containsKey(actor)
-
     operator fun get(actor: Actor) = splits[actor]
 
     private fun checkConsistency() {

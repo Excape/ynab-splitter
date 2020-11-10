@@ -3,27 +3,12 @@ package ch.excape.ynabsplitter.application.use_cases.list_transactions
 import ch.excape.ynabsplitter.domain.MatchedTransaction
 import ch.excape.ynabsplitter.domain.Transaction
 
-typealias MatchingFunction = (Transaction, Transaction) -> Boolean
-
 fun matchTransactions(transactions: List<Transaction>) : List<MatchedTransaction> {
     val matchedTransactions = mutableListOf<MatchedTransaction>()
     transactions.forEach { transaction ->
         matchTransaction(matchedTransactions, transaction)
     }
     return matchedTransactions.toList()
-}
-
-fun matchTransactions(left: List<Transaction>, right: List<Transaction>,
-                      matches: MatchingFunction) : List<MatchedTransaction> {
-    val matchedTransactions = mutableListOf<MatchedTransaction>()
-    for (leftT in left) {
-        val matchedTs = right.filter { matches(leftT, it) }.toMutableList()
-        if (matchedTs.isNotEmpty()) {
-            matchedTs.add(leftT)
-            matchedTransactions.add(MatchedTransaction(matchedTs))
-        }
-    }
-    return matchedTransactions
 }
 
 private fun matchTransaction(matchedTransactions: MutableList<MatchedTransaction>, transaction: Transaction) {

@@ -6,7 +6,6 @@ import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepo
 import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.stereotype.Service
 
 class YnabCategoriesRepository(
         @Qualifier("ynabCategoriesApi")

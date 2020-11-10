@@ -76,7 +76,7 @@ internal class GetMatchedTransactionTest {
         }
     }
 
-    fun testTransaction(id: String, amount: Long, payee: String, actor: Actor) = Transaction(
+    private fun testTransaction(id: String, amount: Long, payee: String, actor: Actor) = Transaction(
             id, LocalDate.now(), amount, null, null, false, payee, actor)
 
 }

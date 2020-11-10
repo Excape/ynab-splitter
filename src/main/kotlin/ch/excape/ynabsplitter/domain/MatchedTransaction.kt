@@ -8,6 +8,3 @@ data class MatchedTransaction(
 }
 fun concatenateIds(transactions: MutableList<Transaction>) =
         transactions.joinToString("_") { it.id }
-
-fun Collection<MatchedTransaction>.containsTransaction(transaction: Transaction) =
-        this.flatMap { it.transactions }.contains(transaction)

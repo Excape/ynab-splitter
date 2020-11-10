@@ -8,5 +8,4 @@ data class AuditLogDocument(
         val oldTransaction: TransactionDocument,
         val newTransaction: TransactionDocument,
         val executingActor: Actor
-) {
-}
+)
