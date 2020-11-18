@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.adapter.persistence
+package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

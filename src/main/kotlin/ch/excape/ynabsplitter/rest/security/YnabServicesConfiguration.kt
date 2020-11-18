@@ -1,6 +1,9 @@
 package ch.excape.ynabsplitter.rest.security
 
+import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi
+import ch.excape.ynabclient.api.CategoriesApi
+import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabclient.invoker.ApiClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,15 +13,30 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.context.annotation.RequestScope
-import java.lang.IllegalStateException
-import kotlin.reflect.full.isSubclassOf
 
 
 @Configuration
-class YnabConfiguration {
+class YnabServicesConfiguration {
     @Bean
     @RequestScope
-    fun ynabBudgetsApi(clientService: OAuth2AuthorizedClientService): BudgetsApi = BudgetsApi(apiClient(clientService))
+    fun ynabAccountsApi(clientService: OAuth2AuthorizedClientService) : AccountsApi =
+            AccountsApi(apiClient(clientService))
+
+    @Bean
+    @RequestScope
+    fun ynabBudgetsApi(clientService: OAuth2AuthorizedClientService) : BudgetsApi =
+            BudgetsApi(apiClient(clientService))
+
+    @Bean
+    @RequestScope
+    fun ynabTransactionsApi(clientService: OAuth2AuthorizedClientService) : TransactionsApi =
+            TransactionsApi(apiClient(clientService))
+
+    @Bean
+    @RequestScope
+    fun ynabCategoriesApi(clientService: OAuth2AuthorizedClientService) : CategoriesApi =
+            CategoriesApi(apiClient(clientService))
+
 
     private fun apiClient(clientService: OAuth2AuthorizedClientService): ApiClient {
         val authentication: Authentication = SecurityContextHolder.getContext().authentication
@@ -31,10 +49,10 @@ class YnabConfiguration {
                 authentication.authorizedClientRegistrationId,
                 authentication.name)
 
-        val apiClient = ApiClient()
-        apiClient.getAuthentication("bearer")
-        apiClient.setApiKey(client.accessToken.tokenValue)
-        apiClient.setApiKeyPrefix("Bearer")
-        return apiClient
+        return ApiClient().apply {
+            getAuthentication("bearer")
+            setApiKey(client.accessToken.tokenValue)
+            setApiKeyPrefix("Bearer")
+        }
     }
 }

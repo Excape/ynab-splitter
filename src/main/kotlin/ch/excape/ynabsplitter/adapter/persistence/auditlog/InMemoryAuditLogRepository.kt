@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.adapter.persistence
+package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.domain.AuditLog

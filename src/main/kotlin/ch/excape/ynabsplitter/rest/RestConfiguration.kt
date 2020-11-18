@@ -2,14 +2,16 @@ package ch.excape.ynabsplitter.rest
 
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
-import ch.excape.ynabsplitter.adapter.persistence.AuditLogCrudRepository
-import ch.excape.ynabsplitter.adapter.persistence.InMemoryAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.RedisAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogCrudRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.RedisAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
 import ch.excape.ynabsplitter.adapter.ynab.YnabCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.YnabTransactionRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
+import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
@@ -40,6 +42,10 @@ class RestConfiguration(
 
     @Bean
     @Profile("dev")
+    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
+
+    @Bean
+    @Profile("dev")
     fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
 
     @Bean
@@ -58,4 +64,9 @@ class RestConfiguration(
     @Bean
     @Profile("prod")
     fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi)
+
+    @Bean
+    @Profile("prod")
+    // TODO implement real thing
+    fun userRepositoryProd(): UserRepository = InMemoryUserRepository()
 }

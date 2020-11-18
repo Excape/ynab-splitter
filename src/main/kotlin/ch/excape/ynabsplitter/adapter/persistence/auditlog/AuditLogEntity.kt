@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.adapter.persistence
+package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
 import ch.excape.ynabsplitter.domain.Actor

@@ -10,22 +10,22 @@ import org.springframework.util.StreamUtils
 import java.io.IOException
 import java.util.*
 
-class DockerSecretYnabTokenResolver : EnvironmentPostProcessor {
+class DockerSecretYnabSecretResolver : EnvironmentPostProcessor {
 
     companion object {
-        private const val YNAB_TOKEN_PROPERTY = "ynab.auth.token"
-        private const val YNAB_TOKEN_SECRET_PROPERTY = "ynab.auth.token.file"
+        private const val YNAB_CLIENT_SECRET_PROPERTY = "ynab.auth.client.secret"
+        private const val DOCKER_SECRET_FILE_PROPERTY = "ynab.auth.client.secret.file"
     }
 
     override fun postProcessEnvironment(environment: ConfigurableEnvironment, application: SpringApplication) {
-        if (System.getenv(YNAB_TOKEN_SECRET_PROPERTY) == null) return
+        if (System.getenv(DOCKER_SECRET_FILE_PROPERTY) == null) return
 
-        val resource: Resource = FileSystemResource(System.getenv(YNAB_TOKEN_SECRET_PROPERTY))
+        val resource: Resource = FileSystemResource(System.getenv(DOCKER_SECRET_FILE_PROPERTY))
         if (resource.exists()) {
             try {
-                val ynabToken = StreamUtils.copyToString(resource.inputStream, Charsets.UTF_8)
+                val ynabSecret = StreamUtils.copyToString(resource.inputStream, Charsets.UTF_8)
                 val props = Properties()
-                props[YNAB_TOKEN_PROPERTY] = ynabToken
+                props[YNAB_CLIENT_SECRET_PROPERTY] = ynabSecret
                 environment.propertySources.addLast(PropertiesPropertySource("ynabAuth", props))
             } catch (e: IOException) {
                 throw RuntimeException(e)

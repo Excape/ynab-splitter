@@ -1,4 +1,4 @@
-package ch.excape.ynabsplitter.adapter.persistence
+package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import org.springframework.data.repository.CrudRepository
 
