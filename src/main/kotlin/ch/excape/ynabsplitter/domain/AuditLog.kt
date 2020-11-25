@@ -6,5 +6,5 @@ data class AuditLog(
         val date: LocalDateTime,
         val oldTransaction: Transaction,
         val newTransaction: Transaction,
-        val executingActor: Actor
+        val executingActor: String
 )

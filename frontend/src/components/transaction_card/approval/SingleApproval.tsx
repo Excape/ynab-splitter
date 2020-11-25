@@ -1,10 +1,12 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import CategoryDropdown from "./CategoryDropdown";
-import {ApprovalOption, Category, UnapprovedTransaction, ApprovalResult} from "../types";
+import {ApprovalOption, Category, UnapprovedTransaction, ApprovalResult, ApprovalFor} from "../../../types";
 import {Button, Loader} from "semantic-ui-react";
+import Cookies from 'js-cookie';
+import {SessionContext} from '../../../session';
 
 type Props = {
-    for: ApprovalOption,
+    for: ApprovalFor,
     transaction: UnapprovedTransaction,
     presetCategory?: Category,
     onApprove: (result: ApprovalResult) => void
@@ -15,8 +17,10 @@ const SingleApproval = (props: Props) => {
     const [categoryOptions, setCategoryOptions] = React.useState([] as Category[]);
     const [approveVisible, setApproveVisible] = React.useState(false);
 
+    const {session} = useContext(SessionContext)
+
     useEffect(() => {
-        fetch(`/api/v1/categories/${upperCase(props.for)}`)
+        fetch(`/api/v1/categories/${props.for.actor}`)
             .then(result => result.json())
             .then(result => {
                     setCategoryOptions(result);
@@ -25,13 +29,23 @@ const SingleApproval = (props: Props) => {
             );
     }, [props.for]);
 
-    function upperCase(option: ApprovalOption) {
-        return option.toString().toUpperCase()
-    }
 
     function onApprove() {
         setApproveVisible(false);
-        fetch(`/api/v1/transactions/${props.transaction.id}/approveSingle?for=${upperCase(props.for)}&categoryId=${selectedCategory?.id}`)
+        const request = {
+            actor: props.for.actor,
+            categoryId: selectedCategory?.id,
+            executingActor: session?.actor
+        }
+
+        fetch(`/api/v1/transactions/${props.transaction.id}/approveSingle`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': Cookies.get("XSRF-TOKEN") ?? 'NULL'
+            },
+            body: JSON.stringify(request)
+        })
             .then(result => result.json())
             .then(result => {
                 props.onApprove(result);

@@ -19,9 +19,11 @@ class LoginManagerProd: LoginManager {
             "sophie" to Actor.SOPHIE
     )
     override fun getLoggedInActor(request: HttpServletRequest): Actor {
-        val session = request.getSession(false) ?:
+        val userAttribute = request
+                .getSession(false)
+                ?.getAttribute(USER_ATTRIBUTE)
+                ?.toString() ?:
             throw RuntimeException("X-Forwarded-User header must be set")
-        val userAttribute = session.getAttribute(USER_ATTRIBUTE).toString()
 
         val actor = userNameMap[userAttribute]
         return if (actor != null) actor else {

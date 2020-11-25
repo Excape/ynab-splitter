@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 data class TransactionDocument(
     val id: String,
-    val actor: Actor,
+    val actor: SplitterActorDocument,
     val date: LocalDate,
     val amount: Long,
     val category: CategoryDocument?,

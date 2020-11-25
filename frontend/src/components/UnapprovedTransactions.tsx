@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Grid, Loader} from "semantic-ui-react";
 import {UnapprovedTransaction} from "../types";
-import TransactionCard from "./TransactionCard";
+import TransactionCard from "./transaction_card/TransactionCard";
 
 const UnapprovedTransactions = () => {
     const [isLoaded, setIsLoaded] = React.useState(false);

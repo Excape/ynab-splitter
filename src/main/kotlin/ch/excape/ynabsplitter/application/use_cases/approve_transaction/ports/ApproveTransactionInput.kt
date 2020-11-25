@@ -5,8 +5,11 @@ import ch.excape.ynabsplitter.domain.MatchedTransaction
 import ch.excape.ynabsplitter.domain.TransactionSplit
 
 data class ApproveTransactionInput(
-        val transaction: MatchedTransaction,
-        val executingActor: Actor,
+        val userId: String,
+        val transaction: MatchedTransactionIds,
+        val executingActor: String,
         val split: TransactionSplit,
         val categories: CategoryPerActor
 )
+
+class MatchedTransactionIds(val transactionIdsByActor: Map<String, String>)

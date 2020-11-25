@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
-import {AuditLog, Transaction} from "../types";
+import {AuditLog, Transaction} from "../../types";
 import {Card, Grid, Icon, Loader} from 'semantic-ui-react';
+import {renderAmount} from '../../util';
 
 const AuditLogList = () => {
     const [isLoaded, setIsLoaded] = React.useState(false);
@@ -46,10 +47,14 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
         return transaction.category ? transaction.category.name : "Uncategorized";
     }
 
+    function renderTransactionAmount(transaction: Transaction) {
+        return renderAmount(transaction.amount)
+    }
+
     return (
         <Card fluid>
             <Card.Content>
-                <Card.Header>{auditlog.newTransaction.payee} ({renderActor(auditlog.newTransaction.actor)})</Card.Header>
+                <Card.Header>{auditlog.newTransaction.payee} ({renderActor(auditlog.newTransaction.actor.name)})</Card.Header>
                 <Card.Meta>{auditlog.newTransaction.date}</Card.Meta>
                 <Card.Meta>Approved by {renderActor(auditlog.executingActor)}</Card.Meta>
                 <Card.Description>
@@ -58,7 +63,7 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    {auditlog.oldTransaction.amount / 1000} -> {auditlog.newTransaction.amount / 1000}
+                    <strong>{renderTransactionAmount(auditlog.oldTransaction)} -> {renderTransactionAmount(auditlog.newTransaction)}</strong>
                 </Card.Description>
             </Card.Content>
         </Card>

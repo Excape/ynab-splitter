@@ -1,26 +1,26 @@
 package ch.excape.ynabsplitter.domain
 
-class TransactionSplit(private val splits: Map<Actor, Double>) {
+class TransactionSplit(private val splits: Map<String, Double>) {
 
-    constructor(vararg splits: Pair<Actor, Double>) : this(hashMapOf(*splits))
+    constructor(vararg splits: Pair<String, Double>) : this(hashMapOf(*splits))
 
     init {
         checkConsistency()
     }
 
     companion object {
-        fun allOnOne(actor: Actor) : TransactionSplit {
-            val allZero = Actor.values()
-                    .associate { it to 0.0 }
-                    .toMutableMap()
-            allZero[actor] = 1.0
-            val splits = allZero.toMap()
+        fun allOnOne(actor: String, allActors: List<String>) : TransactionSplit {
+            val splits = allActors.associateWith {
+                when (it) {
+                    actor -> 1.0
+                    else -> 0.0
+                }
+            }
             return TransactionSplit(splits)
-
         }
     }
 
-    operator fun get(actor: Actor) = splits[actor]
+    operator fun get(actor: String) = splits[actor]
 
     private fun checkConsistency() {
         if (!hasSumOf1()) {

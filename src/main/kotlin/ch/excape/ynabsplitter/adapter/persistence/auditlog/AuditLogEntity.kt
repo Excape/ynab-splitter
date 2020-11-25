@@ -1,10 +1,7 @@
 package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
-import ch.excape.ynabsplitter.domain.Actor
-import ch.excape.ynabsplitter.domain.AuditLog
-import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.Transaction
+import ch.excape.ynabsplitter.domain.*
 import ch.excape.ynabsplitter.rest.toThreetenLocalDate
 import org.springframework.data.redis.core.RedisHash
 import java.time.LocalDate
@@ -16,7 +13,7 @@ data class AuditLogEntity(
         val date: LocalDateTime,
         val oldTransaction: TransactionEntity,
         val newTransaction: TransactionEntity,
-        val executingActor: Actor
+        val executingActor: String
 ) {
     fun toDomain() = AuditLog(
             date,
@@ -28,7 +25,7 @@ data class AuditLogEntity(
 
 data class TransactionEntity(
         val id: String,
-        val actor: Actor,
+        val actor: String,
         val date: LocalDate,
         val amount: Long,
         val categoryId: String?,
@@ -44,7 +41,8 @@ data class TransactionEntity(
             memo,
             true,
             payee,
-            actor
+            // TODO we might want everything in the audit log
+            SplitterActor(actor, "NO-ID", "NO-ID")
     )
 }
 
@@ -57,7 +55,7 @@ fun AuditLog.toEntity() = AuditLogEntity(
 )
 fun Transaction.toEntity() = TransactionEntity(
         id,
-        actor,
+        actor.name,
         date.toJavaLocalDate(),
         amount,
         category?.id,

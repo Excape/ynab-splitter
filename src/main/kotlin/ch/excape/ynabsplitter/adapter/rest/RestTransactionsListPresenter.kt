@@ -23,6 +23,7 @@ private fun MatchedTransaction.toSingleTransactionDocument(): UnapprovedTransact
     return UnapprovedTransactionDocument(
             this.id,
             firstTransaction.date.toJavaLocalDate(),
+            mapActors(this.transactions),
             firstTransaction.amount,
             mapCategoriesToActors(this.transactions),
             firstTransaction.memo,
@@ -30,8 +31,10 @@ private fun MatchedTransaction.toSingleTransactionDocument(): UnapprovedTransact
     )
 }
 
+fun mapActors(transactions: List<Transaction>): List<String> = transactions.map { it.actor.name }
+
 fun mapCategoriesToActors(transactions: MutableList<Transaction>): List<ActorCategoryDocument> =
         transactions
                 .filter { it.category != null }
-                .map {ActorCategoryDocument(it.actor.firstName, it.category!!.toDocument())}
+                .map {ActorCategoryDocument(it.actor.name, it.category!!.toDocument())}
 

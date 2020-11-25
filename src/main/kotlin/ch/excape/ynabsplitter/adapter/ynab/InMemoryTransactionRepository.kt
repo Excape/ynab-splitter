@@ -2,29 +2,30 @@ package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.threeten.bp.LocalDate
 
 class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactionRepository {
-    override fun getTransaction(actor: Actor, id: String): Transaction? {
-        return transactions[id]
-    }
-
-    override fun triggerTransactionImport(actor: Actor) {
-        println("Transactions for ${actor.name} would be imported here")
-    }
 
     private val transactions: MutableMap<String, Transaction> = createFakeTransactions()
 
-    override fun getAllTransactionsFromLastWeek(actor: Actor): List<Transaction> =
-            transactions.values.filter { it.actor == actor }
+    override fun getTransaction(actor: SplitterActor, id: String): Transaction? {
+        return transactions[id]
+    }
 
-    override fun getAllTransactionsBetween(actor: Actor, startDate: LocalDate, endDate: LocalDate): List<Transaction> =
+    override fun triggerTransactionImport(actor: SplitterActor) {
+        println("Transactions for ${actor.name} would be imported here")
+    }
+
+    override fun getAllTransactionsFromLastWeek(actor: SplitterActor): List<Transaction> =
+            transactions.values.filter { it.actor.name == actor.name }
+
+    override fun getAllTransactionsBetween(actor: SplitterActor, startDate: LocalDate, endDate: LocalDate): List<Transaction> =
             transactions.values.filter { it.date in startDate..endDate }
 
-    override fun getUnapprovedTransactionsFromLastMonth(actor: Actor): List<Transaction> =
+    override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> =
             getAllTransactionsFromLastWeek(actor).filter { !it.isApproved }
 
     override fun saveTransaction(transaction: Transaction) {
@@ -32,7 +33,9 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     }
 
     private fun createFakeTransactions(): MutableMap<String, Transaction> {
-        val transactionsRobin = listOf(
+        val aliceActor = SplitterActor("Anusha", "fake-budget", "fake-account")
+        val bobActor = SplitterActor("Bartholomew", "fake-budget", "fake-account")
+        val transactionsAlice = listOf(
                 Transaction(
                         "t0",
                         LocalDate.ofYearDay(2019, 1),
@@ -41,7 +44,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         null,
                         false,
                         "Migros",
-                        Actor.ROBIN
+                        aliceActor
                 ),
                 Transaction(
                         "t1",
@@ -51,7 +54,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         "oops",
                         false,
                         "Starbucks",
-                        Actor.ROBIN
+                        aliceActor
                 ),
                 Transaction(
                         "t2",
@@ -61,7 +64,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         null,
                         false,
                         "Delta Airways",
-                        Actor.ROBIN
+                        aliceActor
                 ),
                 Transaction(
                         "t3",
@@ -71,13 +74,13 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                         null,
                         false,
                         "Clothes refund",
-                        Actor.ROBIN
+                        aliceActor
                 )
         )
-        val transactionsSophie = transactionsRobin.withIndex()
-                .map { t -> t.value.copy(id = "t" + (t.index + transactionsRobin.size), actor = Actor.SOPHIE) }
+        val transactionsBob = transactionsAlice.withIndex()
+                .map { t -> t.value.copy(id = "t" + (t.index + transactionsAlice.size), actor = bobActor) }
 
-        return sequenceOf(transactionsRobin, transactionsSophie).flatten()
+        return sequenceOf(transactionsAlice, transactionsBob).flatten()
                 .map { it.id to it }
                 .toMap().toMutableMap()
 

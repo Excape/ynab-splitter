@@ -1,24 +1,25 @@
 package ch.excape.ynabsplitter.application.use_cases.approve_transaction
 
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
+import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTransactionResult
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.ApproveTransactionInput
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.IApproveTransaction
-import ch.excape.ynabsplitter.domain.AuditLog
-import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.Transaction
-import ch.excape.ynabsplitter.domain.TransactionSplit
+import ch.excape.ynabsplitter.domain.*
 import java.time.LocalDateTime
 import kotlin.math.roundToLong
 
 class ApproveTransaction(
+        private val readTransactionsRepository: ReadTransactionsRepository,
         private val saveTransactionRepository: SaveTransactionRepository,
         private val categoriesRepository: ReadCategoriesRepository,
-        private val auditLogRepository: AuditLogRepository
+        private val auditLogRepository: AuditLogRepository,
+        private val userRepository: UserRepository
 ) : IApproveTransaction {
 
     override fun executeWith(input: ApproveTransactionInput, presenter: ApproveTransactionPresenter) {
@@ -33,7 +34,8 @@ class ApproveTransaction(
     }
 
     private fun approveTransactions(input: ApproveTransactionInput) {
-        val transactions = input.transaction.transactions
+        val actors = getActors(input.userId)
+        val transactions = loadTransactions(input.transaction.transactionIdsByActor, actors)
         for (transaction in transactions) {
 
             val split = splitTransaction(transaction, input.split)
@@ -47,15 +49,27 @@ class ApproveTransaction(
         }
     }
 
+    private fun loadTransactions(transactionIdsByActor: Map<String, String>, actors: List<SplitterActor>): List<Transaction> {
+        return transactionIdsByActor.map { entry ->
+            readTransactionsRepository.getTransaction(actors.getByName(entry.key), entry.value)
+                    ?: throw IllegalArgumentException("transaction ${entry.value} not found")
+        }
+    }
+
+    private fun getActors(userId: String): List<SplitterActor> {
+        val user = userRepository.getUser(userId) ?: throw IllegalArgumentException("User with id $userId not found")
+        return user.settings.actors
+    }
+
     private fun getCategory(transaction: Transaction, categories: CategoryPerActor): Category? {
-        val inputCategory = categories[transaction.actor] ?: transaction.category
+        val inputCategory = categories[transaction.actor.name] ?: transaction.category
         return if (inputCategory != null) {
             categoriesRepository.findCategory(transaction.actor, inputCategory.id)
         } else null
     }
 
     private fun splitTransaction(transaction: Transaction, splits: TransactionSplit): Long {
-        val split: Double = splits[transaction.actor]
+        val split: Double = splits[transaction.actor.name]
                 ?: throw IllegalArgumentException("No split defined for actor ${transaction.actor}")
         return (split * transaction.amount).roundToLong()
     }

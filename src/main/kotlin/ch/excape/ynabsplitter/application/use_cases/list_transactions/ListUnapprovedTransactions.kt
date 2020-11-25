@@ -1,19 +1,26 @@
 package ch.excape.ynabsplitter.application.use_cases.list_transactions
 
+import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.TransactionListPresenter
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.IListUnapprovedTransactions
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ListUnapprovedTransactionsInput
-import ch.excape.ynabsplitter.domain.Actor
+import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
+import ch.excape.ynabsplitter.domain.User
+import java.lang.IllegalStateException
 
-class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTransactionsRepository)
+class ListUnapprovedTransactions(
+        private val readTransactionsRepository: ReadTransactionsRepository,
+        private val userRepository: UserRepository)
     : IListUnapprovedTransactions {
 
     override fun executeWith(input: ListUnapprovedTransactionsInput, presenter: TransactionListPresenter) {
-        triggerYnabImport(input.actors)
 
-        val allTransactions = input.actors
+        val user = getUser(input.userId)
+        triggerYnabImport(user)
+
+        val allTransactions = user.settings.actors
                 .map { readTransactions(it) }
                 .flatten()
 
@@ -29,13 +36,16 @@ class ListUnapprovedTransactions(private val readTransactionsRepository: ReadTra
         presenter.present(validTransactions)
     }
 
-    private fun triggerYnabImport(actors: List<Actor>) {
-        actors.forEach {
+    private fun getUser(userId: String): User =
+            userRepository.getUser(userId) ?: throw IllegalStateException("user with id ${userId} not found")
+
+    private fun triggerYnabImport(user: User) {
+        user.settings.actors.forEach {
             readTransactionsRepository.triggerTransactionImport(it)
         }
     }
 
-    private fun readTransactions(actor: Actor): List<Transaction> {
+    private fun readTransactions(actor: SplitterActor): List<Transaction> {
         return readTransactionsRepository.getUnapprovedTransactionsFromLastMonth(actor)
     }
 }

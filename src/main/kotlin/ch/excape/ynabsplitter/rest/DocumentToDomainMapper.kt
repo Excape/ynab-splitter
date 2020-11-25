@@ -2,10 +2,7 @@ package ch.excape.ynabsplitter.rest
 
 import ch.excape.ynabsplitter.adapter.rest.document.*
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
-import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.MatchedTransaction
-import ch.excape.ynabsplitter.domain.Transaction
-import ch.excape.ynabsplitter.domain.TransactionSplit
+import ch.excape.ynabsplitter.domain.*
 import java.time.LocalDate
 
 fun MatchedTransactionDocument.toDomain(): MatchedTransaction =
@@ -20,7 +17,7 @@ fun TransactionDocument.toDomain(): Transaction =
                 memo,
                 false,
                 payee,
-                actor
+                actor.toDomain()
         )
 
 fun CategoryDocument.toDomain(): Category = Category(id, name, group, balance)
@@ -37,3 +34,5 @@ fun List<SplitRequest>.toDomain(): TransactionSplit {
 fun List<CategoryRequest>.toDomain(): CategoryPerActor {
     return CategoryPerActor(this.associate { it.actor to Category(it.categoryId) })
 }
+// TODO only have transaction id as input to use case to not need this mapper
+fun SplitterActorDocument.toDomain(): SplitterActor = SplitterActor(name, "TODO", "TODO")

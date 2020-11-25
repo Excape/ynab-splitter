@@ -7,5 +7,5 @@ data class AuditLogDocument(
         val date: LocalDateTime,
         val oldTransaction: TransactionDocument,
         val newTransaction: TransactionDocument,
-        val executingActor: Actor
+        val executingActor: String
 )

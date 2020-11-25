@@ -1,6 +1,6 @@
 import {Dropdown, DropdownItemProps} from "semantic-ui-react";
 import React from "react";
-import {Category} from "../types";
+import {Category} from "../../../types";
 
 type Props = {
     defaultCategory?: Category

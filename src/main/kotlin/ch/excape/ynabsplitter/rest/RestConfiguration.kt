@@ -45,12 +45,13 @@ class RestConfiguration(
     fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
 
     @Bean
-    @Profile("dev")
+    @Profile("dev", "prod")
     fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
 
-    @Bean
-    @Profile("prod")
-    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository)
+    // TODO enable redis
+//    @Bean
+//    @Profile("prod")
+//    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository)
 
     @Bean
     @Profile("prod")

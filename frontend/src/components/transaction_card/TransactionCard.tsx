@@ -1,8 +1,10 @@
-import {ApprovalOption, ApprovalResult, Category, UnapprovedTransaction} from "../types";
-import {Button, Card, Icon} from "semantic-ui-react";
+import {Actor, ApprovalFor, ApprovalOption, ApprovalResult, Category, UnapprovedTransaction} from "../../types";
+import {Card, Icon} from "semantic-ui-react";
 import React from "react";
-import SingleApproval from "./SingleApproval";
-import SplitApproval from "./SplitApproval";
+import SingleApproval from "./approval/SingleApproval";
+import SplitApproval from "./approval/SplitApproval";
+import ApprovalButtons from './ApprovalButtons';
+import {renderAmount} from '../../util';
 
 type Props = {
     transaction: UnapprovedTransaction
@@ -10,16 +12,16 @@ type Props = {
 
 const TransactionCard = ({transaction}: Props) => {
     const [approvalOpen, setApprovalOpen] = React.useState(false);
-    const [approvalFor, setApprovalFor] = React.useState(ApprovalOption.Undefined);
+    const [approvalFor, setApprovalFor] = React.useState<ApprovalFor>({actor: undefined, splitApproval: false});
     const [approvalResult, setApprovalResult] = React.useState<ApprovalResult | null>(null);
 
 
-    function handleApprove(approveFor: ApprovalOption) {
+    function handleSelectApproval(approveFor: ApprovalFor) {
         setApprovalOpen(true);
         setApprovalFor(approveFor);
     }
 
-    function getCategory(actor: ApprovalOption): Category | undefined {
+    function getCategory(actor: string): Category | undefined {
         for (const entry of transaction.categoryMap) {
             if (entry.actor === actor) {
                 return entry.category;
@@ -27,18 +29,21 @@ const TransactionCard = ({transaction}: Props) => {
         }
         return undefined;
     }
-
-    function renderCategory(actor: ApprovalOption): string {
-        return getCategory(actor)?.name ?? "?";
-    }
-
     function onApprove(result: ApprovalResult) {
         setApprovalResult(result);
         setApprovalOpen(false);
     }
+    function renderCategories() {
+        return transaction.actors
+            .map((actor) => getCategory(actor)?.name ?? "?")
+            .join(" / ");
+    }
 
-    function approveOpenFor(option: ApprovalOption) {
-        return approvalFor === option;
+    function getPresetCategories(): Map<string, Category | undefined> {
+        const presetCategories = new Map<string, Category | undefined>()
+        transaction.actors.forEach((actor) =>
+            presetCategories.set(actor, getCategory(actor)))
+        return presetCategories;
     }
 
     return (
@@ -48,29 +53,25 @@ const TransactionCard = ({transaction}: Props) => {
                 <Card.Meta>{transaction.date}</Card.Meta>
                 <Card.Description>
                     <Icon name="folder"/>
-                    {renderCategory(ApprovalOption.Robin)} / {renderCategory(ApprovalOption.Sophie)}
+                    {renderCategories()}
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    {transaction.amount / 1000}
+                    {/*TODO render colored amounts (red for negative, green for positive)*/}
+                    <strong>{renderAmount(transaction.amount)}</strong>
                 </Card.Description>
             </Card.Content>
             {!approvalResult?.success && (
             <Card.Content extra fluid={"true"}>
-                <div className='approveButtons'>
-                    <Button fluid basic={!approveOpenFor(ApprovalOption.Robin)} color="orange" content={"Robin"} onClick={() => handleApprove(ApprovalOption.Robin)}/>
-                    <Button fluid basic={!approveOpenFor(ApprovalOption.Sophie)} color="teal" content={"Sophie"} onClick={() => handleApprove(ApprovalOption.Sophie)}/>
-                    <Button fluid basic={!approveOpenFor(ApprovalOption.Split)} color="grey" content={"Split"} onClick={() => handleApprove(ApprovalOption.Split)}/>
-                </div>
+                <ApprovalButtons actors={transaction.actors} onSelect={(approvalOption => handleSelectApproval(approvalOption))} />
             </Card.Content>)}
             {approvalOpen && (
                 <Card.Content extra fluid={"true"}>
-                    {approvalFor === ApprovalOption.Split ? (
-                        <SplitApproval transaction={transaction} onApprove={onApprove} presetCategoryRobin={getCategory(ApprovalOption.Robin)}
-                            presetCategorySophie={getCategory(ApprovalOption.Sophie)}/>
+                    {approvalFor?.splitApproval ? (
+                        <SplitApproval transaction={transaction} onApprove={onApprove} presetCategories={getPresetCategories()}/>
                     ) : (
                         <SingleApproval for={approvalFor} transaction={transaction}
-                                        presetCategory={getCategory(approvalFor)} onApprove={onApprove}/>
+                                        presetCategory={getCategory(approvalFor.actor!)} onApprove={onApprove}/>
                     )}
                 </Card.Content>
             )}
