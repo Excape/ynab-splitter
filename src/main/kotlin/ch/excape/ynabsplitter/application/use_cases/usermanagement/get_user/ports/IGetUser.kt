@@ -1,7 +1,6 @@
 package ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.ports
 
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.UserPresenter
-import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
 
 /**
  * Retrieve a user, or if non-existing, create a new user with default settings

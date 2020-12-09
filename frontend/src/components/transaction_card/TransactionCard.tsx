@@ -1,10 +1,10 @@
-import {Actor, ApprovalFor, ApprovalOption, ApprovalResult, Category, UnapprovedTransaction} from "../../types";
+import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction} from "../../types";
 import {Card, Icon} from "semantic-ui-react";
 import React from "react";
 import SingleApproval from "./approval/SingleApproval";
 import SplitApproval from "./approval/SplitApproval";
 import ApprovalButtons from './ApprovalButtons';
-import {renderAmount} from '../../util';
+import MonetaryAmount from '../MonetaryAmount';
 
 type Props = {
     transaction: UnapprovedTransaction
@@ -57,8 +57,7 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    {/*TODO render colored amounts (red for negative, green for positive)*/}
-                    <strong>{renderAmount(transaction.amount)}</strong>
+                    <strong><MonetaryAmount amount={transaction.amount} /></strong>
                 </Card.Description>
             </Card.Content>
             {!approvalResult?.success && (

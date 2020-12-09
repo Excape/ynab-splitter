@@ -4,7 +4,6 @@ import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.RedisAuditLogRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository

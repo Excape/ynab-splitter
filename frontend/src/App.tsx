@@ -4,11 +4,7 @@ import './App.css';
 import UnapprovedTransactions from "./components/UnapprovedTransactions";
 import AuditLogList from './components/auditlog/AuditLogList';
 import NavBar from './components/NavBar';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 const App = () => {
     return (

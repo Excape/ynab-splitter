@@ -1,7 +1,10 @@
 package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
 import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
-import ch.excape.ynabsplitter.domain.*
+import ch.excape.ynabsplitter.domain.AuditLog
+import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.SplitterActor
+import ch.excape.ynabsplitter.domain.Transaction
 import ch.excape.ynabsplitter.rest.toThreetenLocalDate
 import org.springframework.data.redis.core.RedisHash
 import java.time.LocalDate

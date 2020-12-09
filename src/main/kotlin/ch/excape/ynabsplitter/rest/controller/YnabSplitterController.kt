@@ -26,8 +26,9 @@ import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ILis
 import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.ListUnapprovedTransactionsInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.ports.GetUserInput
-import ch.excape.ynabsplitter.domain.*
-import ch.excape.ynabsplitter.rest.LoginManager
+import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.MatchedTransaction
+import ch.excape.ynabsplitter.domain.TransactionSplit
 import ch.excape.ynabsplitter.rest.toDomain
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -40,7 +41,6 @@ class YnabSplitterController(
         private val readTransactionRepository: ReadTransactionsRepository,
         private val saveTransactionRepository: SaveTransactionRepository,
         private val auditLogRepository: AuditLogRepository,
-        private val loginManager: LoginManager,
         private val userRepository: UserRepository
 ) {
     @GetMapping("/transactions")

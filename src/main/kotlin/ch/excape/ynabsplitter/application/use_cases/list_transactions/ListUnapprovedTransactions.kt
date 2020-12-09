@@ -8,7 +8,6 @@ import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.List
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
 import ch.excape.ynabsplitter.domain.User
-import java.lang.IllegalStateException
 
 class ListUnapprovedTransactions(
         private val readTransactionsRepository: ReadTransactionsRepository,

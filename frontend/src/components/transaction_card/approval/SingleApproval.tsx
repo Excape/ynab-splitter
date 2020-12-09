@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from "react";
 import CategoryDropdown from "./CategoryDropdown";
-import {ApprovalOption, Category, UnapprovedTransaction, ApprovalResult, ApprovalFor} from "../../../types";
+import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction} from "../../../types";
 import {Button, Loader} from "semantic-ui-react";
 import Cookies from 'js-cookie';
 import {SessionContext} from '../../../session';

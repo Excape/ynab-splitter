@@ -6,7 +6,6 @@ import ch.excape.ynabclient.model.TransactionResponse
 import ch.excape.ynabclient.model.TransactionsResponse
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.springframework.beans.factory.annotation.Qualifier

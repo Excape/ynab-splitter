@@ -1,8 +1,6 @@
 package ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports
 
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.SplitterActor
 
 class CategoryPerActor(private val categories: Map<String, Category>) {
 

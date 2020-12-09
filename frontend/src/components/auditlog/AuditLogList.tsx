@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {AuditLog, Transaction} from "../../types";
 import {Card, Grid, Icon, Loader} from 'semantic-ui-react';
-import {renderAmount} from '../../util';
+import MonetaryAmount from '../MonetaryAmount';
 
 const AuditLogList = () => {
     const [isLoaded, setIsLoaded] = React.useState(false);
@@ -46,11 +46,6 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
     function renderCategory(transaction: Transaction ) {
         return transaction.category ? transaction.category.name : "Uncategorized";
     }
-
-    function renderTransactionAmount(transaction: Transaction) {
-        return renderAmount(transaction.amount)
-    }
-
     return (
         <Card fluid>
             <Card.Content>
@@ -63,7 +58,11 @@ const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    <strong>{renderTransactionAmount(auditlog.oldTransaction)} -> {renderTransactionAmount(auditlog.newTransaction)}</strong>
+                    <strong>
+                        <MonetaryAmount amount={auditlog.oldTransaction.amount} />
+                        <span> -> </span>
+                        <MonetaryAmount amount={auditlog.newTransaction.amount} />
+                    </strong>
                 </Card.Description>
             </Card.Content>
         </Card>

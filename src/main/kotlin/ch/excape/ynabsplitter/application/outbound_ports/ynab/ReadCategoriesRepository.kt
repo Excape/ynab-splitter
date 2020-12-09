@@ -1,6 +1,5 @@
 package ch.excape.ynabsplitter.application.outbound_ports.ynab
 
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 

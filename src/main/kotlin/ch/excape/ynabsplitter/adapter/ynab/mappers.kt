@@ -2,7 +2,6 @@ package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.model.SaveTransaction
 import ch.excape.ynabclient.model.TransactionDetail
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction

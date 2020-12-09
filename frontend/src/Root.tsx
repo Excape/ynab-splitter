@@ -1,8 +1,7 @@
-import React, {useContext, useEffect} from 'react';
-import {BrowserRouter, Route, Redirect, useHistory} from 'react-router-dom';
+import React, {useContext} from 'react';
+import {BrowserRouter, Redirect, Route} from 'react-router-dom';
 import App from './App';
-import {Button} from 'semantic-ui-react';
-import {clearSessionCookie, getSessionCookie, setSessionCookie, SessionContext} from './session';
+import {clearSessionCookie, getSessionCookie, SessionContext} from './session';
 import ActorChooser from './components/ActorChooser';
 
 const Root = () => {

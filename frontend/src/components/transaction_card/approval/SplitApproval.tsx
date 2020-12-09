@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
 import CategoryDropdown from "./CategoryDropdown";
 import {
-    Actor,
-    ApprovalOption,
     ApprovalResult,
     Category,
     CategoryRequest,
@@ -59,14 +57,6 @@ const SplitApproval = (props: Props) => {
         }
 
     }, [props.transaction]);
-
-
-
-
-    function upperCase(option: ApprovalOption) {
-        return option.toString().toUpperCase()
-    }
-
     function approveSplit(split: SplitRequest[]) {
         setApproveVisible(false)
         const request: SplitTransactionRequest = {
@@ -106,11 +96,15 @@ const SplitApproval = (props: Props) => {
         approveSplit(split)
     }
 
-    function approveCustomSplit(splitRobin: number) {
+    function approveCustomSplit(splitLeft: number) {
         checkCategoriesSelected();
+        const actors = props.transaction.actors
+        if (actors.length > 2) {
+            throw Error("Only 2 people supported for custom split")
+        }
         const split: SplitRequest[] = [
-            {actor: "ROBIN", split: splitRobin},
-            {actor: "SOPHIE", split: 1 - splitRobin}
+            {actor: actors[0], split: splitLeft},
+            {actor: actors[1], split: 1 - splitLeft}
         ];
         approveSplit(split)
     }
@@ -161,7 +155,10 @@ const SplitApproval = (props: Props) => {
             </div>
             <div>
                 {customSplitVisible && (
-                    <CustomSplitApproval amountPositive={Math.abs(props.transaction.amount)} onApprove={approveCustomSplit}/>
+                    <CustomSplitApproval
+                        amountPositive={Math.abs(props.transaction.amount)}
+                        actorNames={props.transaction.actors}
+                        onApprove={approveCustomSplit}/>
                 )}
             </div>
         </div>

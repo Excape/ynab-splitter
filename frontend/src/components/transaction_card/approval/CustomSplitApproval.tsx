@@ -4,7 +4,8 @@ import {Button, Input, InputProps} from 'semantic-ui-react';
 
 type Props = {
     amountPositive: number;
-    onApprove: (splitValueRobin: number) => void;
+    onApprove: (splitValueLeft: number) => void;
+    actorNames: string[];
 }
 
 const CustomSplitApproval = (props: Props) => {
@@ -98,8 +99,7 @@ const CustomSplitApproval = (props: Props) => {
                 </div>
             </div>
             <div className="splitLabel">
-                <div>Robin</div>
-                <div>Sophie</div>
+                {props.actorNames.map(actorName => <div>{actorName}</div>)}
             </div>
             <div className={'approveBtn'}>
                 <Button color={"green"}

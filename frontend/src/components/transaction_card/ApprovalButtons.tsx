@@ -1,9 +1,9 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import {Button} from "semantic-ui-react";
 import {ApprovalFor} from '../../types';
 
 type Props = {
-    actors: [string]
+    actors: string[]
     onSelect: (approvalOption: ApprovalFor) => void
 }
 

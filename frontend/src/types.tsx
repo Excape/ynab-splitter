@@ -1,7 +1,7 @@
 export type UnapprovedTransaction = {
     id: string,
     date: Date,
-    actors: [string]
+    actors: string[]
     amount: number,
     categoryMap: [
         { actor: string, category: Category }
@@ -37,9 +37,6 @@ export type Category = {
     group?: string,
     balance?: number
 }
-
-export enum ApprovalOption {Undefined, Robin = "Robin", Sophie = "Sophie", Split = "Split"}
-
 export type ApprovalFor = {
     actor: string | undefined,
     splitApproval: boolean

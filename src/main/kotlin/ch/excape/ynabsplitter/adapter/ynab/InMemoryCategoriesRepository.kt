@@ -3,7 +3,6 @@ package ch.excape.ynabsplitter.adapter.ynab
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
-import java.lang.IllegalArgumentException
 
 class InMemoryCategoriesRepository : ReadCategoriesRepository {
     private val categoriesAnusha = listOf(

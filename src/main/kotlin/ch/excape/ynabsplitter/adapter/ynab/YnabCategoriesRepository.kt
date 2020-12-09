@@ -3,7 +3,6 @@ package ch.excape.ynabsplitter.adapter.ynab
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.model.CategoryGroupWithCategories
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 import org.springframework.beans.factory.annotation.Qualifier
