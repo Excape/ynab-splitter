@@ -18,7 +18,7 @@ class GetUser(private val userRepository: UserRepository) : IGetUser {
     private fun createNewUser(userId: String) : User{
         val newUser = User.defaultUser(userId)
         userRepository.createUser(newUser)
-        return newUser;
+        return newUser
     }
 
 }

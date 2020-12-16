@@ -6,7 +6,6 @@ import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.port
 import ch.excape.ynabsplitter.domain.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class GetUserTest {
     @Test
@@ -18,9 +17,9 @@ internal class GetUserTest {
 
         val useCase = GetUser(userRepository)
         val input = GetUserInput("myUserId")
-        useCase.executeWith(input, TestUserPresenter());
+        useCase.executeWith(input, TestUserPresenter())
 
-        val result = TestUserPresenter().presentation;
+        val result = TestUserPresenter().presentation
         assertThat(result)
                 .isNotNull
                 .extracting { it!!.userId }
@@ -29,9 +28,9 @@ internal class GetUserTest {
     }
 
     inner class TestUserPresenter : UserPresenter {
-        var presentation: User? = null;
+        var presentation: User? = null
         override fun present(user: User) {
-            presentation = user;
+            presentation = user
         }
     }
 }

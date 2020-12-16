@@ -36,7 +36,7 @@ class ListUnapprovedTransactions(
     }
 
     private fun getUser(userId: String): User =
-            userRepository.getUser(userId) ?: throw IllegalStateException("user with id ${userId} not found")
+            userRepository.getUser(userId) ?: throw IllegalStateException("user with id $userId not found")
 
     private fun triggerYnabImport(user: User) {
         user.settings.actors.forEach {

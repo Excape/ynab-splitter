@@ -19,14 +19,10 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
         println("Transactions for ${actor.name} would be imported here")
     }
 
-    override fun getAllTransactionsFromLastWeek(actor: SplitterActor): List<Transaction> =
-            transactions.values.filter { it.actor.name == actor.name }
-
-    override fun getAllTransactionsBetween(actor: SplitterActor, startDate: LocalDate, endDate: LocalDate): List<Transaction> =
-            transactions.values.filter { it.date in startDate..endDate }
-
     override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> =
-            getAllTransactionsFromLastWeek(actor).filter { !it.isApproved }
+            transactions.values
+                    .filter { it.actor.name == actor.name }
+                    .filter { !it.isApproved }
 
     override fun saveTransaction(transaction: Transaction) {
         transactions[transaction.id] = transaction

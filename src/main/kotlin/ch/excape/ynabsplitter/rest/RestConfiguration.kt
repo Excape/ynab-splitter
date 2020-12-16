@@ -4,6 +4,7 @@ import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.RedisAuditLogRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
@@ -47,10 +48,9 @@ class RestConfiguration(
     @Profile("dev", "prod")
     fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
 
-    // TODO enable redis
-//    @Bean
-//    @Profile("prod")
-//    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository)
+    @Bean
+    @Profile("prod")
+    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository)
 
     @Bean
     @Profile("prod")

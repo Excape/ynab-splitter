@@ -5,5 +5,4 @@ import org.springframework.data.redis.core.RedisHash
 @RedisHash("user")
 data class UserEntity(
         val id: String
-) {
-}
+)

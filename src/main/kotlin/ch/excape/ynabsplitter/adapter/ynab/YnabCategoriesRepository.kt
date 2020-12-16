@@ -24,7 +24,7 @@ class YnabCategoriesRepository(
                     .map(this::toCategories)
                     .flatten()
 
-    override fun findCategory(actor: SplitterActor, categoryId: String): Category? {
+    override fun findCategory(actor: SplitterActor, categoryId: String): Category {
         val category = categoriesApi.getCategoryById(actor.budgetId, categoryId).data.category
         return category.toCategory()
     }

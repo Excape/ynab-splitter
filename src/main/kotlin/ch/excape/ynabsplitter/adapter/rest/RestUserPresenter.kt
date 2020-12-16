@@ -6,7 +6,7 @@ import ch.excape.ynabsplitter.application.outbound_ports.presentation.UserPresen
 import ch.excape.ynabsplitter.domain.User
 
 class RestUserPresenter : UserPresenter {
-    var presentation: UserDocument? = null;
+    var presentation: UserDocument? = null
     override fun present(user: User) {
         presentation = user.toDocument()
     }
