@@ -17,8 +17,8 @@ import org.threeten.bp.LocalDate
 
 class ApproveTransactionTest {
 
-    private val actorAlice = SplitterActor("Alice", "test", "test")
-    private val actorBob = SplitterActor("Bob", "test", "test")
+    private val actorAlice = SplitterActor(ActorName("Alice"), "test", "test")
+    private val actorBob = SplitterActor(ActorName("Bob"), "test", "test")
     private val fakeUser = User("someID", UserSettings(listOf(actorAlice, actorBob)))
 
     private val testTransactions = listOf(
@@ -86,12 +86,12 @@ class ApproveTransactionTest {
         val input = ApproveTransactionInput(
                 fakeUser.userId,
                 MatchedTransactionIds(mapOf(
-                        actorBob.actorName to t1.id,
-                        actorAlice.actorName to t2.id
+                        actorBob.actorName.name to t1.id,
+                        actorAlice.actorName.name to t2.id
                        )),
-                actorBob.actorName,
-                TransactionSplit(actorAlice.actorName to 0.5, actorBob.actorName to 0.5),
-                CategoryPerActor(actorAlice.actorName to Category("k1"), actorBob.actorName to Category("k2"))
+                actorBob.actorName.name,
+                TransactionSplit(actorAlice.actorName.name to 0.5, actorBob.actorName.name to 0.5),
+                CategoryPerActor(actorAlice.actorName.name to Category("k1"), actorBob.actorName.name to Category("k2"))
         )
 
         val presenter = object : ApproveTransactionPresenter {

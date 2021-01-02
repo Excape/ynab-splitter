@@ -17,9 +17,10 @@ internal class GetUserTest {
 
         val useCase = GetUser(userRepository)
         val input = GetUserInput("myUserId")
-        useCase.executeWith(input, TestUserPresenter())
+        val presenter = TestUserPresenter()
+        useCase.executeWith(input, presenter)
 
-        val result = TestUserPresenter().presentation
+        val result = presenter.presentation
         assertThat(result)
                 .isNotNull
                 .extracting { it!!.userId }

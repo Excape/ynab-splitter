@@ -12,8 +12,8 @@ import org.threeten.bp.LocalDate
 
 internal class GetMatchedTransactionTest {
 
-    private val actorAlice = SplitterActor("Alice", "test", "test")
-    private val actorBob = SplitterActor("Bob", "test", "test")
+    private val actorAlice = SplitterActor(ActorName("Alice"), "test", "test")
+    private val actorBob = SplitterActor(ActorName("Bob"), "test", "test")
     private val fakeUser = User("someID", UserSettings(listOf(actorAlice, actorBob)))
 
     val testTransactions = listOf(
