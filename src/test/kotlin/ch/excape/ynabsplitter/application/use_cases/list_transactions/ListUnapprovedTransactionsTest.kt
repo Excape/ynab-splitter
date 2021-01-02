@@ -99,7 +99,7 @@ internal class ListUnapprovedTransactionsTest {
     private fun mockReadRepository(testTransactions: List<Transaction>): ReadTransactionsRepository {
         return object : ReadTransactionsRepository {
             override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> {
-                return testTransactions.filter { it.actor.name == actor.name}
+                return testTransactions.filter { it.actor.actorName == actor.actorName}
             }
 
             override fun getTransaction(actor: SplitterActor, id: String): Transaction? {

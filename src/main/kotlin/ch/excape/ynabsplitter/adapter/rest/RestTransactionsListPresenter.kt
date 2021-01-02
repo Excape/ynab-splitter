@@ -31,10 +31,10 @@ private fun MatchedTransaction.toSingleTransactionDocument(): UnapprovedTransact
     )
 }
 
-fun mapActors(transactions: List<Transaction>): List<String> = transactions.map { it.actor.name }
+fun mapActors(transactions: List<Transaction>): List<String> = transactions.map { it.actor.actorName.name }
 
 fun mapCategoriesToActors(transactions: MutableList<Transaction>): List<ActorCategoryDocument> =
         transactions
                 .filter { it.category != null }
-                .map {ActorCategoryDocument(it.actor.name, it.category!!.toDocument())}
+                .map {ActorCategoryDocument(it.actor.actorName.name, it.category!!.toDocument())}
 

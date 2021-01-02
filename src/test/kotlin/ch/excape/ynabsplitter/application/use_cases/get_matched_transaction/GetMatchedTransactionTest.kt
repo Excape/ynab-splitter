@@ -25,7 +25,7 @@ internal class GetMatchedTransactionTest {
 
     private val transactionRepository = object : ReadTransactionsRepository {
         override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> {
-            return testTransactions.filter { it.actor.name == actor.name}
+            return testTransactions.filter { it.actor.actorName == actor.actorName}
         }
 
         override fun getTransaction(actor: SplitterActor, id: String): Transaction? {

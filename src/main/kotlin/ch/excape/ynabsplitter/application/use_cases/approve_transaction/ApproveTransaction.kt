@@ -12,6 +12,7 @@ import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.Ca
 import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.IApproveTransaction
 import ch.excape.ynabsplitter.domain.*
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.math.roundToLong
 
 class ApproveTransaction(
@@ -36,6 +37,7 @@ class ApproveTransaction(
     private fun approveTransactions(input: ApproveTransactionInput) {
         val actors = getActors(input.userId)
         val transactions = loadTransactions(input.transaction.transactionIdsByActor, actors)
+        val newTransactions = mutableListOf<Transaction>()
         for (transaction in transactions) {
 
             val split = splitTransaction(transaction, input.split)
@@ -43,10 +45,22 @@ class ApproveTransaction(
             val approvedTransaction = createApprovedTransaction(transaction, split, category)
 
             saveTransactionRepository.saveTransaction(approvedTransaction)
-
-            val auditLog = AuditLog(LocalDateTime.now(), transaction, approvedTransaction, input.executingActor)
-            auditLogRepository.saveAuditLog(auditLog)
+            newTransactions += approvedTransaction
         }
+
+        saveAuditLog(transactions, newTransactions, input.executingActor)
+    }
+
+    private fun saveAuditLog(oldTransactions: List<Transaction>, newTransactions: List<Transaction>, executingActor: String) {
+        val auditLog = AuditLog(
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                executingActor,
+                oldTransactions,
+                newTransactions
+        )
+
+        auditLogRepository.saveAuditLog(auditLog)
     }
 
     private fun loadTransactions(transactionIdsByActor: Map<String, String>, actors: List<SplitterActor>): List<Transaction> {
@@ -62,14 +76,14 @@ class ApproveTransaction(
     }
 
     private fun getCategory(transaction: Transaction, categories: CategoryPerActor): Category? {
-        val inputCategory = categories[transaction.actor.name] ?: transaction.category
+        val inputCategory = categories[transaction.actor.actorName.name] ?: transaction.category
         return if (inputCategory != null) {
             categoriesRepository.findCategory(transaction.actor, inputCategory.id)
         } else null
     }
 
     private fun splitTransaction(transaction: Transaction, splits: TransactionSplit): Long {
-        val split: Double = splits[transaction.actor.name]
+        val split: Double = splits[transaction.actor.actorName.name]
                 ?: throw IllegalArgumentException("No split defined for actor ${transaction.actor}")
         return (split * transaction.amount).roundToLong()
     }

@@ -2,6 +2,7 @@ package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
+import ch.excape.ynabsplitter.domain.ActorName
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
@@ -16,12 +17,12 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     }
 
     override fun triggerTransactionImport(actor: SplitterActor) {
-        println("Transactions for ${actor.name} would be imported here")
+        println("Transactions for ${actor.actorName} would be imported here")
     }
 
     override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> =
             transactions.values
-                    .filter { it.actor.name == actor.name }
+                    .filter { it.actor.actorName == actor.actorName }
                     .filter { !it.isApproved }
 
     override fun saveTransaction(transaction: Transaction) {
@@ -29,14 +30,14 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     }
 
     private fun createFakeTransactions(): MutableMap<String, Transaction> {
-        val aliceActor = SplitterActor("Anusha", "fake-budget", "fake-account")
-        val bobActor = SplitterActor("Bartholomew", "fake-budget", "fake-account")
+        val aliceActor = SplitterActor(ActorName("Anusha"), "fake-budget", "fake-account")
+        val bobActor = SplitterActor(ActorName("Bartholomew"), "fake-budget", "fake-account")
         val transactionsAlice = listOf(
                 Transaction(
                         "t0",
                         LocalDate.ofYearDay(2019, 1),
                         -10000,
-                        Category("catGroceries", "Groceries", "True Expenses", 2300),
+                        Category("catGroceri    es", "Groceries", "True Expenses", 2300),
                         null,
                         false,
                         "Migros",

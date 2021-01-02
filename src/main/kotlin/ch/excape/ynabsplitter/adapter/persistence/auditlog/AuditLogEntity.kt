@@ -1,34 +1,37 @@
 package ch.excape.ynabsplitter.adapter.persistence.auditlog
 
+import ch.excape.ynabsplitter.adapter.persistence.user.ActorEntity
 import ch.excape.ynabsplitter.adapter.ynab.toJavaLocalDate
-import ch.excape.ynabsplitter.domain.AuditLog
-import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.SplitterActor
-import ch.excape.ynabsplitter.domain.Transaction
+import ch.excape.ynabsplitter.domain.*
 import ch.excape.ynabsplitter.rest.toThreetenLocalDate
-import org.springframework.data.redis.core.RedisHash
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@RedisHash("AuditLog")
+@Document(collection = "auditlogs")
 data class AuditLogEntity(
         val id: String,
         val date: LocalDateTime,
-        val oldTransaction: TransactionEntity,
-        val newTransaction: TransactionEntity,
-        val executingActor: String
+        val executingActor: String,
+        val oldTransactions: List<TransactionEntity>,
+        val newTransactions: List<TransactionEntity>
 ) {
     fun toDomain() = AuditLog(
+            id,
             date,
-            oldTransaction.toDomain(),
-            newTransaction.toDomain(),
-            executingActor
+            executingActor,
+            oldTransactions.map {it.toDomain()},
+            newTransactions.map {it.toDomain()}
     )
+}
+
+private fun Map<String, TransactionEntity>.toDomain(): Map<ActorName, Transaction> {
+    return entries.associate { ActorName(it.key) to it.value.toDomain() }
 }
 
 data class TransactionEntity(
         val id: String,
-        val actor: String,
+        val actor: ActorEntity,
         val date: LocalDate,
         val amount: Long,
         val categoryId: String?,
@@ -44,21 +47,24 @@ data class TransactionEntity(
             memo,
             true,
             payee,
-            // TODO we might want everything in the audit log
-            SplitterActor(actor, "NO-ID", "NO-ID")
+            actor.toDomain()
     )
 }
 
 fun AuditLog.toEntity() = AuditLogEntity(
-        newTransaction.id,
+        id,
         date,
-        oldTransaction.toEntity(),
-        newTransaction.toEntity(),
-        executingActor
+        executingActor,
+        oldTransactions.map { it.toEntity() },
+        newTransactions.map { it.toEntity() }
 )
+
+private fun SplitterActor.toEntity(): ActorEntity =
+        ActorEntity(actorName.name, budgetId, accountId)
+
 fun Transaction.toEntity() = TransactionEntity(
         id,
-        actor.name,
+        actor.toEntity(),
         date.toJavaLocalDate(),
         amount,
         category?.id,

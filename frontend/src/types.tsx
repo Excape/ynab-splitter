@@ -25,6 +25,7 @@ export type Actor = {
 }
 
 export type AuditLog = {
+    // FIXME update data model
     date: Date,
     oldTransaction: Transaction,
     newTransaction: Transaction,

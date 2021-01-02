@@ -86,12 +86,12 @@ class ApproveTransactionTest {
         val input = ApproveTransactionInput(
                 fakeUser.userId,
                 MatchedTransactionIds(mapOf(
-                        actorBob.name to t1.id,
-                        actorAlice.name to t2.id
+                        actorBob.actorName to t1.id,
+                        actorAlice.actorName to t2.id
                        )),
-                actorBob.name,
-                TransactionSplit(actorAlice.name to 0.5, actorBob.name to 0.5),
-                CategoryPerActor(actorAlice.name to Category("k1"), actorBob.name to Category("k2"))
+                actorBob.actorName,
+                TransactionSplit(actorAlice.actorName to 0.5, actorBob.actorName to 0.5),
+                CategoryPerActor(actorAlice.actorName to Category("k1"), actorBob.actorName to Category("k2"))
         )
 
         val presenter = object : ApproveTransactionPresenter {

@@ -14,10 +14,13 @@ data class UserSettings(
 )
 
 data class SplitterActor(
-        val name: String,
+        val actorName: ActorName,
         val budgetId: String,
         val accountId: String
 )
+
+data class ActorName(val name: String)
+
 fun List<SplitterActor>.getByName(name: String): SplitterActor {
-    return this.find { it.name == name } ?: throw IllegalArgumentException("$name not in list of actors")
+    return this.find { it.actorName.name == name } ?: throw IllegalArgumentException("$name not in list of actors")
 }

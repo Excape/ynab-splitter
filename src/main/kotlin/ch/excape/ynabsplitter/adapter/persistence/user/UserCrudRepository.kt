@@ -1,5 +1,7 @@
 package ch.excape.ynabsplitter.adapter.persistence.user
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface UserCrudRepository : CrudRepository<UserEntity, String>
+interface UserCrudRepository : MongoRepository<UserEntity, String> {
+    fun findByUserId(userId: String): UserEntity?
+}

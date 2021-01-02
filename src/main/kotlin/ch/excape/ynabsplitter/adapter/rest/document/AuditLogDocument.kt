@@ -3,8 +3,9 @@ package ch.excape.ynabsplitter.adapter.rest.document
 import java.time.LocalDateTime
 
 data class AuditLogDocument(
+        val id: String,
         val date: LocalDateTime,
-        val oldTransaction: TransactionDocument,
-        val newTransaction: TransactionDocument,
-        val executingActor: String
+        val executingActor: String,
+        val oldTransactions: Map<String, TransactionDocument>,
+        val newTransactions: Map<String, TransactionDocument>,
 )

@@ -2,10 +2,11 @@ package ch.excape.ynabsplitter.rest
 
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogCrudRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogMongoCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.RedisAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.MongoAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.MongoUserRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.UserCrudRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
 import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
 import ch.excape.ynabsplitter.adapter.ynab.YnabCategoriesRepository
@@ -24,7 +25,8 @@ import org.springframework.context.annotation.Profile
 class RestConfiguration(
        private val ynabTransactionsApi: TransactionsApi,
        private val ynabCategoriesApi: CategoriesApi,
-       private val auditLogCrudRepository: AuditLogCrudRepository
+       private val auditLogCrudRepository: AuditLogMongoCrudRepository,
+       private val userCrudRepository: UserCrudRepository
 ) {
 
     @Bean
@@ -39,18 +41,14 @@ class RestConfiguration(
     @Bean
     @Profile("dev")
     fun saveTransactionRepositoryDev(): SaveTransactionRepository = InMemoryTransactionRepository()
+//
+//    @Bean
+//    @Profile("dev")
+//    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
 
     @Bean
-    @Profile("dev")
-    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
-
-    @Bean
-    @Profile("dev", "prod")
-    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
-
-    @Bean
-    @Profile("prod")
-    fun auditLogRepositoryProd() : AuditLogRepository = RedisAuditLogRepository(auditLogCrudRepository)
+    @Profile("prod", "dev")
+    fun auditLogRepositoryProd() : AuditLogRepository = MongoAuditLogRepository(auditLogCrudRepository)
 
     @Bean
     @Profile("prod")
@@ -65,8 +63,11 @@ class RestConfiguration(
     @Profile("prod")
     fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi)
 
+//    @Bean
+//    @Profile("dev")
+//    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
+
     @Bean
-    @Profile("prod")
-    // TODO implement real thing
-    fun userRepositoryProd(): UserRepository = InMemoryUserRepository()
+    @Profile("prod", "dev")
+    fun userRepositoryProd(): UserRepository = MongoUserRepository(userCrudRepository)
 }

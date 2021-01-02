@@ -21,7 +21,7 @@ class GetCategories(
             userRepository.getUser(userId) ?: throw IllegalStateException("User with id $userId not found")
 
     private fun getActor(user: User, actorName: String): SplitterActor {
-       return user.settings.actors.find { it.name == actorName }
+       return user.settings.actors.find { it.actorName.name == actorName }
                ?: throw IllegalArgumentException("Actor $actorName not configured for user ${user.userId}")
     }
 }

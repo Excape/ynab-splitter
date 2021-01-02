@@ -22,18 +22,18 @@ class InMemoryCategoriesRepository : ReadCategoriesRepository {
     )
 
     override fun getCategories(actor: SplitterActor): List<Category> {
-        return when (actor.name) {
+        return when (actor.actorName.name) {
             "Anusha" -> categoriesAnusha
             "Bartholomew" -> categoriesBob
-            else -> throw IllegalArgumentException("${actor.name} not known for in memory categories")
+            else -> throw IllegalArgumentException("${actor.actorName} not known for in memory categories")
         }
     }
 
     override fun findCategory(actor: SplitterActor, categoryId: String): Category? {
-        return when (actor.name) {
+        return when (actor.actorName.name) {
             "Anusha" -> categoriesAnusha.find { it.id == categoryId }
             "Bartholomew" -> categoriesBob.find { it.id == categoryId }
-            else -> throw IllegalArgumentException("${actor.name} not known for in memory categories")
+            else -> throw IllegalArgumentException("${actor.actorName} not known for in memory categories")
         }
     }
 }

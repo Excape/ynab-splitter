@@ -13,12 +13,16 @@ fun Transaction.toDocument(): TransactionDocument {
     return TransactionDocument(id, actor.toDocument(), date.toJavaLocalDate(), amount, category?.toDocument(), memo, payee)
 }
 
-fun AuditLog.toDocument(): AuditLogDocument {
-    return AuditLogDocument(date, oldTransaction.toDocument(), newTransaction.toDocument(), executingActor)
-}
+fun AuditLog.toDocument(): AuditLogDocument = AuditLogDocument(
+        id,
+        date,
+        executingActor,
+        oldTransactions.associate { it.actor.actorName.name to it.toDocument() },
+        newTransactions.associate { it.actor.actorName.name to it.toDocument() }
+)
 
-fun User.toDocument() : UserDocument = UserDocument(userId, settings.toDocument())
+fun User.toDocument(): UserDocument = UserDocument(userId, settings.toDocument())
 
 fun UserSettings.toDocument(): UserSettingsDocument = UserSettingsDocument(actors.map { it.toDocument() })
 
-fun SplitterActor.toDocument(): SplitterActorDocument = SplitterActorDocument(name)
+fun SplitterActor.toDocument(): SplitterActorDocument = SplitterActorDocument(actorName.name)

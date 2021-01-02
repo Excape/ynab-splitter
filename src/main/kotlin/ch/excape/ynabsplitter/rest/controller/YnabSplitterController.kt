@@ -27,7 +27,6 @@ import ch.excape.ynabsplitter.application.use_cases.list_transactions.ports.List
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.ports.GetUserInput
 import ch.excape.ynabsplitter.domain.Category
-import ch.excape.ynabsplitter.domain.MatchedTransaction
 import ch.excape.ynabsplitter.domain.TransactionSplit
 import ch.excape.ynabsplitter.rest.toDomain
 import org.springframework.web.bind.annotation.*
@@ -117,13 +116,12 @@ class YnabSplitterController(
             matchedTransactionDocument: MatchedTransactionDocument, user: UserDocument,
             request: SingleApprovalRequest) : ApproveTransactionResult {
 
-        val matchedTransaction = matchedTransactionDocument.toDomain()
         val presenter = RestApproveTransactionPresenter()
 
         val forActor = request.actor
         val input = ApproveTransactionInput(
                 user.userId,
-                extractTransactionIds(matchedTransaction),
+                extractTransactionIds(matchedTransactionDocument),
                 request.executingActor,
                 TransactionSplit.allOnOne(forActor, user.settings.actors.map {it.name}),
                 CategoryPerActor(forActor to Category(request.categoryId)))
@@ -134,7 +132,7 @@ class YnabSplitterController(
         return presenter.presentation!!
     }
 
-    private fun extractTransactionIds(matchedTransaction: MatchedTransaction) =
+    private fun extractTransactionIds(matchedTransaction: MatchedTransactionDocument) =
             MatchedTransactionIds(matchedTransaction.transactions.associate { it.actor.name to it.id })
 
     @PostMapping("/transactions/{id}/approveSplit")
@@ -155,11 +153,10 @@ class YnabSplitterController(
             matchedTransactionDocument: MatchedTransactionDocument, userId: String,
             splitRequest: SplitTransactionRequest
     ): ApproveTransactionResult {
-        val matchedTransaction = matchedTransactionDocument.toDomain()
         val presenter = RestApproveTransactionPresenter()
         val input = ApproveTransactionInput(
                 userId,
-                extractTransactionIds(matchedTransaction),
+                extractTransactionIds(matchedTransactionDocument),
                 splitRequest.executingActor,
                 splitRequest.split.toDomain(),
                 splitRequest.categories.toDomain()
