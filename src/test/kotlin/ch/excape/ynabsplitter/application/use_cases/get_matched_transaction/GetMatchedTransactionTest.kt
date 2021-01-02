@@ -46,6 +46,10 @@ internal class GetMatchedTransactionTest {
             TODO("not implemented")
         }
 
+        override fun updateUser(user: User) {
+            TODO("not implemented")
+        }
+
     }
 
 

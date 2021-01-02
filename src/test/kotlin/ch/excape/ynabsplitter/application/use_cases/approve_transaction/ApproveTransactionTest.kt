@@ -77,6 +77,10 @@ class ApproveTransactionTest {
                 TODO("not implemented")
             }
 
+            override fun updateUser(user: User) {
+                TODO("not implemented")
+            }
+
         }
         val approveTransaction = ApproveTransaction(transactionRepository, transactionRepository,
                 categoriesRepository, auditLogRepository, userRepository)

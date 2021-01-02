@@ -13,6 +13,9 @@ internal class GetUserTest {
         val userRepository = object : UserRepository {
             override fun getUser(userId: String): User? = null
             override fun createUser(user: User) {}
+            override fun updateUser(user: User) {
+                TODO("not implemented")
+            }
         }
 
         val useCase = GetUser(userRepository)

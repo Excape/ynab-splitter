@@ -20,4 +20,8 @@ class InMemoryUserRepository : UserRepository {
     override fun createUser(user: User) {
         // noop
     }
+
+    override fun updateUser(user: User) {
+        // noop
+    }
 }

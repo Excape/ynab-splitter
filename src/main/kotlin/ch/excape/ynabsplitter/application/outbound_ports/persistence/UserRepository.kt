@@ -6,4 +6,6 @@ interface UserRepository {
     fun getUser(userId: String) : User?
 
     fun createUser(user: User)
+
+    fun updateUser(user: User)
 }

@@ -10,4 +10,8 @@ class MongoUserRepository(private val mongoRepo: UserCrudRepository) : UserRepos
     override fun createUser(user: User) {
          mongoRepo.save(user.toEntity())
     }
+
+    override fun updateUser(user: User) {
+        mongoRepo.save(user.toEntity())
+    }
 }

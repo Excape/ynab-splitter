@@ -92,6 +92,10 @@ internal class ListUnapprovedTransactionsTest {
                 TODO("not implemented")
             }
 
+            override fun updateUser(user: User) {
+                TODO("not implemented")
+            }
+
         }
     }
 
