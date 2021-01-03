@@ -1,5 +1,6 @@
 package ch.excape.ynabsplitter.rest
 
+import ch.excape.ynabclient.api.BudgetsApi
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogMongoCrudRepository
@@ -7,12 +8,10 @@ import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepos
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.MongoAuditLogRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.MongoUserRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.UserCrudRepository
-import ch.excape.ynabsplitter.adapter.ynab.InMemoryCategoriesRepository
-import ch.excape.ynabsplitter.adapter.ynab.InMemoryTransactionRepository
-import ch.excape.ynabsplitter.adapter.ynab.YnabCategoriesRepository
-import ch.excape.ynabsplitter.adapter.ynab.YnabTransactionRepository
+import ch.excape.ynabsplitter.adapter.ynab.*
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
+import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
@@ -25,6 +24,7 @@ import org.springframework.context.annotation.Profile
 class RestConfiguration(
        private val ynabTransactionsApi: TransactionsApi,
        private val ynabCategoriesApi: CategoriesApi,
+       private val ynabBudgetsApi: BudgetsApi,
        private val auditLogCrudRepository: AuditLogMongoCrudRepository,
        private val userCrudRepository: UserCrudRepository
 ) {
@@ -70,4 +70,12 @@ class RestConfiguration(
     @Bean
     @Profile("prod", "dev")
     fun userRepositoryProd(): UserRepository = MongoUserRepository(userCrudRepository)
+
+    @Bean
+    @Profile("prod")
+    fun readBudgetsRepositoryProd(): ReadBudgetsRepository = YnabReadBudgetsRepository(ynabBudgetsApi)
+
+    @Bean
+    @Profile("dev")
+    fun readBudgetsRepositoryDev(): ReadBudgetsRepository = InMemoryReadBudgetsRepository()
 }

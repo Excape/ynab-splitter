@@ -10,5 +10,7 @@ data class UserSettingsDocument(
 )
 
 data class SplitterActorDocument(
-        val name: String
+        val name: String,
+        val budgetId: String,
+        val accountId: String
 )

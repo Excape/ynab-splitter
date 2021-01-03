@@ -10,7 +10,7 @@ data class AddActorResult(
 ) {
  companion object {
   fun success(): AddActorResult {
-   return AddActorResult(true, null)
+   return AddActorResult(true, "Saved Successfully")
   }
  }
 }

@@ -5,6 +5,7 @@ import UnapprovedTransactions from "./components/UnapprovedTransactions";
 import AuditLogList from './components/auditlog/AuditLogList';
 import NavBar from './components/NavBar';
 import {Route, Switch} from "react-router-dom";
+import Settings from './components/settings/Settings';
 
 const App = () => {
     return (
@@ -19,6 +20,9 @@ const App = () => {
                         <Switch>
                             <Route path={"/auditlog"}>
                                 <AuditLogList />
+                            </Route>
+                            <Route path={"/settings"}>
+                                <Settings />
                             </Route>
                             <Route path={"/"}>
                                 <UnapprovedTransactions />

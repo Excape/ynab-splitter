@@ -25,4 +25,10 @@ fun User.toDocument(): UserDocument = UserDocument(userId, settings.toDocument()
 
 fun UserSettings.toDocument(): UserSettingsDocument = UserSettingsDocument(actors.map { it.toDocument() })
 
-fun SplitterActor.toDocument(): SplitterActorDocument = SplitterActorDocument(actorName.name)
+fun SplitterActor.toDocument(): SplitterActorDocument = SplitterActorDocument(actorName.name, budgetId, accountId)
+
+fun Budget.toDocument(): BudgetDocument =
+        BudgetDocument(name, budgetId, accounts.map { it.toDocument() })
+
+fun BudgetAccount.toDocument(): AccountDocument =
+        AccountDocument(name, accountId)

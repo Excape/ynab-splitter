@@ -12,22 +12,23 @@
 
 package ch.excape.ynabclient.model;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * BudgetSummaryResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
-public class BudgetSummaryResponse {
-  @JsonProperty("data")
-  private BudgetSummaryWrapper data = null;
+public class BudgetSummaryWrapper {
+  @JsonProperty("budgets")
+  private List<BudgetSummary> budgets = null;
 
-  public BudgetSummaryResponse data(BudgetSummaryWrapper data) {
-    this.data = data;
+  public BudgetSummaryWrapper data(List<BudgetSummary> budgets) {
+    this.budgets = budgets;
     return this;
   }
 
@@ -36,39 +37,39 @@ public class BudgetSummaryResponse {
    * @return data
   **/
   @Schema(required = true, description = "")
-  public BudgetSummaryWrapper getData() {
-    return data;
+  public List<BudgetSummary> getBudgets() {
+    return budgets;
   }
 
-  public void setData(BudgetSummaryWrapper data) {
-    this.data = data;
+  public void setBudgets(List<BudgetSummary> budgets) {
+    this.budgets = budgets;
   }
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    BudgetSummaryResponse budgetSummaryResponse = (BudgetSummaryResponse) o;
-    return Objects.equals(this.data, budgetSummaryResponse.data);
+    BudgetSummaryWrapper budgetSummaryResponse = (BudgetSummaryWrapper) o;
+    return Objects.equals(this.budgets, budgetSummaryResponse.budgets);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data);
+    return Objects.hash(budgets);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class BudgetSummaryResponse {\n");
+    sb.append("class BudgetSummaryWrapper {\n");
     
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    data: ").append(toIndentedString(budgets)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -77,7 +78,7 @@ public class BudgetSummaryResponse {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
