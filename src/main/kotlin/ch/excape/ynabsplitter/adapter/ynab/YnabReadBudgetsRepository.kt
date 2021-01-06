@@ -1,7 +1,6 @@
 package ch.excape.ynabsplitter.adapter.ynab
 
 import ch.excape.ynabclient.api.BudgetsApi
-import ch.excape.ynabclient.model.Account
 import ch.excape.ynabclient.model.BudgetSummary
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
 import ch.excape.ynabsplitter.domain.Budget

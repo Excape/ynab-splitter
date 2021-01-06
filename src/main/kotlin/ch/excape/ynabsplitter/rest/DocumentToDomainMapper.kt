@@ -1,8 +1,10 @@
 package ch.excape.ynabsplitter.rest
 
-import ch.excape.ynabsplitter.adapter.rest.document.*
-import ch.excape.ynabsplitter.application.use_cases.approve_transaction.ports.CategoryPerActor
-import ch.excape.ynabsplitter.domain.*
+import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.document.CategoryRequest
+import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.document.SplitRequest
+import ch.excape.ynabsplitter.application.use_cases.transaction.approve_transaction.ports.CategoryPerActor
+import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.TransactionSplit
 import java.time.LocalDate
 
 

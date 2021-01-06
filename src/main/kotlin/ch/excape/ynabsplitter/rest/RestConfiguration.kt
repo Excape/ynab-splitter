@@ -3,11 +3,10 @@ package ch.excape.ynabsplitter.rest
 import ch.excape.ynabclient.api.BudgetsApi
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.AuditLogMongoCrudRepository
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.auditlog.MongoAuditLogRepository
-import ch.excape.ynabsplitter.adapter.persistence.user.MongoUserRepository
-import ch.excape.ynabsplitter.adapter.persistence.user.UserCrudRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.AuditLogMongoCrudRepository
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.MongoAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.mongo.MongoUserRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.mongo.UserCrudRepository
 import ch.excape.ynabsplitter.adapter.ynab.*
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
@@ -22,11 +21,11 @@ import org.springframework.context.annotation.Profile
 
 @Configuration
 class RestConfiguration(
-       private val ynabTransactionsApi: TransactionsApi,
-       private val ynabCategoriesApi: CategoriesApi,
-       private val ynabBudgetsApi: BudgetsApi,
-       private val auditLogCrudRepository: AuditLogMongoCrudRepository,
-       private val userCrudRepository: UserCrudRepository
+        private val ynabTransactionsApi: TransactionsApi,
+        private val ynabCategoriesApi: CategoriesApi,
+        private val ynabBudgetsApi: BudgetsApi,
+        private val auditLogCrudRepository: AuditLogMongoCrudRepository,
+        private val userCrudRepository: UserCrudRepository
 ) {
 
     @Bean

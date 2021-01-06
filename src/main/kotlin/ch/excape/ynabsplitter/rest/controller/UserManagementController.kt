@@ -1,11 +1,11 @@
 package ch.excape.ynabsplitter.rest.controller
 
-import ch.excape.ynabsplitter.adapter.rest.RestAddActorPresenter
-import ch.excape.ynabsplitter.adapter.rest.RestBudgetsPresenter
-import ch.excape.ynabsplitter.adapter.rest.RestUserPresenter
-import ch.excape.ynabsplitter.adapter.rest.document.AddActorRequest
-import ch.excape.ynabsplitter.adapter.rest.document.BudgetDocument
-import ch.excape.ynabsplitter.adapter.rest.document.UserDocument
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestAddActorPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestBudgetsPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestUserPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.AddActorRequest
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.BudgetDocument
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.UserDocument
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
 import ch.excape.ynabsplitter.application.outbound_ports.presentation.AddActorResult
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
