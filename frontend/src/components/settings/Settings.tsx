@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
-import {UserSettings} from './types';
-import {Button, Loader} from 'semantic-ui-react';
+import React, {useEffect, useState} from 'react';
+import {SettingsActor, UserSettings} from './types';
+import {Loader, Grid} from 'semantic-ui-react';
 import AddActor from './AddActor';
 
 const Settings = () => {
@@ -16,6 +16,7 @@ const Settings = () => {
             })
     }, [])
 
+
     if (!userLoaded) {
         return (<Loader active inline='centered' />)
     }
@@ -25,17 +26,32 @@ const Settings = () => {
     return (
         <div>
             <h2>Configure Budgets and Accounts</h2>
-            <div>
-                <ul>
-                {actors.map(actor => (
-                    <li>{actor.name}</li>
-                ))}
-                </ul>
-            </div>
-
-            <AddActor />
-
+            <ActorSettings initActors={actors}/>
         </div>
+    )
+}
+
+export const ActorSettings = ({initActors}: {initActors: SettingsActor[]}) => {
+    const [actors, setActors] = useState(initActors)
+
+    function onActorAdded(actor: SettingsActor) {
+        const updatedActors = [ ...actors ]
+        updatedActors.push(actor)
+        setActors(updatedActors)
+    }
+    // TODO: Improve actor list
+    return (
+        <Grid.Row>
+            <Grid.Column>
+                <ul>
+                    {actors.map(actor => (
+                        <li>{actor.name}</li>
+                    ))}
+                </ul>
+            </Grid.Column>
+
+            <AddActor onAddActor={onActorAdded}/>
+        </Grid.Row>
     )
 }
 

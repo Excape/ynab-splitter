@@ -15,7 +15,7 @@ class AddActor(private val userRepository: UserRepository) : IAddActor {
         val actor = buildActor(input)
 
         if (actorAlreadyExists(user, actor)) {
-            val result = AddActorResult(false, "Actor already exists")
+            val result = AddActorResult.failure("Actor already exists")
             presenter.present(result)
             return
         }
@@ -23,7 +23,7 @@ class AddActor(private val userRepository: UserRepository) : IAddActor {
         val updatedUser = addActorToUser(user, actor)
 
         userRepository.updateUser(updatedUser)
-        presenter.present(AddActorResult.success())
+        presenter.present(AddActorResult.success(actor))
     }
 
     private fun buildActor(input: AddActorInput): SplitterActor =

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Grid} from 'semantic-ui-react'
 import './App.css';
 import UnapprovedTransactions from "./components/UnapprovedTransactions";
@@ -7,9 +7,9 @@ import NavBar from './components/NavBar';
 import {Route, Switch} from "react-router-dom";
 import Settings from './components/settings/Settings';
 
-const App = () => {
+const App = ({children}: PropsWithChildren<any>) => {
     return (
-            <Grid columns={1} className={"App-Grid"}>
+            <AppGrid>
                 <Grid.Row>
                     <Grid.Column>
                         <NavBar />
@@ -30,8 +30,16 @@ const App = () => {
                         </Switch>
                     </Grid.Column>
                 </Grid.Row>
-            </Grid>
+            </AppGrid>
     );
+}
+
+export const AppGrid = ({children}: PropsWithChildren<any>) => {
+    return (
+        <Grid columns={1} className={"App-Grid"}>
+            {children}
+        </Grid>
+    )
 }
 
 

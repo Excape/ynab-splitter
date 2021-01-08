@@ -1,5 +1,6 @@
 package ch.excape.ynabsplitter.rest.controller
 
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.AddActorResultDocument
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestAddActorPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestBudgetsPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestUserPresenter
@@ -37,7 +38,7 @@ class UserManagementController(
     }
 
     @PostMapping("/addActor")
-    fun addActor(@RequestBody request: AddActorRequest, principal: Principal): AddActorResult {
+    fun addActor(@RequestBody request: AddActorRequest, principal: Principal): AddActorResultDocument {
         val user = getLoggedInUser(principal)
         val input = AddActorInput(user.userId, request.actorName, request.budgetId, request.accountId)
         val presenter = RestAddActorPresenter()

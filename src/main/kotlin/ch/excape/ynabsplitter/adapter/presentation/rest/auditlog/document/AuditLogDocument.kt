@@ -6,7 +6,13 @@ import java.time.LocalDateTime
 data class AuditLogDocument(
         val id: String,
         val date: LocalDateTime,
+        val payee: String?,
         val executingActor: String,
-        val oldTransactions: Map<String, TransactionDocument>,
-        val newTransactions: Map<String, TransactionDocument>,
+        val transactions: List<TransactionsByActorDocument>,
+)
+
+data class TransactionsByActorDocument(
+    val actor: String,
+    val oldTransaction: TransactionDocument,
+    val newTransaction: TransactionDocument
 )

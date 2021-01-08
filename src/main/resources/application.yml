@@ -1,3 +1,7 @@
+# ToDo: add dry-run flag
+ynabsplitter:
+  dry-run: true
+
 spring:
   profiles:
     active: dev

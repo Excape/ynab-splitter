@@ -17,7 +17,7 @@ const UnapprovedTransactions = () => {
                 },
                 error => setIsLoaded(false)
             );
-    }, []);
+    }, [setItems, setIsLoaded]);
 
     function getTime(date?: Date) {
         return date != null ? new Date(date).getTime() : 0;

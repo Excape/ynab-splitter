@@ -1,14 +1,17 @@
 import React, {useEffect} from 'react';
-import {Budget, BudgetAccount, SaveActorResult} from './types';
-import {Button, Dropdown, DropdownItemProps, Icon, Input, Label, Loader} from 'semantic-ui-react';
+import {Budget, BudgetAccount, SaveActorResult, SettingsActor} from './types';
+import {Button, DropdownItemProps, Form, Label, Loader} from 'semantic-ui-react';
 import Cookies from 'js-cookie';
 
-const AddActor = () => {
+type Props = {
+    onAddActor: (addedActor: SettingsActor) => void
+}
+
+const AddActor = (props: Props) => {
     const [budgets, setBudgets] = React.useState([] as Budget[])
     const [budgetsLoaded, setBudgetsLoaded] = React.useState(false)
-    const [selectedName, setSelectedName] = React.useState<string>()
+    const [selectedName, setSelectedName] = React.useState<string>("")
     const [selectedBudget, setSelectedBudget] = React.useState<Budget>()
-    const [budgetSelected, setBudgetSelected] = React.useState(false)
     const [selectedAccount, setSelectedAccount] = React.useState<BudgetAccount>()
     const [saveResult, setSaveResult] = React.useState<SaveActorResult>()
 
@@ -21,12 +24,17 @@ const AddActor = () => {
             })
     }, [])
 
+    function resetForm() {
+        setSelectedName("")
+        setSelectedBudget(undefined)
+        setSelectedAccount(undefined)
+    }
+
     function onSave(result: SaveActorResult) {
         setSaveResult(result)
         if (result.success) {
-            setSelectedName(undefined)
-            setSelectedBudget(undefined)
-            setSelectedAccount(undefined)
+            resetForm();
+            props.onAddActor(result.actor!)
         }
     }
 
@@ -52,12 +60,12 @@ const AddActor = () => {
     }
 
     function isSavable() {
-        return budgetSelected && selectedName !== undefined && selectedAccount !== undefined;
+        return selectedBudget !== undefined && selectedName !== undefined
+            && selectedAccount !== undefined;
     }
 
     function onBudgetSelect(budget: Budget) {
         setSelectedBudget(budget)
-        setBudgetSelected(true)
     }
 
     function onAccountSelect(account: BudgetAccount) {
@@ -73,32 +81,39 @@ const AddActor = () => {
     }
 
     return (
-        <div>
-            <Input
-                value={selectedName}
-                onChange={(_, {value}) => setSelectedName(value)}
-            />
-            <BudgetDropdown budgets={budgets} onSelect={onBudgetSelect}/>
-            <AccountDropdown enabled={budgetSelected} accounts={getAccounts()} onSelect={onAccountSelect}/>
-            <Button as="div" labelPosition="right">
-                <Button
+        <Form>
+            <Form.Group widths="equal">
+                <Form.Input
+                    placeholder="Choose a name"
+                    value={selectedName}
+                    onChange={(_, {value}) => setSelectedName(value)}
+                />
+                <BudgetDropdown budgets={budgets} value={selectedBudget} onSelect={onBudgetSelect}/>
+                <AccountDropdown
+                    enabled={selectedBudget !== undefined}
+                    value={selectedAccount}
+                    accounts={getAccounts()}
+                    onSelect={onAccountSelect}/>
+            </Form.Group>
+                <Button as="div" labelPosition="right">
+                    <Button
                         icon="plus circle"
+                        content="Add"
                         color="green"
                         disabled={!isSavable()}
                         onClick={() => save()}>
-                    Add
+                    </Button>
+                    {saveResult !== undefined && (
+                        <Label basic pointing="left" color={saveResult.success ? 'green' : 'red'}>
+                            {saveResult.message}
+                        </Label>
+                    )}
                 </Button>
-                {saveResult !== undefined && (
-                    <Label basic pointing="left" color={saveResult.success ? 'green' : 'red'}>
-                        {saveResult.message}
-                    </Label>
-                )}
-            </Button>
-        </div>
+        </Form>
     )
 }
 
-const BudgetDropdown = (props: { budgets: Budget[], onSelect: (budget: Budget) => void }) => {
+const BudgetDropdown = (props: { budgets: Budget[], value: Budget | undefined, onSelect: (budget: Budget) => void }) => {
     function createBudgetOptions(): DropdownItemProps[] {
         return props.budgets.map(budget => (
                 {
@@ -117,8 +132,9 @@ const BudgetDropdown = (props: { budgets: Budget[], onSelect: (budget: Budget) =
     }
 
     return (
-        <Dropdown
+        <Form.Dropdown
             placeholder={"Select Budget"}
+            value={props.value?.budgetId ?? ""}
             fluid
             search
             selection
@@ -128,9 +144,19 @@ const BudgetDropdown = (props: { budgets: Budget[], onSelect: (budget: Budget) =
     )
 }
 
-const AccountDropdown = (props: { enabled: boolean, accounts: BudgetAccount[] | undefined, onSelect: (account: BudgetAccount) => void }) => {
+type AccountDropdownProps = {
+    enabled: boolean;
+    value: BudgetAccount | undefined;
+    accounts: BudgetAccount[] | undefined;
+    onSelect: (account: BudgetAccount) => void
+}
+
+const AccountDropdown = (props: AccountDropdownProps) => {
     function createAccountOptions() {
-        return props.accounts?.map(account => (
+        if (props.accounts === undefined) {
+            return []
+        }
+        return props.accounts.map(account => (
                 {
                     value: account.accountId,
                     key: account.accountId,
@@ -147,9 +173,10 @@ const AccountDropdown = (props: { enabled: boolean, accounts: BudgetAccount[] | 
     }
 
     return (
-        <Dropdown
+        <Form.Dropdown
             disabled={!props.enabled}
             placeholder={"Select Account"}
+            value={props.value?.accountId ?? ""}
             fluid
             search
             selection

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {AuditLog, Transaction} from "../../types";
-import {Card, Grid, Icon, Loader} from 'semantic-ui-react';
-import MonetaryAmount from '../MonetaryAmount';
+import {AuditLog} from "../../types";
+import {Grid, Loader} from 'semantic-ui-react';
+import AuditLogCard from "./AuditLogCard";
 
 const AuditLogList = () => {
     const [isLoaded, setIsLoaded] = React.useState(false);
@@ -26,46 +26,14 @@ const AuditLogList = () => {
     }
 
     return (
-        <Grid stackable columns={3}>
+        <Grid stackable columns={1}>
             {items!
-                .map(item => (
-                    <Grid.Column  key={item.newTransaction.id}>
-                        <AuditLogCard auditlog={item}/>
+                .map(auditlog => (
+                    <Grid.Column  key={auditlog.id}>
+                        <AuditLogCard auditlog={auditlog}/>
                     </Grid.Column>
                 ))}
         </Grid>
-    );
-}
-
-const AuditLogCard = ({auditlog}: { auditlog: AuditLog }) => {
-
-    function renderActor(actor: string) {
-        return actor.charAt(0) + actor.toLowerCase().slice(1);
-    }
-
-    function renderCategory(transaction: Transaction ) {
-        return transaction.category ? transaction.category.name : "Uncategorized";
-    }
-    return (
-        <Card fluid>
-            <Card.Content>
-                <Card.Header>{auditlog.newTransaction.payee} ({renderActor(auditlog.newTransaction.actor.name)})</Card.Header>
-                <Card.Meta>{auditlog.newTransaction.date}</Card.Meta>
-                <Card.Meta>Approved by {renderActor(auditlog.executingActor)}</Card.Meta>
-                <Card.Description>
-                    <Icon name="folder"/>
-                    {renderCategory(auditlog.oldTransaction)} -> {renderCategory(auditlog.newTransaction)}
-                </Card.Description>
-                <Card.Description>
-                    <Icon name="dollar sign"/>
-                    <strong>
-                        <MonetaryAmount amount={auditlog.oldTransaction.amount} />
-                        <span> -> </span>
-                        <MonetaryAmount amount={auditlog.newTransaction.amount} />
-                    </strong>
-                </Card.Description>
-            </Card.Content>
-        </Card>
     );
 }
 

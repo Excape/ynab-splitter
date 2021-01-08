@@ -9,12 +9,16 @@ import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRep
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpClientErrorException
 import org.threeten.bp.LocalDate
 
-class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val transactionsApi: TransactionsApi)
-    : ReadTransactionsRepository, SaveTransactionRepository {
+class YnabTransactionRepository(
+        private val transactionsApi: TransactionsApi,
+        private val dryRun: Boolean
+) : ReadTransactionsRepository, SaveTransactionRepository {
+
     override fun getTransaction(actor: SplitterActor, id: String): Transaction? {
         val transactionResponse: TransactionResponse?
         try {
@@ -39,14 +43,18 @@ class YnabTransactionRepository(@Qualifier("ynabTransactionsApi") private val tr
                 actor.budgetId, actor.accountId, startDate,
                 if (unapprovedOnly) "unapproved" else null, null)
 
-        return response.data.transactions.map {it.toTransaction(actor)}
+        return response.data.transactions.map { it.toTransaction(actor) }
     }
 
-    private fun lastMonth() : LocalDate = LocalDate.now().minusMonths(1)
+    private fun lastMonth(): LocalDate = LocalDate.now().minusMonths(1)
 
 
     override fun saveTransaction(transaction: Transaction) {
-        transactionsApi.updateTransaction(wrapTransaction(transaction), transaction.actor.budgetId, transaction.id)
+        if (!dryRun) {
+            transactionsApi.updateTransaction(wrapTransaction(transaction), transaction.actor.budgetId, transaction.id)
+        } else {
+            println("Dry run enabled, not saving transaction to ynab")
+        }
     }
 
     private fun wrapTransaction(transaction: Transaction): SaveTransactionWrapper {

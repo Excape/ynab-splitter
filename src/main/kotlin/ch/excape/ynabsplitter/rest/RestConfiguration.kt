@@ -14,6 +14,7 @@ import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsReposit
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -25,7 +26,9 @@ class RestConfiguration(
         private val ynabCategoriesApi: CategoriesApi,
         private val ynabBudgetsApi: BudgetsApi,
         private val auditLogCrudRepository: AuditLogMongoCrudRepository,
-        private val userCrudRepository: UserCrudRepository
+        private val userCrudRepository: UserCrudRepository,
+        @Value("\${ynabsplitter.dry-run}")
+        private val dryRun: Boolean
 ) {
 
     @Bean
@@ -56,11 +59,11 @@ class RestConfiguration(
     @Bean
     @Primary
     @Profile("prod")
-    fun readTransactionRepositoryProd(): ReadTransactionsRepository = YnabTransactionRepository(ynabTransactionsApi)
+    fun readTransactionRepositoryProd(): ReadTransactionsRepository = YnabTransactionRepository(ynabTransactionsApi, dryRun)
 
     @Bean
     @Profile("prod")
-    fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi)
+    fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi, dryRun)
 
 //    @Bean
 //    @Profile("dev")

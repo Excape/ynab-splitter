@@ -2,7 +2,7 @@ export type UserSettings = {
     actors: SettingsActor[]
 }
 
-type SettingsActor = {
+export type SettingsActor = {
     name: string,
     budgetId: string,
     accountId: string
@@ -21,5 +21,6 @@ export type BudgetAccount = {
 
 export type SaveActorResult = {
     success: boolean,
-    message: string
+    message: string,
+    actor: SettingsActor | undefined
 }
