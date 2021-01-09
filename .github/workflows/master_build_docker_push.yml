@@ -12,10 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Set up JDK 1.8
+    - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: 11
 
     - name: Cache gradle caches
       uses: actions/cache@v1
@@ -26,8 +26,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Build with Gradle
-      # TODO enable tests
-      run: ./gradlew build -xtest
+      run: ./gradlew build
 
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
@@ -36,4 +35,4 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_PKG_PASSWORD }}
         registry: docker.pkg.github.com
-        tags: ${GITHUB_REF##*/} # branch name
+        tags: ${{ GITHUB_REF##*/ }} # branch name
