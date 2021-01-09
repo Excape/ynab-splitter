@@ -3,8 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ master, oauth-auth ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -16,6 +14,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
 
     - name: Cache gradle caches
       uses: actions/cache@v1
@@ -35,4 +39,4 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_PKG_PASSWORD }}
         registry: docker.pkg.github.com
-        tags: ${{ GITHUB_REF##*/ }} # branch name
+        tags: ${{ steps.extract_branch.outputs.branch }} # branch name
