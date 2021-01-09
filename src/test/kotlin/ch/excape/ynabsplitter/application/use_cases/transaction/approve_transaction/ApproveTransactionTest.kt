@@ -54,6 +54,14 @@ class ApproveTransactionTest {
                 auditLogEntries.add(auditLog)
             }
 
+            override fun getById(auditLogId: String): AuditLog? {
+                TODO("not implemented")
+            }
+
+            override fun delete(auditLogId: String) {
+                TODO("not implemented")
+            }
+
             override fun getAllAuditLogs(): List<AuditLog> {
                 TODO("not implemented")
             }

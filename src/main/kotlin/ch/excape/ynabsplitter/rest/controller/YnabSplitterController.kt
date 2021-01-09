@@ -2,10 +2,7 @@ package ch.excape.ynabsplitter.rest.controller
 
 import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.RestAuditLogPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.document.AuditLogDocument
-import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestApproveTransactionPresenter
-import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestCategoryListPresenter
-import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestMatchedTransactionPresenter
-import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestTransactionsListPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.*
 import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.document.*
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestUserPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.SplitterActorDocument
@@ -32,6 +29,8 @@ import ch.excape.ynabsplitter.application.use_cases.transaction.get_matched_tran
 import ch.excape.ynabsplitter.application.use_cases.transaction.list_transactions.ListUnapprovedTransactions
 import ch.excape.ynabsplitter.application.use_cases.transaction.list_transactions.ports.IListUnapprovedTransactions
 import ch.excape.ynabsplitter.application.use_cases.transaction.list_transactions.ports.ListUnapprovedTransactionsInput
+import ch.excape.ynabsplitter.application.use_cases.transaction.undo_approval.UndoApproval
+import ch.excape.ynabsplitter.application.use_cases.transaction.undo_approval.ports.UndoApprovalInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.ports.GetUserInput
 import ch.excape.ynabsplitter.domain.Category
@@ -174,6 +173,21 @@ class YnabSplitterController(
                 saveTransactionRepository, readCategoriesRepository, auditLogRepository, userRepository)
 
         approveTransaction.executeWith(input, presenter)
+        return presenter.presentation!!
+    }
+
+    @PostMapping("/auditlog")
+    fun undoApproval(
+            @RequestBody(required = true) request: UndoApprovalRequest,
+            principal: Principal): UndoApprovalResultDocument {
+
+        val loggedInUser = getLoggedInUser(principal)
+        val presenter = RestUndoneApprovalPresenter()
+        val undoApproval = UndoApproval(auditLogRepository, saveTransactionRepository)
+
+        val input = UndoApprovalInput(loggedInUser.userId, request.auditLogId)
+        undoApproval.executeWith(input, presenter)
+
         return presenter.presentation!!
     }
 }

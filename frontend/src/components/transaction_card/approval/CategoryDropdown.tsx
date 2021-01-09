@@ -8,7 +8,6 @@ type Props = {
     onChange: (category: Category) => void
 }
 
-
 const CategoryDropdown = (props: Props) => {
 
     function createOptions(): DropdownItemProps[] {

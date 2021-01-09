@@ -5,6 +5,7 @@ import SingleApproval from "./approval/SingleApproval";
 import SplitApproval from "./approval/SplitApproval";
 import ApprovalButtons from './ApprovalButtons';
 import MonetaryAmount from '../MonetaryAmount';
+import UndoApproval from '../UndoApproval';
 
 type Props = {
     transaction: UnapprovedTransaction
@@ -29,10 +30,12 @@ const TransactionCard = ({transaction}: Props) => {
         }
         return undefined;
     }
+
     function onApprove(result: ApprovalResult) {
         setApprovalResult(result);
         setApprovalOpen(false);
     }
+
     function renderCategories() {
         return transaction.actors
             .map((actor) => getCategory(actor)?.name ?? "?")
@@ -57,17 +60,19 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Description>
                 <Card.Description>
                     <Icon name="dollar sign"/>
-                    <strong><MonetaryAmount amount={transaction.amount} /></strong>
+                    <strong><MonetaryAmount amount={transaction.amount}/></strong>
                 </Card.Description>
             </Card.Content>
             {!approvalResult?.success && (
-            <Card.Content extra fluid={"true"}>
-                <ApprovalButtons actors={transaction.actors} onSelect={(approvalOption => handleSelectApproval(approvalOption))} />
-            </Card.Content>)}
+                <Card.Content extra fluid={"true"}>
+                    <ApprovalButtons actors={transaction.actors}
+                                     onSelect={(approvalOption => handleSelectApproval(approvalOption))}/>
+                </Card.Content>)}
             {approvalOpen && (
                 <Card.Content extra fluid={"true"}>
                     {approvalFor?.splitApproval ? (
-                        <SplitApproval transaction={transaction} onApprove={onApprove} presetCategories={getPresetCategories()}/>
+                        <SplitApproval transaction={transaction} onApprove={onApprove}
+                                       presetCategories={getPresetCategories()}/>
                     ) : (
                         <SingleApproval for={approvalFor} transaction={transaction}
                                         presetCategory={getCategory(approvalFor.actor!)} onApprove={onApprove}/>
@@ -75,9 +80,10 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Content>
             )}
             {approvalResult != null && (
-                <Card.Content extra fluid="true">
-                    <span>{approvalResult.success ? "Transaction successfully saved!" : "Transaction could not be saved"}</span>
-                </Card.Content>
+                    <Card.Content extra fluid="true">
+                        <span>{approvalResult.success ? "Transaction successfully saved!" : "Transaction could not be saved"}</span>
+                        <UndoApproval auditLogId={approvalResult.auditLogId!} />
+                    </Card.Content>
             )}
         </Card>
     );

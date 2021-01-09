@@ -25,16 +25,16 @@ class ApproveTransaction(
 
     override fun executeWith(input: ApproveTransactionInput, presenter: ApproveTransactionPresenter) {
         try {
-            approveTransactions(input)
-            presenter.present(ApproveTransactionResult(true))
+            val auditLogId = approveTransactions(input)
+            presenter.present(ApproveTransactionResult(true, auditLogId))
         } catch (ex: Exception) {
-            presenter.present(ApproveTransactionResult(false))
+            presenter.present(ApproveTransactionResult(false, null))
             println("Exception in ApproveTransaction use case: $ex")
             ex.printStackTrace()
         }
     }
 
-    private fun approveTransactions(input: ApproveTransactionInput) {
+    private fun approveTransactions(input: ApproveTransactionInput): String {
         val actors = getActors(input.userId)
         val transactions = loadTransactions(input.transaction.transactionIdsByActor, actors)
         val newTransactions = mutableListOf<Transaction>()
@@ -48,19 +48,22 @@ class ApproveTransaction(
             newTransactions += approvedTransaction
         }
 
-        saveAuditLog(transactions, newTransactions, input.executingActor)
+        return saveAuditLog(transactions, newTransactions, input.userId, input.executingActor)
     }
 
-    private fun saveAuditLog(oldTransactions: List<Transaction>, newTransactions: List<Transaction>, executingActor: String) {
+    private fun saveAuditLog(oldTransactions: List<Transaction>, newTransactions: List<Transaction>, userId: String,
+                             executingActor: String): String {
         val auditLog = AuditLog(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(),
+                userId,
                 executingActor,
                 oldTransactions,
                 newTransactions
         )
 
         auditLogRepository.saveAuditLog(auditLog)
+        return auditLog.id
     }
 
     private fun loadTransactions(transactionIdsByActor: Map<String, String>, actors: List<SplitterActor>): List<Transaction> {

@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 data class AuditLogEntity(
         val id: String,
         val date: LocalDateTime,
+        val userId: String,
         val executingActor: String,
         val oldTransactions: List<TransactionEntity>,
         val newTransactions: List<TransactionEntity>
@@ -19,6 +20,7 @@ data class AuditLogEntity(
     fun toDomain() = AuditLog(
             id,
             date,
+            userId,
             executingActor,
             oldTransactions.map {it.toDomain()},
             newTransactions.map {it.toDomain()}
@@ -37,6 +39,7 @@ data class TransactionEntity(
         val categoryId: String?,
         val categoryName: String?,
         val memo: String?,
+        val isApproved: Boolean,
         val payee: String?
 ) {
     fun toDomain() = Transaction(
@@ -45,7 +48,7 @@ data class TransactionEntity(
             amount,
             if (categoryId != null) Category(categoryId, categoryName, null, null) else null,
             memo,
-            true,
+            isApproved,
             payee,
             actor.toDomain()
     )
@@ -54,6 +57,7 @@ data class TransactionEntity(
 fun AuditLog.toEntity() = AuditLogEntity(
         id,
         date,
+        userId,
         executingActor,
         oldTransactions.map { it.toEntity() },
         newTransactions.map { it.toEntity() }
@@ -70,5 +74,6 @@ fun Transaction.toEntity() = TransactionEntity(
         category?.id,
         category?.name,
         memo,
+        isApproved,
         payee
 )

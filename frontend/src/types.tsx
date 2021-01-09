@@ -49,7 +49,15 @@ export type ApprovalFor = {
     splitApproval: boolean
 }
 
-export type ApprovalResult = {success: boolean}
+export type ApprovalResult = {
+    success: boolean,
+    auditLogId?: string | undefined
+}
+
+export type UndoApprovalResult = {
+    success: boolean,
+    message?: string | undefined
+}
 
 export type SplitTransactionRequest = {
     executingActor: string
