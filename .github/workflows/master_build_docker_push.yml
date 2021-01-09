@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, oauth-auth ]
   pull_request:
     branches: [ master ]
 
@@ -35,3 +35,4 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_PKG_PASSWORD }}
         registry: docker.pkg.github.com
+        tags: ${GITHUB_REF##*/} # branch name
