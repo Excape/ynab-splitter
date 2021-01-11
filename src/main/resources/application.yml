@@ -14,7 +14,7 @@ spring:
       port: 27017
       database: splitter
       username: splitter_user
-      password: '12345'
+      password: '12345' # overwrite this in prod
   security:
     oauth2:
       client:

@@ -5,7 +5,7 @@ type Props = {
 }
 
 const displayStyleNegative = {
-    color: "#B03060"
+    color: "#ca481d"
 }
 
 const displayStylePositive = {

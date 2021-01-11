@@ -30,13 +30,6 @@ const AuditLogMatrix = ({auditLog}: {auditLog: AuditLog}) => {
     }
     return (
         <Table>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Category</Table.HeaderCell>
-                    <Table.HeaderCell>Amount</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
             <Table.Body>
                 {auditLog.transactions.map(({actor, oldTransaction, newTransaction}) => (
                     <Table.Row>
