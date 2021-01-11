@@ -1,6 +1,7 @@
 # ToDo: add dry-run flag
 ynabsplitter:
   dry-run: true
+  host: http://localhost:8080
 
 spring:
   profiles:
@@ -30,4 +31,4 @@ spring:
             client-id: cc3f5805948b05cb6d16927be7277455e6361efb6dbda6b7dcc72c08d6b7e1d9
             client-secret: ${ynab.auth.client.secret}
             provider: ynab-provider
-            redirect-uri: http://localhost:8080/login/oauth2/code/ynab
+            redirect-uri: ${ynabsplitter.host}/login/oauth2/code/ynab
