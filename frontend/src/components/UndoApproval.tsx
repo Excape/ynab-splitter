@@ -1,12 +1,18 @@
-import {Button} from 'semantic-ui-react';
+import {Button, Loader} from 'semantic-ui-react';
 import React, {useState} from 'react';
 import {UndoApprovalResult} from '../types';
 import Cookies from 'js-cookie';
 
-const UndoApproval = ({auditLogId}: {auditLogId: string}) => {
-    const [result, setResult] = useState<UndoApprovalResult>()
+type Props = {
+    auditLogId: string,
+    onUndoApproval: (result: UndoApprovalResult) => void
+}
+
+const UndoApproval = ({auditLogId, onUndoApproval}: Props) => {
+    const [undoLoading, setUndoLoading] = useState(false)
 
     function onUndo() {
+        setUndoLoading(true)
         const request = {
             auditLogId: auditLogId
         }
@@ -21,23 +27,21 @@ const UndoApproval = ({auditLogId}: {auditLogId: string}) => {
         })
             .then(result => result.json())
             .then(result => {
-                setResult(result)
+                onUndoApproval(result)
+                setUndoLoading(false)
             })
     }
 
+    if (undoLoading) {
+        return (
+            <Loader active inline />
+        )
+    }
+
     return (
-        <div>
-            <Button onClick={() => onUndo()}>
-                Undo
-            </Button>
-            {result !== undefined && (
-                <div>
-                    {result.success && (
-                        <span>Transaction has been restored</span>
-                    ) /* TODO: Add error message */ }
-                </div>
-            )}
-        </div>
+        <Button onClick={() => onUndo()}>
+            Undo
+        </Button>
     )
 }
 

@@ -1,6 +1,6 @@
-import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction} from "../../types";
+import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction, UndoApprovalResult} from "../../types";
 import {Card, Icon} from "semantic-ui-react";
-import React from "react";
+import React, {useState, Fragment} from "react";
 import SingleApproval from "./approval/SingleApproval";
 import SplitApproval from "./approval/SplitApproval";
 import ApprovalButtons from './ApprovalButtons';
@@ -15,6 +15,7 @@ const TransactionCard = ({transaction}: Props) => {
     const [approvalOpen, setApprovalOpen] = React.useState(false);
     const [approvalFor, setApprovalFor] = React.useState<ApprovalFor>({actor: undefined, splitApproval: false});
     const [approvalResult, setApprovalResult] = React.useState<ApprovalResult | null>(null);
+    const [undoApprovalResult, setUndoApprovalResult] = useState<UndoApprovalResult>()
 
 
     function handleSelectApproval(approveFor: ApprovalFor) {
@@ -34,6 +35,7 @@ const TransactionCard = ({transaction}: Props) => {
     function onApprove(result: ApprovalResult) {
         setApprovalResult(result);
         setApprovalOpen(false);
+        setUndoApprovalResult(undefined)
     }
 
     function renderCategories() {
@@ -47,6 +49,14 @@ const TransactionCard = ({transaction}: Props) => {
         transaction.actors.forEach((actor) =>
             presetCategories.set(actor, getCategory(actor)))
         return presetCategories;
+    }
+
+    function onUndoApproval(result: UndoApprovalResult) {
+        setUndoApprovalResult(result)
+        if (result.success) {
+            setApprovalOpen(false)
+            setApprovalResult(null)
+        }
     }
 
     return (
@@ -80,10 +90,19 @@ const TransactionCard = ({transaction}: Props) => {
                 </Card.Content>
             )}
             {approvalResult != null && (
+                <Fragment>
                     <Card.Content extra fluid="true">
                         <span>{approvalResult.success ? "Transaction successfully saved!" : "Transaction could not be saved"}</span>
-                        <UndoApproval auditLogId={approvalResult.auditLogId!} />
                     </Card.Content>
+                    <Card.Content extra fluid="true">
+                        <UndoApproval auditLogId={approvalResult.auditLogId!} onUndoApproval={onUndoApproval}/>
+                    </Card.Content>
+                </Fragment>
+            )}
+            {undoApprovalResult !== undefined && (
+                <Card.Content extra fluid="true">
+                    <span>{undoApprovalResult.success ? "Transaction has been restored!" : "Transaction could not be restored"}</span>
+                </Card.Content>
             )}
         </Card>
     );
