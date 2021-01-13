@@ -6,9 +6,10 @@ import Cookies from 'js-cookie';
 type Props = {
     auditLogId: string,
     onUndoApproval: (result: UndoApprovalResult) => void
+    enabled?: boolean
 }
 
-const UndoApproval = ({auditLogId, onUndoApproval}: Props) => {
+const UndoApproval = ({auditLogId, onUndoApproval, enabled = true}: Props) => {
     const [undoLoading, setUndoLoading] = useState(false)
 
     function onUndo() {
@@ -39,7 +40,7 @@ const UndoApproval = ({auditLogId, onUndoApproval}: Props) => {
     }
 
     return (
-        <Button onClick={() => onUndo()}>
+        <Button onClick={() => onUndo()} disabled={!enabled}>
             Undo
         </Button>
     )
