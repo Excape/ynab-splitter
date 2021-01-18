@@ -32,3 +32,6 @@ spring:
             client-secret: ${ynab.auth.client.secret}
             provider: ynab-provider
             redirect-uri: ${ynabsplitter.host}/login/oauth2/code/ynab
+server:
+  # try to prevent redirects to http behind a reverse proxy
+  forward-headers-strategy: native
