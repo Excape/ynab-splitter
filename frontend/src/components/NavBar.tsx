@@ -10,7 +10,7 @@ const NavBar = () => {
                 exact // needed for active element of router to work
                 as={NavLink}
                 to={"/"}>
-                Unapproved Transactions
+                Approve Transactions
             </Menu.Item>
             <Menu.Item
                 name={"auditlog"}

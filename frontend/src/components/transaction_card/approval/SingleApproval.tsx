@@ -55,7 +55,7 @@ const SingleApproval = (props: Props) => {
 
     return (
         <div>
-            <span>Select category:</span>
+            <span>Select category for {props.for.actor}:</span>
             <CategoryDropdown defaultCategory={props.presetCategory} categoryOptions={categoryOptions}
                               onChange={setSelectedCategory}/>
             <div className="approveBtn">

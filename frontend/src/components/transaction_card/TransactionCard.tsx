@@ -1,5 +1,11 @@
-import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction, UndoApprovalResult} from "../../types";
-import {Card, Icon} from "semantic-ui-react";
+import {
+    ApprovalFor,
+    ApprovalResult,
+    Category,
+    UnapprovedTransaction,
+    UndoApprovalResult
+} from "../../types";
+import {Card, Icon, Table} from "semantic-ui-react";
 import React, {useState, Fragment} from "react";
 import SingleApproval from "./approval/SingleApproval";
 import SplitApproval from "./approval/SplitApproval";
@@ -9,6 +15,15 @@ import UndoApproval from '../UndoApproval';
 
 type Props = {
     transaction: UnapprovedTransaction
+}
+
+function getCategory(transaction: UnapprovedTransaction, actor: string): Category | undefined {
+    for (const entry of transaction.categoryMap) {
+        if (entry.actor === actor) {
+            return entry.category;
+        }
+    }
+    return undefined;
 }
 
 const TransactionCard = ({transaction}: Props) => {
@@ -23,31 +38,16 @@ const TransactionCard = ({transaction}: Props) => {
         setApprovalFor(approveFor);
     }
 
-    function getCategory(actor: string): Category | undefined {
-        for (const entry of transaction.categoryMap) {
-            if (entry.actor === actor) {
-                return entry.category;
-            }
-        }
-        return undefined;
-    }
-
     function onApprove(result: ApprovalResult) {
         setApprovalResult(result);
         setApprovalOpen(false);
         setUndoApprovalResult(undefined)
     }
 
-    function renderCategories() {
-        return transaction.actors
-            .map((actor) => getCategory(actor)?.name ?? "?")
-            .join(" / ");
-    }
-
     function getPresetCategories(): Map<string, Category | undefined> {
         const presetCategories = new Map<string, Category | undefined>()
         transaction.actors.forEach((actor) =>
-            presetCategories.set(actor, getCategory(actor)))
+            presetCategories.set(actor, getCategory(transaction, actor)))
         return presetCategories;
     }
 
@@ -65,13 +65,12 @@ const TransactionCard = ({transaction}: Props) => {
                 <Card.Header>{transaction.payee}</Card.Header>
                 <Card.Meta>{transaction.date}</Card.Meta>
                 <Card.Description>
-                    <Icon name="folder"/>
-                    {renderCategories()}
-                </Card.Description>
-                <Card.Description>
                     <Icon name="dollar sign"/>
                     <strong><MonetaryAmount amount={transaction.amount}/></strong>
                 </Card.Description>
+
+                <CategoryMatrix transaction={transaction} />
+
             </Card.Content>
             {!approvalResult?.success && (
                 <Card.Content extra fluid={"true"}>
@@ -85,7 +84,8 @@ const TransactionCard = ({transaction}: Props) => {
                                        presetCategories={getPresetCategories()}/>
                     ) : (
                         <SingleApproval for={approvalFor} transaction={transaction}
-                                        presetCategory={getCategory(approvalFor.actor!)} onApprove={onApprove}/>
+                                        presetCategory={getCategory(transaction, approvalFor.actor!)}
+                                        onApprove={onApprove}/>
                     )}
                 </Card.Content>
             )}
@@ -109,3 +109,27 @@ const TransactionCard = ({transaction}: Props) => {
 };
 
 export default TransactionCard
+
+const CategoryMatrix = ({transaction}: { transaction: UnapprovedTransaction }) => {
+    return (
+        <Table>
+            <Table.Body>
+                {transaction.actors.map(actor => (
+                    <Table.Row key={actor}>
+                        <Table.Cell>
+                            <Icon name="user circle"/>
+                            {actor}
+                        </Table.Cell>
+                        <Table.Cell>
+                            <Icon name="arrow right"/>
+                        </Table.Cell>
+                        <Table.Cell>
+                            <Icon name="folder"/>
+                            {getCategory(transaction, actor)?.name ?? "?"}
+                        </Table.Cell>
+                    </Table.Row>
+                ))}
+            </Table.Body>
+        </Table>
+    )
+}

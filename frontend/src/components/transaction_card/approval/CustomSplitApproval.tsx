@@ -99,7 +99,8 @@ const CustomSplitApproval = (props: Props) => {
                 </div>
             </div>
             <div className="splitLabel">
-                {props.actorNames.map(actorName => <div>{actorName}</div>)}
+                {props.actorNames.map(actorName =>
+                    <div key={actorName}>{actorName}</div>)}
             </div>
             <div className={'approveBtn'}>
                 <Button color={"green"}

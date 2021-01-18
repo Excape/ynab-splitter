@@ -1,5 +1,5 @@
 import {AuditLog, Transaction, UndoApprovalResult} from '../../types';
-import {Card, Icon, Segment, Table, Button} from 'semantic-ui-react';
+import {Card, Icon, Table} from 'semantic-ui-react';
 import MonetaryAmount from '../MonetaryAmount';
 import React, {useState} from 'react';
 import UndoApproval from '../UndoApproval';

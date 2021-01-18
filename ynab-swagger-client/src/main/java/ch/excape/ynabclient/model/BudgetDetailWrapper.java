@@ -17,17 +17,17 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
- * BudgetDetailResponse
+ * BudgetSummaryResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
-public class BudgetDetailResponse {
-  @JsonProperty("data")
-  private BudgetDetailWrapper data = null;
+public class BudgetDetailWrapper {
+  @JsonProperty("budget")
+  private BudgetDetail budget = null;
 
-  public BudgetDetailResponse data(BudgetDetailWrapper data) {
-    this.data = data;
+  public BudgetDetailWrapper data(BudgetDetail budget) {
+    this.budget = budget;
     return this;
   }
 
@@ -36,39 +36,39 @@ public class BudgetDetailResponse {
    * @return data
   **/
   @Schema(required = true, description = "")
-  public BudgetDetailWrapper getData() {
-    return data;
+  public BudgetDetail getBudget() {
+    return budget;
   }
 
-  public void setData(BudgetDetailWrapper data) {
-    this.data = data;
+  public void setBudget(BudgetDetail budget) {
+    this.budget = budget;
   }
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    BudgetDetailResponse budgetDetailResponse = (BudgetDetailResponse) o;
-    return Objects.equals(this.data, budgetDetailResponse.data);
+    BudgetDetailWrapper budgetDetailWrapper = (BudgetDetailWrapper) o;
+    return Objects.equals(this.budget, budgetDetailWrapper.budget);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data);
+    return Objects.hash(budget);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class BudgetDetailResponse {\n");
+    sb.append("class BudgetSummaryWrapper {\n");
     
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    data: ").append(toIndentedString(budget)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -77,7 +77,7 @@ public class BudgetDetailResponse {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

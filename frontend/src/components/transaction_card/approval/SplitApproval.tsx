@@ -57,12 +57,14 @@ const SplitApproval = (props: Props) => {
         }
 
     }, [props.transaction]);
+
     function approveSplit(split: SplitRequest[]) {
         setApproveVisible(false)
         const request: SplitTransactionRequest = {
             executingActor: session.session!.actor,
             categories: createCategoryRequest(),
-            split}
+            split
+        }
         fetch(`/api/v1/transactions/${props.transaction.id}/approveSplit`, {
             method: "POST",
             headers: {
@@ -136,21 +138,21 @@ const SplitApproval = (props: Props) => {
             ))}
 
             <div className="approveBtn">
-                { approveVisible
-                ? (
-                    <div>
-                    <Button basic color={"blue"}
-                            content={"Split 50/50"}
-                            disabled={shouldDisableApproveButtons()}
-                            onClick={() => approveEvenSplit()}/>
-                    <Button basic color={"grey"}
-                            disabled={shouldDisableApproveButtons()}
-                            content={"Custom split"}
-                            onClick={() => setCustomSplitVisible(true)}
-                    />
-                    </div>
+                {approveVisible
+                    ? (
+                        <div className="buttonRow">
+                            <Button fluid color={"green"}
+                                    content={"Split 50/50"}
+                                    disabled={shouldDisableApproveButtons()}
+                                    onClick={() => approveEvenSplit()}/>
+                            <Button basic fluid color={"grey"}
+                                    disabled={shouldDisableApproveButtons()}
+                                    content={"Custom split"}
+                                    onClick={() => setCustomSplitVisible(true)}
+                            />
+                        </div>
                     )
-                : <Loader active inline />
+                    : <Loader active inline/>
                 }
             </div>
             <div>

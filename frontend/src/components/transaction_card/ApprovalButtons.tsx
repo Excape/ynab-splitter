@@ -32,7 +32,7 @@ const ApprovalButtons = ({actors, onSelect}: Props) => {
     const splitApprovalOption = {actor: undefined, splitApproval: true}
 
     return (
-        <div className='approveButtons'>
+        <div className='buttonRow'>
         {actors.map((actor, i) => {
             const approvalOption: ApprovalFor = {actor: actor, splitApproval: false}
             return (

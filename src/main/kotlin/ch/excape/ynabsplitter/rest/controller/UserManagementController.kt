@@ -1,9 +1,8 @@
 package ch.excape.ynabsplitter.rest.controller
 
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.AddActorResultDocument
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestAddActorPresenter
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestBudgetsPresenter
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.RestUserPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestUndoneApprovalPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.*
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.ActorDocument
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.AddActorRequest
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.BudgetDocument
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.UserDocument
@@ -12,6 +11,7 @@ import ch.excape.ynabsplitter.application.outbound_ports.presentation.AddActorRe
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.AddActor
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.ports.AddActorInput
+import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_actors.GetActors
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_budgets.GetBudgets
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.ports.GetUserInput
@@ -27,6 +27,17 @@ class UserManagementController(
     @GetMapping
     fun getUser(principal: Principal): UserDocument {
         return getLoggedInUser(principal)
+    }
+
+    @GetMapping("/actors")
+    fun getActors(principal: Principal): List<ActorDocument> {
+        val user = getLoggedInUser(principal)
+        val presenter = RestActorsPresenter()
+        val getActors = GetActors(userRepository, budgetsRepository)
+
+        getActors.executeWith(user.userId, presenter)
+
+        return presenter.presentation!!
     }
 
     @GetMapping("/budgets")

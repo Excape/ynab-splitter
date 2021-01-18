@@ -1,4 +1,4 @@
-import {Button, Loader} from 'semantic-ui-react';
+import {Button, Icon, Loader} from 'semantic-ui-react';
 import React, {useState} from 'react';
 import {UndoApprovalResult} from '../types';
 import Cookies from 'js-cookie';
@@ -41,6 +41,7 @@ const UndoApproval = ({auditLogId, onUndoApproval, enabled = true}: Props) => {
 
     return (
         <Button onClick={() => onUndo()} disabled={!enabled}>
+            <Icon name="undo"/>
             Undo
         </Button>
     )
