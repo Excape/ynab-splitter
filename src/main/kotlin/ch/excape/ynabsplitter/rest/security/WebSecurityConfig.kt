@@ -18,6 +18,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http {
             authorizeRequests {
+                // allow manifest access for service worker
+                authorize("/manifest.json", permitAll)
                 authorize(anyRequest, authenticated)
             }
             oauth2Login {
