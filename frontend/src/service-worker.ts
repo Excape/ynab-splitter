@@ -77,4 +77,11 @@ self.addEventListener('message', (event) => {
   }
 });
 
+self.addEventListener("push", (event) => {
+    const data = event.data!.text()
+
+    if (Notification.permission === 'granted') {
+        event.waitUntil(self.registration.showNotification(data))
+    }
+})
 // Any other custom service worker logic can go here.

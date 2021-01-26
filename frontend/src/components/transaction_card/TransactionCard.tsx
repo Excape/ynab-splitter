@@ -112,7 +112,7 @@ export default TransactionCard
 
 const CategoryMatrix = ({transaction}: { transaction: UnapprovedTransaction }) => {
     return (
-        <Table unstackable={true}>
+        <Table unstackable={true} fixed columns={3}>
             <Table.Body>
                 {transaction.actors.map(actor => (
                     <Table.Row key={actor}>

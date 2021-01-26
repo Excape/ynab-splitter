@@ -4,7 +4,12 @@ import {Button, Icon, Segment} from 'semantic-ui-react';
 const ReloadPageOnFail = ({message}: { message: string }) => {
 
     function reloadPage() {
-        window.location.reload()
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.ready.then((registration) => {
+                registration.unregister()
+                window.location.reload()
+            })
+        }
     }
 
     return (

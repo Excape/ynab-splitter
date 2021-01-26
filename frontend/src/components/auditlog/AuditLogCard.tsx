@@ -45,7 +45,7 @@ const AuditLogMatrix = ({auditLog}: { auditLog: AuditLog }) => {
     }
 
     return (
-        <Table>
+        <Table fixed columns={3}>
             <Table.Body>
                 {auditLog.transactions.map(({actor, oldTransaction, newTransaction}) => (
                     <Table.Row key={oldTransaction.id}>

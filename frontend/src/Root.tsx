@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import App from './App';
 import {clearSessionCookie, getSessionCookie, SessionContext} from './session';
@@ -6,6 +6,16 @@ import ActorChooser from './components/ActorChooser';
 
 const Root = () => {
     const [session, setSession] = React.useState(getSessionCookie())
+
+    useEffect(() => {
+        if (!("Notification" in window)) {
+            console.log("Notification API not available")
+        } else {
+            Notification.requestPermission()
+        }
+
+    })
+
 
     function performLogin() {
         setSession(getSessionCookie())
