@@ -1,6 +1,7 @@
-import {Dropdown, DropdownItemProps} from "semantic-ui-react";
+import {Dropdown, DropdownItemProps, Icon} from "semantic-ui-react";
 import React from "react";
 import {Category} from "../../../types";
+import MonetaryAmount from '../../MonetaryAmount';
 
 type Props = {
     defaultCategory?: Category
@@ -11,8 +12,27 @@ type Props = {
 const CategoryDropdown = (props: Props) => {
 
     function createOptions(): DropdownItemProps[] {
+        function renderItem(category: Category) {
+
+            return (<div className="category-item">
+                <div className="category-item-name">{category.name}</div>
+                {category.balance !== undefined && (
+                    <div>
+                        <Icon name="dollar sign" />
+                        <MonetaryAmount amount={category.balance}/>
+                    </div>
+                )}
+            </div>);
+        }
+
         return props.categoryOptions
-            .map(({id, name}) => ({value: id, key: id, text: name}));
+            .map((category) => ({
+                    value: category.id,
+                    key: category.id,
+                    text: category.name,
+                    content: renderItem(category)
+                }
+            ));
     }
 
     function onChange(value: any) {
