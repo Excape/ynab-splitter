@@ -3,9 +3,9 @@ export type UserSettings = {
 }
 
 export type SettingsActor = {
-    name: string,
-    budgetId: string,
-    accountId: string
+    actorName: string,
+    budgetName: string,
+    accountName: string
 }
 
 export type Budget = {

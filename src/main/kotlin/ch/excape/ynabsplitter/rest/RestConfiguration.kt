@@ -1,10 +1,13 @@
 package ch.excape.ynabsplitter.rest
 
+import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
+import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.AuditLogMongoCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.MongoAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.mongo.MongoUserRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.mongo.UserCrudRepository
 import ch.excape.ynabsplitter.adapter.ynab.*
@@ -43,10 +46,10 @@ class RestConfiguration(
     @Bean
     @Profile("dev")
     fun saveTransactionRepositoryDev(): SaveTransactionRepository = InMemoryTransactionRepository()
-//
-//    @Bean
-//    @Profile("dev")
-//    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
+
+    @Bean
+    @Profile("dev")
+    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
 
     @Bean
     @Profile("prod", "dev")
@@ -65,9 +68,9 @@ class RestConfiguration(
     @Profile("prod")
     fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi, dryRun)
 
-//    @Bean
-//    @Profile("dev")
-//    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
+    @Bean
+    @Profile("dev")
+    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
 
     @Bean
     @Profile("prod", "dev")

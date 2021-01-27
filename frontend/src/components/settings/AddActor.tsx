@@ -4,7 +4,7 @@ import {Button, DropdownItemProps, Form, Label, Loader} from 'semantic-ui-react'
 import Cookies from 'js-cookie';
 
 type Props = {
-    onAddActor: (addedActor: SettingsActor) => void
+    onAddActor: () => Promise<void>
 }
 
 const AddActor = (props: Props) => {
@@ -14,6 +14,7 @@ const AddActor = (props: Props) => {
     const [selectedBudget, setSelectedBudget] = React.useState<Budget>()
     const [selectedAccount, setSelectedAccount] = React.useState<BudgetAccount>()
     const [saveResult, setSaveResult] = React.useState<SaveActorResult>()
+    const [isSaving, setIsSaving] = React.useState(false)
 
     useEffect(() => {
         fetch("/api/v1/user/budgets")
@@ -34,11 +35,12 @@ const AddActor = (props: Props) => {
         setSaveResult(result)
         if (result.success) {
             resetForm();
-            props.onAddActor(result.actor!)
+            props.onAddActor().then(() => setIsSaving(false))
         }
     }
 
     function save() {
+        setIsSaving(true)
         const request = {
             actorName: selectedName,
             budgetId: selectedBudget!.budgetId,
@@ -76,7 +78,7 @@ const AddActor = (props: Props) => {
         return selectedBudget?.accounts
     }
 
-    if (!budgetsLoaded) {
+    if (!budgetsLoaded || isSaving) {
         return (<Loader active inline='centered'/>)
     }
 
@@ -95,20 +97,20 @@ const AddActor = (props: Props) => {
                     accounts={getAccounts()}
                     onSelect={onAccountSelect}/>
             </Form.Group>
-                <Button as="div" labelPosition="right">
-                    <Button
-                        icon="plus circle"
-                        content="Add"
-                        color="green"
-                        disabled={!isSavable()}
-                        onClick={() => save()}>
-                    </Button>
-                    {saveResult !== undefined && (
-                        <Label basic pointing="left" color={saveResult.success ? 'green' : 'red'}>
-                            {saveResult.message}
-                        </Label>
-                    )}
+            <Button as="div" labelPosition="right">
+                <Button
+                    icon="plus circle"
+                    content="Add"
+                    color="green"
+                    disabled={!isSavable()}
+                    onClick={() => save()}>
                 </Button>
+                {saveResult !== undefined && (
+                    <Label basic pointing="left" color={saveResult.success ? 'green' : 'red'}>
+                        {saveResult.message}
+                    </Label>
+                )}
+            </Button>
         </Form>
     )
 }

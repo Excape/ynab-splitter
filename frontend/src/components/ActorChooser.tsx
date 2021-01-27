@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {SessionContext, setSessionCookie} from '../session';
 import {Button, Grid, Header, Segment} from 'semantic-ui-react';
 import {Actor} from '../types';
-import {ActorSettings} from './settings/Settings';
+import ActorSettings from './settings/ActorSettings';
 
 const ActorChooser = () => {
     const history = useHistory()
@@ -66,7 +66,7 @@ const NoActorsDefinedDialog = () => {
                 Hello there! Please set up 2 accounts first:
             </Header>
             <Segment basic>
-            <ActorSettings initActors={[]}/>
+            <ActorSettings />
             </Segment>
             <Grid.Row>
                 <Grid.Column>
