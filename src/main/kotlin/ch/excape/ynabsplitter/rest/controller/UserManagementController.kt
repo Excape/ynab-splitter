@@ -1,14 +1,13 @@
 package ch.excape.ynabsplitter.rest.controller
 
-import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.RestUndoneApprovalPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.*
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.ActorDocument
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.AddActorRequest
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.BudgetDocument
-import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.UserDocument
+import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.*
+import ch.excape.ynabsplitter.application.outbound_ports.notification.PushMessageRepository
+import ch.excape.ynabsplitter.application.outbound_ports.persistence.SubscriptionRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
-import ch.excape.ynabsplitter.application.outbound_ports.presentation.AddActorResult
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
+import ch.excape.ynabsplitter.application.use_cases.notifications.subscribe_push.SubscribePush
+import ch.excape.ynabsplitter.application.use_cases.notifications.subscribe_push.ports.SubscribePushInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.AddActor
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.ports.AddActorInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_actors.GetActors
@@ -22,7 +21,10 @@ import java.security.Principal
 @RequestMapping("/api/v1/user")
 class UserManagementController(
         private val userRepository: UserRepository,
-        private val budgetsRepository: ReadBudgetsRepository) {
+        private val budgetsRepository: ReadBudgetsRepository,
+        private val subscriptionRepository: SubscriptionRepository,
+        private val pushMessageRepository: PushMessageRepository
+) {
 
     @GetMapping
     fun getUser(principal: Principal): UserDocument {
@@ -56,6 +58,14 @@ class UserManagementController(
         AddActor(userRepository).executeWith(input, presenter)
 
         return presenter.presentation!!
+    }
+
+    @PostMapping("/subscribePush")
+    fun subscribePush(@RequestBody request: SubscribePushRequest, principal: Principal) {
+        val user = getLoggedInUser(principal)
+        val input = SubscribePushInput(request.toSubscription(user.userId))
+        val subscribePush = SubscribePush(subscriptionRepository, pushMessageRepository)
+        subscribePush.executeWith(input)
     }
 
     private fun getLoggedInUser(principal: Principal): UserDocument {

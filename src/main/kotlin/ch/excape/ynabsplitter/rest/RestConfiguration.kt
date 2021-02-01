@@ -1,23 +1,20 @@
 package ch.excape.ynabsplitter.rest
 
-import ch.excape.ynabclient.api.AccountsApi
 import ch.excape.ynabclient.api.BudgetsApi
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.api.TransactionsApi
+import ch.excape.ynabsplitter.adapter.notification.FakePushMessageRepository
+import ch.excape.ynabsplitter.adapter.notification.WebPushMessageRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.InMemoryAuditLogRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.AuditLogMongoCrudRepository
 import ch.excape.ynabsplitter.adapter.persistence.auditlog.mongo.MongoAuditLogRepository
+import ch.excape.ynabsplitter.adapter.persistence.notification.InMemorySubscriptionRepository
+import ch.excape.ynabsplitter.adapter.persistence.notification.mongo.MongoSubscriptionCrudRepository
+import ch.excape.ynabsplitter.adapter.persistence.notification.mongo.MongoSubscriptionRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.InMemoryUserRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.mongo.MongoUserRepository
 import ch.excape.ynabsplitter.adapter.persistence.user.mongo.UserCrudRepository
 import ch.excape.ynabsplitter.adapter.ynab.*
-import ch.excape.ynabsplitter.application.outbound_ports.persistence.AuditLogRepository
-import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -30,57 +27,76 @@ class RestConfiguration(
         private val ynabBudgetsApi: BudgetsApi,
         private val auditLogCrudRepository: AuditLogMongoCrudRepository,
         private val userCrudRepository: UserCrudRepository,
-        @Value("\${ynabsplitter.dry-run}")
-        private val dryRun: Boolean
+        private val subscriptionCrudRepository: MongoSubscriptionCrudRepository,
+        private val properties: YnabSplitterProperties
 ) {
 
     @Bean
     @Profile("dev")
-    fun readCategoriesRepositoryDev(): ReadCategoriesRepository = InMemoryCategoriesRepository()
+    fun readCategoriesRepositoryDev() = InMemoryCategoriesRepository()
 
     @Bean
     @Primary
     @Profile("dev")
-    fun readTransactionRepositoryDev(): ReadTransactionsRepository = InMemoryTransactionRepository()
+    fun readTransactionRepositoryDev() = InMemoryTransactionRepository()
 
     @Bean
     @Profile("dev")
-    fun saveTransactionRepositoryDev(): SaveTransactionRepository = InMemoryTransactionRepository()
+    fun saveTransactionRepositoryDev() = InMemoryTransactionRepository()
 
     @Bean
     @Profile("dev")
-    fun auditLogRepositoryDev() : AuditLogRepository = InMemoryAuditLogRepository()
-
-    @Bean
-    @Profile("prod", "dev")
-    fun auditLogRepositoryProd() : AuditLogRepository = MongoAuditLogRepository(auditLogCrudRepository)
+    fun auditLogRepositoryDev() = InMemoryAuditLogRepository()
 
     @Bean
     @Profile("prod")
-    fun readCategoriesRepositoryProd(): ReadCategoriesRepository = YnabCategoriesRepository(ynabCategoriesApi)
+    fun auditLogRepositoryProd() = MongoAuditLogRepository(auditLogCrudRepository)
+
+    @Bean
+    @Profile("prod")
+    fun readCategoriesRepositoryProd() = YnabCategoriesRepository(ynabCategoriesApi)
 
     @Bean
     @Primary
     @Profile("prod")
-    fun readTransactionRepositoryProd(): ReadTransactionsRepository = YnabTransactionRepository(ynabTransactionsApi, dryRun)
+    fun readTransactionRepositoryProd() = YnabTransactionRepository(ynabTransactionsApi, properties.dryRun)
 
     @Bean
     @Profile("prod")
-    fun saveTransactionRepositoryProd(): SaveTransactionRepository = YnabTransactionRepository(ynabTransactionsApi, dryRun)
+    fun saveTransactionRepositoryProd() = YnabTransactionRepository(ynabTransactionsApi, properties.dryRun)
 
     @Bean
     @Profile("dev")
-    fun userRepositoryDev(): UserRepository = InMemoryUserRepository()
-
-    @Bean
-    @Profile("prod", "dev")
-    fun userRepositoryProd(): UserRepository = MongoUserRepository(userCrudRepository)
+    fun userRepositoryDev() = InMemoryUserRepository()
 
     @Bean
     @Profile("prod")
-    fun readBudgetsRepositoryProd(): ReadBudgetsRepository = YnabReadBudgetsRepository(ynabBudgetsApi)
+    fun userRepositoryProd() = MongoUserRepository(userCrudRepository)
+
+    @Bean
+    @Profile("prod")
+    fun readBudgetsRepositoryProd() = YnabReadBudgetsRepository(ynabBudgetsApi)
 
     @Bean
     @Profile("dev")
-    fun readBudgetsRepositoryDev(): ReadBudgetsRepository = InMemoryReadBudgetsRepository()
+    fun readBudgetsRepositoryDev() = InMemoryReadBudgetsRepository()
+
+    @Bean
+    @Profile("dev")
+    fun subscriptionRepositoryDev() = InMemorySubscriptionRepository()
+
+    @Bean
+    @Profile("prod")
+    fun subscriptionRepositoryProd() = MongoSubscriptionRepository(subscriptionCrudRepository)
+
+
+    @Bean
+    @Profile("prod")
+    fun pushMessageRepositoryProd() = WebPushMessageRepository(
+            properties.notifications.publicKey,
+            properties.notifications.privateKey)
+
+    @Bean
+    @Profile("dev")
+    fun pushMessageRepositoryDev() = FakePushMessageRepository()
 }

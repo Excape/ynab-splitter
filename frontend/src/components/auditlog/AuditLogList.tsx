@@ -29,7 +29,7 @@ const AuditLogList = () => {
     }
 
     if (loadingFailed) {
-        return (<ReloadPageOnFail message={"Failed to load audit log"} />)
+        return (<ReloadPageOnFail message={"Please reload to show audit logs"} />)
     }
 
     if (!isLoaded) {

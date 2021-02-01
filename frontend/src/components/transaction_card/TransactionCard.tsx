@@ -1,23 +1,18 @@
-import {
-    ApprovalFor,
-    ApprovalResult,
-    Category,
-    UnapprovedTransaction,
-    UndoApprovalResult
-} from "../../types";
-import {Card, Icon, Table} from "semantic-ui-react";
-import React, {useState, Fragment} from "react";
+import {ApprovalFor, ApprovalResult, Category, UnapprovedTransaction, UndoApprovalResult} from "../../types";
+import {Card, Icon} from "semantic-ui-react";
+import React, {Fragment, useState} from "react";
 import SingleApproval from "./approval/SingleApproval";
 import SplitApproval from "./approval/SplitApproval";
 import ApprovalButtons from './ApprovalButtons';
 import MonetaryAmount from '../MonetaryAmount';
 import UndoApproval from '../UndoApproval';
+import CategoryMatrix from './CategoryMatrix';
 
 type Props = {
     transaction: UnapprovedTransaction
 }
 
-function getCategory(transaction: UnapprovedTransaction, actor: string): Category | undefined {
+export function getCategory(transaction: UnapprovedTransaction, actor: string): Category | undefined {
     for (const entry of transaction.categoryMap) {
         if (entry.actor === actor) {
             return entry.category;
@@ -110,26 +105,3 @@ const TransactionCard = ({transaction}: Props) => {
 
 export default TransactionCard
 
-const CategoryMatrix = ({transaction}: { transaction: UnapprovedTransaction }) => {
-    return (
-        <Table unstackable={true} fixed columns={3}>
-            <Table.Body>
-                {transaction.actors.map(actor => (
-                    <Table.Row key={actor}>
-                        <Table.Cell>
-                            <Icon name="user circle"/>
-                            {actor}
-                        </Table.Cell>
-                        <Table.Cell>
-                            <Icon name="arrow right"/>
-                        </Table.Cell>
-                        <Table.Cell>
-                            <Icon name="folder"/>
-                            {getCategory(transaction, actor)?.name ?? "?"}
-                        </Table.Cell>
-                    </Table.Row>
-                ))}
-            </Table.Body>
-        </Table>
-    )
-}

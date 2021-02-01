@@ -2,10 +2,12 @@ import {SettingsActor} from './types';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Grid, Header, Icon, Loader, Segment, Table} from 'semantic-ui-react';
 import AddActor from './AddActor';
+import ReloadPageOnFail from '../ReloadPageOnFail';
 
 export const ActorSettings = () => {
     const [actors, setActors] = useState([] as SettingsActor[])
     const [actorsLoaded, setActorsLoaded] = useState(false)
+    const [loadingFailed, setLoadingFailed] = useState(false)
 
     const fetchActors = useCallback(() => {
         return fetch("/api/v1/user/actors")
@@ -13,6 +15,8 @@ export const ActorSettings = () => {
             .then(actors => {
                 setActors(actors)
                 setActorsLoaded(true)
+            }, error => {
+                setLoadingFailed(true)
             })
     }, []);
 
@@ -24,8 +28,12 @@ export const ActorSettings = () => {
         return fetchActors()
     }
 
+    if (loadingFailed) {
+        return <ReloadPageOnFail message={"Please reload the page"} />
+    }
+
     if (!actorsLoaded) {
-        return (<Loader active inline='centered'/>)
+        return <Loader active inline='centered'/>
     }
 
     return (

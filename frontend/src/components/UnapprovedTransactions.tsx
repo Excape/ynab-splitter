@@ -26,7 +26,7 @@ const UnapprovedTransactions = () => {
     }
 
     if (loadingFailed) {
-        return (<ReloadPageOnFail message="Failed to load transactions" />)
+        return (<ReloadPageOnFail message="Please reload to show transactions" />)
     }
 
     if (!isLoaded) {

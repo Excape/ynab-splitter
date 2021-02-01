@@ -14,15 +14,15 @@ const ReloadPageOnFail = ({message}: { message: string }) => {
 
     return (
         <div>
-                <Segment basic textAlign="center">
-                    <em>{message}</em>
-                </Segment>
-                <Segment basic textAlign="center">
-                        <Button onClick={() => reloadPage()}>
-                            <Icon name="redo alternate" />
-                            Reload
-                        </Button>
-                </Segment>
+            <Segment basic textAlign="center">
+                <em>{message}</em>
+            </Segment>
+            <Segment basic textAlign="center">
+                <Button onClick={() => reloadPage()}>
+                    <Icon name="redo alternate"/>
+                    Reload
+                </Button>
+            </Segment>
         </div>
     )
 }

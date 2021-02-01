@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
 	kotlin("jvm") version "1.4.10"
 	kotlin("plugin.spring") version "1.4.10"
+	kotlin("kapt") version "1.4.21"
 }
 repositories {
 	mavenCentral()
@@ -21,6 +22,12 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+	kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+	implementation("nl.martijndwars:web-push:5.1.1")
+	implementation("org.bouncycastle:bcpkix-jdk15on:1.58")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	implementation(project(":frontend"))

@@ -1,10 +1,13 @@
 package ch.excape.ynabsplitter
 
+import ch.excape.ynabsplitter.rest.YnabSplitterProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 
 
 @SpringBootApplication
+@EnableConfigurationProperties(YnabSplitterProperties::class)
 class YnabSplitterApplication
 
 fun main(args: Array<String>) {
