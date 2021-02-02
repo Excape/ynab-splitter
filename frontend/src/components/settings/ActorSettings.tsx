@@ -1,6 +1,6 @@
 import {SettingsActor} from './types';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Grid, Header, Icon, Loader, Segment, Table} from 'semantic-ui-react';
+import {Grid, Header, Icon, Loader, Table} from 'semantic-ui-react';
 import AddActor from './AddActor';
 import ReloadPageOnFail from '../ReloadPageOnFail';
 

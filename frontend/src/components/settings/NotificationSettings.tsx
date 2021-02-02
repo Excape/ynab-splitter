@@ -1,4 +1,4 @@
-import {Button, Header, Segment, Grid} from 'semantic-ui-react';
+import {Button, Grid, Header, Segment} from 'semantic-ui-react';
 import React, {useCallback, useEffect, useState} from 'react';
 import {SessionContext} from '../../session';
 import * as notificationService from '../../services/notification-service'

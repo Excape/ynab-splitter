@@ -1,6 +1,5 @@
 import {vapid_public_key} from '../env';
 import Cookies from 'js-cookie';
-import {Session} from '../session';
 import {UserSession} from '../types';
 
 const serviceWorkerAvailable = () => 'serviceWorker' in navigator;

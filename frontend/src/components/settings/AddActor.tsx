@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Budget, BudgetAccount, SaveActorResult, SettingsActor} from './types';
+import {Budget, BudgetAccount, SaveActorResult} from './types';
 import {Button, DropdownItemProps, Form, Label, Loader} from 'semantic-ui-react';
 import Cookies from 'js-cookie';
 
