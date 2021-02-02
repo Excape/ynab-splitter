@@ -1,6 +1,7 @@
 import {vapid_public_key} from '../env';
 import Cookies from 'js-cookie';
 import {Session} from '../session';
+import {UserSession} from '../types';
 
 const serviceWorkerAvailable = () => 'serviceWorker' in navigator;
 
@@ -38,9 +39,9 @@ export const unsubscribe = (): Promise<boolean> => {
     })
 }
 
-export const sendSubscription = (sub: PushSubscription, session: Session) => {
+export const sendSubscription = (sub: PushSubscription, session: UserSession | undefined) => {
     const request = {
-        actorName: session.session!.actor,
+        actorName: session?.actor,
         subscription: sub.toJSON()
     }
     return fetch("/api/v1/user/subscribePush", {

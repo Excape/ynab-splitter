@@ -5,4 +5,5 @@ import ch.excape.ynabsplitter.domain.PushSubscription
 interface SubscriptionRepository {
     fun saveOrUpdateSubscription(subscription: PushSubscription)
     fun getSubscriptionsForUser(userId: String): List<PushSubscription>
+    fun getAllSubscriptions() : List<PushSubscription>
 }

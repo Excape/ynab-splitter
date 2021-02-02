@@ -32,8 +32,9 @@ class YnabTransactionRepository(
         return transactionResponse.data.transaction.toTransaction(actor)
     }
 
-    override fun triggerTransactionImport(actor: SplitterActor) {
-        transactionsApi.importTransactions(actor.budgetId)
+    override fun triggerTransactionImport(actor: SplitterActor): Int {
+        val result = transactionsApi.importTransactions(actor.budgetId)
+        return result.data.transactionIds.count()
     }
 
     override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> = getTransactions(actor, true, lastMonth())

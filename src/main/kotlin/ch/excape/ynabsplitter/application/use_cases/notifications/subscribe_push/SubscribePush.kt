@@ -13,6 +13,6 @@ class SubscribePush(
     override fun executeWith(input: SubscribePushInput) {
         val subscription = input.subscription
         subscriptionRepository.saveOrUpdateSubscription(subscription)
-        pushMessageRepository.pushMessage(subscription, "You are ${subscription.actorName}" )
+        pushMessageRepository.pushMessage(subscription, "You are now subscribed to push notifications" )
     }
 }

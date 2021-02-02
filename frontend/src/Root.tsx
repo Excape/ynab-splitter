@@ -3,19 +3,19 @@ import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import App from './App';
 import {clearSessionCookie, getSessionCookie, SessionContext} from './session';
 import ActorChooser from './components/ActorChooser';
+import * as notificationService from './services/notification-service'
 
 const Root = () => {
     const [session, setSession] = React.useState(getSessionCookie())
 
     useEffect(() => {
-        if (!("Notification" in window)) {
-            console.log("Notification API not available")
-        } else {
-            Notification.requestPermission()
-        }
-
+        // send updated notification to server
+        notificationService.getExistingSubscription()
+            .then(
+                sub => notificationService.sendSubscription(sub, session),
+                () => console.log("no subscription present")
+            )
     })
-
 
     function performLogin() {
         setSession(getSessionCookie())

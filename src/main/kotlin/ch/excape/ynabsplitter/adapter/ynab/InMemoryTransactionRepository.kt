@@ -16,8 +16,9 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
         return transactions[id]
     }
 
-    override fun triggerTransactionImport(actor: SplitterActor) {
+    override fun triggerTransactionImport(actor: SplitterActor): Int {
         println("Transactions for ${actor.actorName} would be imported here")
+        return 0;
     }
 
     override fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction> =

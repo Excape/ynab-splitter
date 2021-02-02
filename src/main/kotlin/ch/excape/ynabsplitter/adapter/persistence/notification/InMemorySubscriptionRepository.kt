@@ -6,6 +6,9 @@ import ch.excape.ynabsplitter.domain.PushSubscription
 class InMemorySubscriptionRepository : SubscriptionRepository {
 
     private val subscriptions: MutableMap<String, PushSubscription> = mutableMapOf()
+    override fun getAllSubscriptions(): List<PushSubscription> {
+        return subscriptions.values.toList()
+    }
 
     override fun saveOrUpdateSubscription(subscription: PushSubscription) {
         subscriptions.put("${subscription.userId}_${subscription.actorName}", subscription)

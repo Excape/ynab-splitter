@@ -14,7 +14,7 @@ const NotificationSettings = () => {
     const session = React.useContext(SessionContext);
 
     const sendSubscription = useCallback((subscription: PushSubscription) => {
-        notificationService.sendSubscription(subscription, session)
+        notificationService.sendSubscription(subscription, session.session)
             .then(response => {
                 setSubStatus(SubscriptionStatus.SUBSCRIBED)
             }, (error) => {

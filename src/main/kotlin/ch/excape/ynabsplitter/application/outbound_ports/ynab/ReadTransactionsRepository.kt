@@ -6,5 +6,5 @@ import ch.excape.ynabsplitter.domain.Transaction
 interface ReadTransactionsRepository {
     fun getUnapprovedTransactionsFromLastMonth(actor: SplitterActor): List<Transaction>
     fun getTransaction(actor: SplitterActor, id: String): Transaction?
-    fun triggerTransactionImport(actor: SplitterActor)
+    fun triggerTransactionImport(actor: SplitterActor): Int
 }

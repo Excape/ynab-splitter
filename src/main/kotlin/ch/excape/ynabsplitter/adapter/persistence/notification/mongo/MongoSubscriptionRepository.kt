@@ -9,6 +9,9 @@ class MongoSubscriptionRepository(private val crudRepository: MongoSubscriptionC
         crudRepository.save(subscription.toEntity())
     }
 
+    override fun getAllSubscriptions() =
+            crudRepository.findAll().map { it.toDomain() }
+
     override fun getSubscriptionsForUser(userId: String): List<PushSubscription> {
         return crudRepository.findByUserId(userId).map { it.toDomain() }
     }
