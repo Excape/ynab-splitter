@@ -32,8 +32,8 @@ internal class GetMatchedTransactionTest {
             return testTransactions.find { it.id == id}
         }
 
-        override fun triggerTransactionImport(actor: SplitterActor) {
-            return
+        override fun triggerTransactionImport(actor: SplitterActor): Int {
+            return 0
         }
     }
 

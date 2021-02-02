@@ -110,8 +110,8 @@ internal class ListUnapprovedTransactionsTest {
                 TODO("not implemented")
             }
 
-            override fun triggerTransactionImport(actor: SplitterActor) {
-                return
+            override fun triggerTransactionImport(actor: SplitterActor): Int {
+                return 0
             }
 
         }

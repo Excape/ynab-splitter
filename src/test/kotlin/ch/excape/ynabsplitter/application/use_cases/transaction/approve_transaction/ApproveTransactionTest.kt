@@ -43,7 +43,7 @@ class ApproveTransactionTest {
                 return testTransactions.find { it.id == id}
             }
 
-            override fun triggerTransactionImport(actor: SplitterActor) {
+            override fun triggerTransactionImport(actor: SplitterActor): Int {
                 TODO("not implemented")
             }
         }
