@@ -1,9 +1,10 @@
 package ch.excape.ynabsplitter.application.use_cases.notifications.notify_new_transactions
 
+import ch.excape.ynabsplitter.adapter.notification.AccessTokenNotAvailableException
 import ch.excape.ynabsplitter.application.outbound_ports.notification.PushMessageRepository
+import ch.excape.ynabsplitter.application.outbound_ports.notification.TriggerImportService
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.SubscriptionRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.use_cases.notifications.notify_new_transactions.ports.INotifyNewTransactions
 import ch.excape.ynabsplitter.domain.ActorName
 import ch.excape.ynabsplitter.domain.PushSubscription
@@ -13,16 +14,25 @@ class NotifyNewTransactions(
         private val userRepository: UserRepository,
         private val subscriptionRepository: SubscriptionRepository,
         private val pushMessageRepository: PushMessageRepository,
-        private val readTransactionsRepository: ReadTransactionsRepository
+        private val triggerImportService: TriggerImportService
 ) : INotifyNewTransactions {
 
     override fun execute() {
         val subscriptions = subscriptionRepository.getAllSubscriptions()
         subscriptions.forEach {
+            importAndNotify(it)
+        }
+    }
+
+    private fun importAndNotify(it: PushSubscription) {
+        try {
             val count = importTransactions(it)
+
             if (count > 0) {
                 notifyUser(it, count)
             }
+        } catch (ex: AccessTokenNotAvailableException) {
+            println("No token available for user ${it.userId}, skipping this notification")
         }
     }
 
@@ -30,17 +40,21 @@ class NotifyNewTransactions(
         val user = getUser(subscription.userId)
         val actor = extractActor(user, subscription.actorName)
 
-        val transactionCount = readTransactionsRepository.triggerTransactionImport(actor)
-        return transactionCount
+        return triggerImportService.triggerImport(user.userId, actor)
     }
 
     private fun notifyUser(subscription: PushSubscription, count: Int) {
-        pushMessageRepository.pushMessage(subscription, "$count new transactions to approve")
+        try {
+            pushMessageRepository.pushMessage(subscription, "$count new transactions to approve")
+        } catch (ex: java.lang.IllegalStateException) {
+            println("Could not notify user: ${ex.message}, removing subscription")
+            subscriptionRepository.removeSubscription(subscription)
+        }
     }
 
     private fun extractActor(user: User, actorName: ActorName) =
-            user.settings.actors.find { it.actorName == actorName } ?:
-                throw IllegalArgumentException("actor ${actorName.name} not configured for user ${user.userId}")
+            user.settings.actors.find { it.actorName == actorName }
+                    ?: throw IllegalArgumentException("actor ${actorName.name} not configured for user ${user.userId}")
 
     private fun getUser(userId: String) =
             userRepository.getUser(userId) ?: throw

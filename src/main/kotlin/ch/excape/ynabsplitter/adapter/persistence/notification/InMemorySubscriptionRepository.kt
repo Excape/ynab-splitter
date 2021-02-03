@@ -11,7 +11,14 @@ class InMemorySubscriptionRepository : SubscriptionRepository {
     }
 
     override fun saveOrUpdateSubscription(subscription: PushSubscription) {
-        subscriptions.put("${subscription.userId}_${subscription.actorName}", subscription)
+        subscriptions.put(createKey(subscription), subscription)
+    }
+
+    private fun createKey(subscription: PushSubscription) =
+            "${subscription.userId}_${subscription.actorName}"
+
+    override fun removeSubscription(subscription: PushSubscription) {
+        subscriptions.remove(createKey(subscription))
     }
 
     override fun getSubscriptionsForUser(userId: String): List<PushSubscription> {

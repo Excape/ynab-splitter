@@ -89,7 +89,6 @@ class RestConfiguration(
     @Profile("prod")
     fun subscriptionRepositoryProd() = MongoSubscriptionRepository(subscriptionCrudRepository)
 
-
     @Bean
     @Profile("prod")
     fun pushMessageRepositoryProd() = WebPushMessageRepository(

@@ -9,6 +9,10 @@ class MongoSubscriptionRepository(private val crudRepository: MongoSubscriptionC
         crudRepository.save(subscription.toEntity())
     }
 
+    override fun removeSubscription(subscription: PushSubscription) {
+        crudRepository.deleteById(subscription.toEntity().id)
+    }
+
     override fun getAllSubscriptions() =
             crudRepository.findAll().map { it.toDomain() }
 

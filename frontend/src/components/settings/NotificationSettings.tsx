@@ -23,6 +23,19 @@ const NotificationSettings = () => {
             })
     }, [session]);
 
+    const sendUnsubscribe = useCallback((subscription: PushSubscription) => {
+        notificationService.sendUnsubscribe(subscription, session.session)
+            .then(response => {
+                notificationService.unsubscribe().then(() => {
+                    setSubscribeError(undefined)
+                    setSubStatus(SubscriptionStatus.UNSUBSCRIBED)
+                })
+            }, (error) => {
+                console.log("Unsubscribing failed: " + error)
+                setSubscribeError("Failed to unsubscribe")
+            })
+    }, [session]);
+
     useEffect(() => {
         notificationService.getExistingSubscription().then(sub => {
                 sendSubscription(sub)
@@ -51,11 +64,8 @@ const NotificationSettings = () => {
     }
 
     function unsubscribe() {
-        notificationService.unsubscribe().then(successful => {
-            if (successful) {
-                setSubscribeError(undefined)
-                setSubStatus(SubscriptionStatus.UNSUBSCRIBED)
-            }
+        notificationService.getExistingSubscription().then(sub => {
+            sendUnsubscribe(sub)
         })
     }
 

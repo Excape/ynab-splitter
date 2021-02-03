@@ -2,12 +2,13 @@ package ch.excape.ynabsplitter.rest.controller
 
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.*
 import ch.excape.ynabsplitter.adapter.presentation.rest.user.document.*
-import ch.excape.ynabsplitter.application.outbound_ports.notification.PushMessageRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.SubscriptionRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadBudgetsRepository
 import ch.excape.ynabsplitter.application.use_cases.notifications.subscribe_push.SubscribePush
 import ch.excape.ynabsplitter.application.use_cases.notifications.subscribe_push.ports.SubscribePushInput
+import ch.excape.ynabsplitter.application.use_cases.notifications.unsubscribe_push.UnsubscribePush
+import ch.excape.ynabsplitter.application.use_cases.notifications.unsubscribe_push.ports.UnsubscribePushInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.AddActor
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.ports.AddActorInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_actors.GetActors
@@ -22,8 +23,7 @@ import java.security.Principal
 class UserManagementController(
         private val userRepository: UserRepository,
         private val budgetsRepository: ReadBudgetsRepository,
-        private val subscriptionRepository: SubscriptionRepository,
-        private val pushMessageRepository: PushMessageRepository
+        private val subscriptionRepository: SubscriptionRepository
 ) {
 
     @GetMapping
@@ -64,8 +64,17 @@ class UserManagementController(
     fun subscribePush(@RequestBody request: SubscribePushRequest, principal: Principal) {
         val user = getLoggedInUser(principal)
         val input = SubscribePushInput(request.toSubscription(user.userId))
-        val subscribePush = SubscribePush(subscriptionRepository, pushMessageRepository)
+        val subscribePush = SubscribePush(subscriptionRepository)
         subscribePush.executeWith(input)
+    }
+
+    // TODO doesn't work in case we need to hard reload
+    @PostMapping("/unsubscribePush")
+    fun unsubscribePush(@RequestBody request: SubscribePushRequest, principal: Principal) {
+        val user = getLoggedInUser(principal)
+        val input = UnsubscribePushInput(request.toSubscription(user.userId))
+        val unsubscribePush = UnsubscribePush(subscriptionRepository)
+        unsubscribePush.executeWith(input)
     }
 
     private fun getLoggedInUser(principal: Principal): UserDocument {

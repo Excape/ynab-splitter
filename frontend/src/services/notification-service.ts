@@ -52,3 +52,18 @@ export const sendSubscription = (sub: PushSubscription, session: UserSession | u
         body: JSON.stringify(request)
     })
 }
+
+export const sendUnsubscribe = (sub: PushSubscription, session: UserSession | undefined) => {
+    const request = {
+        actorName: session?.actor,
+        subscription: sub.toJSON()
+    }
+    return fetch("/api/v1/user/unsubscribePush", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': Cookies.get("XSRF-TOKEN") ?? 'NULL'
+        },
+        body: JSON.stringify(request)
+    })
+}
