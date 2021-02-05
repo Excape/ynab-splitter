@@ -34,3 +34,13 @@ spring:
             client-secret: ${ynab.auth.client.secret}
             provider: ynab-provider
             redirect-uri: ${ynabsplitter.host}/login/oauth2/code/ynab
+  # TODO before we enable this, we need to configure a persistent authorized client repo
+#  session:
+#    store-type: mongodb
+#    mongodb:
+#      collection-name: sessions
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 365d
