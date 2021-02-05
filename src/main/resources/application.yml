@@ -1,6 +1,6 @@
 ynabsplitter:
   dry-run: true
-  host: http://localhost:8080
+  host: http://localhost:${server.port}
   notifications: # set in prod
     public-key:
     private-key:
@@ -34,11 +34,10 @@ spring:
             client-secret: ${ynab.auth.client.secret}
             provider: ynab-provider
             redirect-uri: ${ynabsplitter.host}/login/oauth2/code/ynab
-  # TODO before we enable this, we need to configure a persistent authorized client repo
-#  session:
-#    store-type: mongodb
-#    mongodb:
-#      collection-name: sessions
+  session:
+    store-type: mongodb
+    mongodb:
+      collection-name: sessions
 server:
   port: 8080
   servlet:

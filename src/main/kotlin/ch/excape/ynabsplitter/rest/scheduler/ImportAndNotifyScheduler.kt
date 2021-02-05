@@ -1,16 +1,12 @@
 package ch.excape.ynabsplitter.rest.scheduler
 
-import ch.excape.ynabsplitter.adapter.notification.YnabTransactionsApiProvider
 import ch.excape.ynabsplitter.application.outbound_ports.notification.PushMessageRepository
 import ch.excape.ynabsplitter.application.outbound_ports.notification.TriggerImportService
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.SubscriptionRepository
 import ch.excape.ynabsplitter.application.outbound_ports.persistence.UserRepository
-import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.use_cases.notifications.notify_new_transactions.NotifyNewTransactions
 import org.springframework.context.annotation.Profile
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.security.oauth2.client.*
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.stereotype.Component
 
 @Component
