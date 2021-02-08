@@ -13,7 +13,6 @@ import {ExpirationPlugin} from 'workbox-expiration';
 import {createHandlerBoundToURL, precacheAndRoute} from 'workbox-precaching';
 import {registerRoute} from 'workbox-routing';
 import {StaleWhileRevalidate} from 'workbox-strategies';
-import * as env from './env'
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -81,7 +80,10 @@ self.addEventListener('message', (event) => {
 self.addEventListener("push", (event) => {
     const title = "YNAB Splitter"
     const options = {
-        body: event.data!.text()
+        body: event.data!.text(),
+        data: {
+            url: self.location.origin
+        }
     }
 
     if (Notification.permission === 'granted') {
@@ -90,9 +92,22 @@ self.addEventListener("push", (event) => {
 })
 
 self.addEventListener("notificationclick", (event) => {
-    console.log(event.notification)
-    console.log(event.action)
+    const {notification} = event
+    const url = notification.data.url
+    notification.close()
 
-    self.clients.openWindow(env.base_url)
+    event.waitUntil(self.clients.matchAll({type: 'window'}).then(clientsArr => {
+        let hasActiveClient = false;
+        clientsArr.forEach(client => {
+            if (client.url.includes(url) && client instanceof WindowClient) {
+                client.focus()
+                hasActiveClient = true
+            }
+        })
+
+        if (!hasActiveClient) {
+            self.clients.openWindow(url)
+        }
+    }))
 })
 // Any other custom service worker logic can go here.
