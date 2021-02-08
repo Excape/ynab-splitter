@@ -40,7 +40,10 @@ class NotifyNewTransactions(
         val user = getUser(subscription.userId)
         val actor = extractActor(user, subscription.actorName)
 
-        return triggerImportService.triggerImport(user.userId, actor)
+        val importCountByActor = user.settings.actors.associateWith {
+            triggerImportService.triggerImport(user.userId, it)
+        }
+        return importCountByActor[actor]!!
     }
 
     private fun notifyUser(subscription: PushSubscription, count: Int) {
