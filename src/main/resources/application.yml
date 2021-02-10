@@ -5,6 +5,7 @@ ynabsplitter:
     public-key:
     private-key:
 
+
 spring:
   profiles:
     active: dev
@@ -43,3 +44,8 @@ server:
   servlet:
     session:
       timeout: 365d
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
