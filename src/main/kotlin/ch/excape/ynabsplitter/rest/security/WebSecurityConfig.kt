@@ -26,8 +26,10 @@ class WebSecurityConfig(
     override fun configure(http: HttpSecurity?) {
         http {
             authorizeRequests {
+                authorize("/service-worker.js", permitAll)
                 // allow manifest access for service worker
                 authorize("/manifest.json", permitAll)
+                authorize("/logo*.png", permitAll)
                 authorize(anyRequest, authenticated)
             }
             oauth2Login {
