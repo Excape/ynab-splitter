@@ -39,11 +39,13 @@ spring:
     store-type: mongodb
     mongodb:
       collection-name: sessions
+    timeout: 365d
 server:
   port: 8080
   servlet:
     session:
       timeout: 365d
+      persistent: true
 
 logging:
   level:
