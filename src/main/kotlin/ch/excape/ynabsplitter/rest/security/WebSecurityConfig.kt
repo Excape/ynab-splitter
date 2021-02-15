@@ -32,6 +32,7 @@ class WebSecurityConfig(
                 // allow manifest access for service worker
                 authorize("/manifest.json", permitAll)
                 authorize("/logo*.png", permitAll)
+                authorize("/favicon.ico", permitAll)
                 authorize(anyRequest, authenticated)
             }
             oauth2Login {
