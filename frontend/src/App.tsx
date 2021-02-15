@@ -7,30 +7,30 @@ import NavBar from './components/NavBar';
 import {Route, Switch} from "react-router-dom";
 import Settings from './components/settings/Settings';
 
-const App = ({children}: PropsWithChildren<any>) => {
+const App = () => {
     return (
-            <AppGrid>
-                <Grid.Row>
-                    <Grid.Column>
-                        <NavBar />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <Switch>
-                            <Route path={"/auditlog"}>
-                                <AuditLogList />
-                            </Route>
-                            <Route path={"/settings"}>
-                                <Settings />
-                            </Route>
-                            <Route path={"/"}>
-                                <UnapprovedTransactions />
-                            </Route>
-                        </Switch>
-                    </Grid.Column>
-                </Grid.Row>
-            </AppGrid>
+        <AppGrid>
+            <Grid.Row>
+                <Grid.Column>
+                    <NavBar/>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column>
+                    <Switch>
+                        <Route path={"/auditlog"}>
+                            <AuditLogList/>
+                        </Route>
+                        <Route path={"/settings"}>
+                            <Settings/>
+                        </Route>
+                        <Route path={"/"}>
+                            <UnapprovedTransactions/>
+                        </Route>
+                    </Switch>
+                </Grid.Column>
+            </Grid.Row>
+        </AppGrid>
     );
 }
 

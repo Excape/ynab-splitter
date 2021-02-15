@@ -8,6 +8,8 @@ export type Session = {
     logout: () => void
 }
 
+export const sessionCookieName = "reactSession"
+
 export const SessionContext = React.createContext(
     {
         session: undefined,
@@ -19,15 +21,15 @@ export const SessionContext = React.createContext(
 
 export const setSessionCookie = (session: UserSession): void => {
     clearSessionCookie()
-    Cookies.set("session", session, {sameSite: 'strict'});
+    Cookies.set(sessionCookieName, session, {sameSite: 'strict'});
 };
 
 export const clearSessionCookie = (): void => {
-    Cookies.remove("session");
+    Cookies.remove(sessionCookieName);
 };
 
 export const getSessionCookie = (): UserSession | undefined => {
-    const sessionCookie = Cookies.get("session");
+    const sessionCookie = Cookies.get(sessionCookieName);
 
     if (sessionCookie === undefined) {
         return undefined;
