@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAut
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.session.web.http.CookieSerializer
+import org.springframework.session.web.http.DefaultCookieSerializer
 
 
 @Configuration
@@ -59,5 +61,17 @@ class WebSecurityConfig(
     @Bean
     fun authorizedClientRepository(): OAuth2AuthorizedClientRepository? {
         return AuthenticatedPrincipalOAuth2AuthorizedClientRepository(mongoAuthorizedClientService(mongoRepo, clientRepo))
+    }
+
+    /**
+     * Overriding the Session cookie to set the max age.
+     */
+    @Bean
+    fun cookieSerializer(): CookieSerializer {
+        val serializer = DefaultCookieSerializer()
+        serializer.setCookieName("SESSION")
+        serializer.setCookiePath("/")
+        serializer.setCookieMaxAge(7 * 24 * 3600)
+        return serializer
     }
 }

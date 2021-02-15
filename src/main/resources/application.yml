@@ -45,9 +45,4 @@ server:
   servlet:
     session:
       timeout: 365d
-      persistent: true
-
-logging:
-  level:
-    org.springframework.security: DEBUG
 

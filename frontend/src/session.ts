@@ -21,7 +21,9 @@ export const SessionContext = React.createContext(
 
 export const setSessionCookie = (session: UserSession): void => {
     clearSessionCookie()
-    Cookies.set(sessionCookieName, session, {sameSite: 'lax'});
+    // for some reason, sameSite 'lax' is required for safari on iOS to accept the cookie
+    // when PWA is active
+    Cookies.set(sessionCookieName, session, {sameSite: 'lax', expires: 7});
 };
 
 export const clearSessionCookie = (): void => {
