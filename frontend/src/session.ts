@@ -21,7 +21,7 @@ export const SessionContext = React.createContext(
 
 export const setSessionCookie = (session: UserSession): void => {
     clearSessionCookie()
-    Cookies.set(sessionCookieName, session, {sameSite: 'strict'});
+    Cookies.set(sessionCookieName, session, {sameSite: 'strict', secure: true});
 };
 
 export const clearSessionCookie = (): void => {
