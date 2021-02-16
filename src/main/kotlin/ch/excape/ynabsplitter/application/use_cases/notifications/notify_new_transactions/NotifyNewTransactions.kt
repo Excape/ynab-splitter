@@ -9,6 +9,8 @@ import ch.excape.ynabsplitter.application.use_cases.notifications.notify_new_tra
 import ch.excape.ynabsplitter.domain.ActorName
 import ch.excape.ynabsplitter.domain.PushSubscription
 import ch.excape.ynabsplitter.domain.User
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class NotifyNewTransactions(
         private val userRepository: UserRepository,
@@ -16,6 +18,10 @@ class NotifyNewTransactions(
         private val pushMessageRepository: PushMessageRepository,
         private val triggerImportService: TriggerImportService
 ) : INotifyNewTransactions {
+
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
 
     override fun execute() {
         val subscriptions = subscriptionRepository.getAllSubscriptions()
@@ -32,7 +38,7 @@ class NotifyNewTransactions(
                 notifyUser(it, count)
             }
         } catch (ex: AccessTokenNotAvailableException) {
-            println("No token available for user ${it.userId}, skipping this notification")
+            log.info("No token available for user ${it.userId}, skipping this notification")
         }
     }
 
@@ -50,7 +56,7 @@ class NotifyNewTransactions(
         try {
             pushMessageRepository.pushMessage(subscription, "$count new transactions to approve")
         } catch (ex: java.lang.IllegalStateException) {
-            println("Could not notify user: ${ex.message}, removing subscription")
+            log.warn("Could not notify user: ${ex.message}, removing subscription")
             subscriptionRepository.removeSubscription(subscription)
         }
     }

@@ -6,9 +6,14 @@ import ch.excape.ynabsplitter.domain.ActorName
 import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.threeten.bp.LocalDate
 
 class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactionRepository {
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
 
     private val transactions: MutableMap<String, Transaction> = createFakeTransactions()
 
@@ -17,7 +22,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     }
 
     override fun triggerTransactionImport(actor: SplitterActor): Int {
-        println("Transactions for ${actor.actorName} would be imported here")
+        log.info("Transactions for ${actor.actorName} would be imported here")
         return 0;
     }
 

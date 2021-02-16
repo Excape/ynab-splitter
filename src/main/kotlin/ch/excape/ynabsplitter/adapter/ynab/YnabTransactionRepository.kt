@@ -8,8 +8,8 @@ import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRe
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpClientErrorException
 import org.threeten.bp.LocalDate
@@ -18,6 +18,10 @@ class YnabTransactionRepository(
         private val transactionsApi: TransactionsApi,
         private val dryRun: Boolean
 ) : ReadTransactionsRepository, SaveTransactionRepository {
+
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
 
     override fun getTransaction(actor: SplitterActor, id: String): Transaction? {
         val transactionResponse: TransactionResponse?
@@ -54,7 +58,7 @@ class YnabTransactionRepository(
         if (!dryRun) {
             transactionsApi.updateTransaction(wrapTransaction(transaction), transaction.actor.budgetId, transaction.id)
         } else {
-            println("Dry run enabled, not saving transaction to ynab")
+            log.info("Dry run enabled, not saving transaction to ynab")
         }
     }
 

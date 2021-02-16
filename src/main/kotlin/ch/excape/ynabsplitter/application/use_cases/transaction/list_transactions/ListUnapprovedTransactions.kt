@@ -8,11 +8,17 @@ import ch.excape.ynabsplitter.application.use_cases.transaction.list_transaction
 import ch.excape.ynabsplitter.domain.SplitterActor
 import ch.excape.ynabsplitter.domain.Transaction
 import ch.excape.ynabsplitter.domain.User
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class ListUnapprovedTransactions(
         private val readTransactionsRepository: ReadTransactionsRepository,
         private val userRepository: UserRepository)
     : IListUnapprovedTransactions {
+
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
 
     override fun executeWith(input: ListUnapprovedTransactionsInput, presenter: TransactionListPresenter) {
 
@@ -29,8 +35,8 @@ class ListUnapprovedTransactions(
         val unmatchedTransactions = matchedTransactions.filter { it.transactions.size < 2 }
         val overmatchedTransactions = matchedTransactions.filter { it.transactions.size > 2 }
 
-        unmatchedTransactions.forEach { println("Unmatched transaction: $it") }
-        overmatchedTransactions.forEach { println("Overmatched transaction: $it") }
+        unmatchedTransactions.forEach { log.debug("Unmatched transaction: $it") }
+        overmatchedTransactions.forEach { log.debug("Overmatched transaction: $it") }
 
         presenter.present(validTransactions)
     }

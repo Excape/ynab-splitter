@@ -11,6 +11,8 @@ import ch.excape.ynabsplitter.application.use_cases.transaction.approve_transact
 import ch.excape.ynabsplitter.application.use_cases.transaction.approve_transaction.ports.CategoryPerActor
 import ch.excape.ynabsplitter.application.use_cases.transaction.approve_transaction.ports.IApproveTransaction
 import ch.excape.ynabsplitter.domain.*
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.roundToLong
@@ -23,13 +25,17 @@ class ApproveTransaction(
         private val userRepository: UserRepository
 ) : IApproveTransaction {
 
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
+
     override fun executeWith(input: ApproveTransactionInput, presenter: ApproveTransactionPresenter) {
         try {
             val auditLogId = approveTransactions(input)
             presenter.present(ApproveTransactionResult(true, auditLogId))
         } catch (ex: Exception) {
             presenter.present(ApproveTransactionResult(false, null))
-            println("Exception in ApproveTransaction use case: $ex")
+            log.error("Exception in ApproveTransaction use case: $ex")
             ex.printStackTrace()
         }
     }

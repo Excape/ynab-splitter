@@ -7,12 +7,18 @@ import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRep
 import ch.excape.ynabsplitter.application.use_cases.transaction.undo_approval.ports.IUndoApproval
 import ch.excape.ynabsplitter.application.use_cases.transaction.undo_approval.ports.UndoApprovalInput
 import ch.excape.ynabsplitter.domain.AuditLog
-import java.lang.IllegalArgumentException
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class UndoApproval(
         private val auditLogRepository: AuditLogRepository,
         private val saveTransactionRepository: SaveTransactionRepository
 ) : IUndoApproval {
+
+    companion object {
+        val log: Logger = LogManager.getLogger()
+    }
+
     override fun executeWith(input: UndoApprovalInput, presenter: UndoneApprovalPresenter) {
         try {
             val auditLog = fetchAuditLog(input.auditLogId)
@@ -21,7 +27,7 @@ class UndoApproval(
             removeAuditLog(auditLog)
             presenter.present(UndoApprovalResult.success())
         } catch (ex: Exception) {
-            println("Exception while undoing approval: $ex")
+            log.error("Exception while undoing approval: $ex")
             presenter.present(UndoApprovalResult.failure(ex.message))
         }
     }
