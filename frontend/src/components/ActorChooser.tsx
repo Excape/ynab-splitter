@@ -4,6 +4,7 @@ import {SessionContext, setSessionCookie} from '../session';
 import {Button, Grid, Header, Segment} from 'semantic-ui-react';
 import {Actor} from '../types';
 import ActorSettings from './settings/ActorSettings';
+import {getColor} from './utils';
 
 const ActorChooser = () => {
     const history = useHistory()
@@ -39,12 +40,19 @@ const ActorChooser = () => {
                     {actorsDefined() ? (
                         <div>
                             <Header as="h1">Who are you?</Header>
-                            {/* todo: Improve button layout */}
-                            {/*<Button.Group fluid>*/}
-                            {actors.map((actor, i) => (
-                                <Button key={i} fluid onClick={() => onSelect(actor)}>{actor.name}</Button>)
-                            )}
-                            {/*</Button.Group>*/}
+                            <Button.Group fluid>
+                                {actors.map((actor, i) => (
+                                        <React.Fragment>
+                                            <Button key={i}
+                                                    onClick={() => onSelect(actor)}
+                                                    color={getColor(i)}>
+                                                {actor.name}
+                                            </Button>
+                                            ({i !== actors.length - 1 ? <Button.Or/> : null})
+                                        </React.Fragment>
+                                    )
+                                )}
+                            </Button.Group>
                         </div>
                     ) : <NoActorsDefinedDialog/>}
                 </Grid.Column>
@@ -66,7 +74,7 @@ const NoActorsDefinedDialog = () => {
                 Hello there! Please set up 2 accounts first:
             </Header>
             <Segment basic>
-            <ActorSettings />
+                <ActorSettings/>
             </Segment>
             <Grid.Row>
                 <Grid.Column>

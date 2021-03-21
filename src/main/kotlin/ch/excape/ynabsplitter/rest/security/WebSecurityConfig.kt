@@ -4,6 +4,7 @@ import ch.excape.ynabsplitter.rest.security.clientrepository.MongoOAuth2Authoriz
 import ch.excape.ynabsplitter.rest.security.clientrepository.OAuth2AuthorizedClientCrudRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -19,8 +20,9 @@ import org.springframework.session.web.http.CookieSerializer
 import org.springframework.session.web.http.DefaultCookieSerializer
 
 
-@Configuration
+@Configuration()
 @EnableWebSecurity
+@Profile("prod")
 class WebSecurityConfig(
         private val mongoRepo: OAuth2AuthorizedClientCrudRepository,
         private val clientRepo: ClientRegistrationRepository

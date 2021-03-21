@@ -32,7 +32,7 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
                     .filter { !it.isApproved }
 
     override fun saveTransaction(transaction: Transaction) {
-        transactions[transaction.id] = transaction
+        // noop
     }
 
     private fun createFakeTransactions(): MutableMap<String, Transaction> {

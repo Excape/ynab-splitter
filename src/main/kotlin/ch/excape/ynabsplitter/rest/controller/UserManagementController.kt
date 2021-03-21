@@ -11,6 +11,8 @@ import ch.excape.ynabsplitter.application.use_cases.notifications.unsubscribe_pu
 import ch.excape.ynabsplitter.application.use_cases.notifications.unsubscribe_push.ports.UnsubscribePushInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.AddActor
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.add_actor.ports.AddActorInput
+import ch.excape.ynabsplitter.application.use_cases.usermanagement.delete_actor.DeleteActor
+import ch.excape.ynabsplitter.application.use_cases.usermanagement.delete_actor.ports.DeleteActorInput
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_actors.GetActors
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_budgets.GetBudgets
 import ch.excape.ynabsplitter.application.use_cases.usermanagement.get_user.GetUser
@@ -58,6 +60,13 @@ class UserManagementController(
         AddActor(userRepository).executeWith(input, presenter)
 
         return presenter.presentation!!
+    }
+
+    @PostMapping("/deleteActor")
+    fun deleteActor(@RequestBody request: DeleteActorRequest, principal: Principal) {
+        val user = getLoggedInUser(principal)
+        val input = DeleteActorInput(user.userId, request.actorName)
+        DeleteActor(userRepository).executeWith(input)
     }
 
     @PostMapping("/subscribePush")

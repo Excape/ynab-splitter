@@ -1,6 +1,7 @@
 import React from "react";
 import {Button} from "semantic-ui-react";
 import {ApprovalFor} from '../../types';
+import {getColor} from '../utils';
 
 type Props = {
     actors: string[]
@@ -17,12 +18,6 @@ const ApprovalButtons = ({actors, onSelect}: Props) => {
         onSelect(approvalOption)
     }
 
-    function getColor(i: number): "orange" | "teal" | "purple" | "red" {
-        const colors = ["orange", "teal", "purple", "red"];
-
-        return colors[i % (colors.length - 1)] as "orange" | "teal" | "purple" | "red"
-    }
-
     function isOpen(approvalOption: ApprovalFor) {
         // compare fields because the objects get recreated and are not equal
         return approveOpenFor.actor === approvalOption.actor &&
@@ -33,25 +28,26 @@ const ApprovalButtons = ({actors, onSelect}: Props) => {
 
     return (
         <div className='buttonRow'>
-        {actors.map((actor, i) => {
-            const approvalOption: ApprovalFor = {actor: actor, splitApproval: false}
-            return (
-                    <Button fluid
-                            key={i}
-                            basic={!isOpen(approvalOption)}
-                            color={getColor(i)}
-                            content={actor}
-                            onClick={() => handleApprove(approvalOption)}/>
+            {actors.map((actor, i) => {
+                    const approvalOption: ApprovalFor = {actor: actor, splitApproval: false}
+                    return (
+                        <Button fluid
+                                key={i}
+                                basic={!isOpen(approvalOption)}
+                                color={getColor(i)}
+                                content={actor}
+                                onClick={() => handleApprove(approvalOption)}/>
+                    )
+                }
             )}
-        )}
 
-        <Button fluid
-                basic={!isOpen(splitApprovalOption)}
-                color="grey"
-                content={"Split"}
-                onClick={() => handleApprove(splitApprovalOption)}
-        />
-    </div>)
+            <Button fluid
+                    basic={!isOpen(splitApprovalOption)}
+                    color="grey"
+                    content={"Split"}
+                    onClick={() => handleApprove(splitApprovalOption)}
+            />
+        </div>)
 }
 
 export default ApprovalButtons

@@ -100,13 +100,13 @@ self.addEventListener("notificationclick", (event) => {
         let hasActiveClient = false;
         clientsArr.forEach(client => {
             if (client.url.includes(url) && client instanceof WindowClient) {
-                client.focus()
+                client.focus().then(() => location.reload())
                 hasActiveClient = true
             }
         })
 
         if (!hasActiveClient) {
-            self.clients.openWindow(url)
+            self.clients.openWindow(url).then(() => location.reload())
         }
     }))
 })

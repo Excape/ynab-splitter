@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Grid, Header, Icon, Loader, Table} from 'semantic-ui-react';
 import AddActor from './AddActor';
 import ReloadPageOnFail from '../ReloadPageOnFail';
+import DeleteActor from './DeleteActor';
 
 export const ActorSettings = () => {
     const [actors, setActors] = useState([] as SettingsActor[])
@@ -29,11 +30,19 @@ export const ActorSettings = () => {
     }
 
     if (loadingFailed) {
-        return <ReloadPageOnFail message={"Please reload the page"} />
+        return <ReloadPageOnFail message={"Please reload the page"}/>
     }
 
     if (!actorsLoaded) {
         return <Loader active inline='centered'/>
+    }
+
+    function canAddMoreActors(): boolean {
+        return actorsLoaded && actors.length < 2
+    }
+
+    function onDeleteActor() {
+        return fetchActors()
     }
 
     return (
@@ -45,6 +54,7 @@ export const ActorSettings = () => {
                             <Table.HeaderCell>Name</Table.HeaderCell>
                             <Table.HeaderCell>Budget</Table.HeaderCell>
                             <Table.HeaderCell>Account</Table.HeaderCell>
+                            <Table.HeaderCell>Remove</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -56,6 +66,9 @@ export const ActorSettings = () => {
                                 </Table.Cell>
                                 <Table.Cell>{actor.budgetName}</Table.Cell>
                                 <Table.Cell>{actor.accountName}</Table.Cell>
+                                <Table.Cell>
+                                    <DeleteActor actorName={actor.actorName} onDeleteActor={onDeleteActor}/>
+                                </Table.Cell>
                             </Table.Row>
                         ))}
                     </Table.Body>
@@ -63,7 +76,12 @@ export const ActorSettings = () => {
             </Grid.Column>
 
             <Header as="h3">Add a new budget user</Header>
-            <AddActor onAddActor={onActorAdded}/>
+            {canAddMoreActors() ? (
+                <AddActor onAddActor={onActorAdded}/>
+            ) : <p>
+                Cannot add more than two users
+            </p>}
+
         </Grid.Row>
     )
 }
