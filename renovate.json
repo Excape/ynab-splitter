@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "ignorePaths": [
+    "**/ynab-swagger-client/**"
+  ],
+  "automerge": true
+}
