@@ -5,5 +5,10 @@
   "ignorePaths": [
     "**/ynab-swagger-client/**"
   ],
-  "automerge": true
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ]
 }
