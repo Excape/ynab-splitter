@@ -4,5 +4,6 @@
   ],
   "ignorePaths": [
     "**/ynab-swagger-client/**"
-  ]
+  ],
+  "automerge": true
 }
