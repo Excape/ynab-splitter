@@ -1871,12 +1871,12 @@
   resolved "https://registry.npmjs.org/@types/q/-/q-1.5.4.tgz"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
-"@types/react-dom@*", "@types/react-dom@16.9.12":
-  version "16.9.12"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.12.tgz"
-  integrity sha512-i7NPZZpPte3jtVOoW+eLB7G/jsX5OM6GqQnH+lC0nq0rqwlK0x8WcMEvYDgFWqWhWMlTltTimzdMax6wYfZssA==
+"@types/react-dom@*", "@types/react-dom@17.0.3":
+  version "17.0.3"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-17.0.3.tgz"
+  integrity sha512-4NnJbCeWE+8YBzupn/YrJxZ8VnjcJq5iR1laqQ1vkpQgBiA7bwk0Rp24fxsdNinzJY2U+HHS4dJJDPdoMjdJ7w==
   dependencies:
-    "@types/react" "^16"
+    "@types/react" "*"
 
 "@types/react-router-dom@5.1.7":
   version "5.1.7"
@@ -1902,7 +1902,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.14.6", "@types/react@^16":
+"@types/react@*", "@types/react@16.14.6":
   version "16.14.6"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.14.6.tgz"
   integrity sha512-Ol/aFKune+P0FSFKIgf+XbhGzYGyz0p7g5befSt4rmbzfGLaZR0q7jPew9k7d3bvrcuaL8dPy9Oz3XGZmf9n+w==
