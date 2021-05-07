@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk/openjdk11:alpine-slim
 RUN addgroup -S ynabsplitter && adduser -S ynabsplitter -G ynabsplitter
 USER ynabsplitter:ynabsplitter
 ARG JAR_FILE=build/libs/*.jar

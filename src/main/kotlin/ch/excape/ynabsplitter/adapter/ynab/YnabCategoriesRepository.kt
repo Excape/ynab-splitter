@@ -3,8 +3,8 @@ package ch.excape.ynabsplitter.adapter.ynab
 import ch.excape.ynabclient.api.CategoriesApi
 import ch.excape.ynabclient.model.CategoryGroupWithCategories
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
-import ch.excape.ynabsplitter.domain.Actor
 import ch.excape.ynabsplitter.domain.Category
+import ch.excape.ynabsplitter.domain.SplitterActor
 import org.springframework.beans.factory.annotation.Qualifier
 
 class YnabCategoriesRepository(
@@ -17,14 +17,14 @@ class YnabCategoriesRepository(
             "Credit Card Payments"
     )
 
-    override fun getCategories(actor: Actor): List<Category> =
+    override fun getCategories(actor: SplitterActor): List<Category> =
             retrieveCategoryGroups(actor)
                     .filter { !it.isDeleted }
                     .filter(this::isNotFilteredOutGroup)
                     .map(this::toCategories)
                     .flatten()
 
-    override fun findCategory(actor: Actor, categoryId: String): Category? {
+    override fun findCategory(actor: SplitterActor, categoryId: String): Category {
         val category = categoriesApi.getCategoryById(actor.budgetId, categoryId).data.category
         return category.toCategory()
     }
@@ -36,7 +36,7 @@ class YnabCategoriesRepository(
 
     private fun isNotFilteredOutGroup(group: CategoryGroupWithCategories) = !FILTERED_GROUPS.contains(group.name)
 
-    private fun retrieveCategoryGroups(actor: Actor) =
+    private fun retrieveCategoryGroups(actor: SplitterActor) =
             categoriesApi.getCategories(actor.budgetId, null)
                     .data
                     .categoryGroupWithCategoriesList

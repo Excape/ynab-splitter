@@ -1,6 +1,7 @@
 export type UnapprovedTransaction = {
     id: string,
     date: Date,
+    actors: string[]
     amount: number,
     categoryMap: [
         { actor: string, category: Category }
@@ -11,7 +12,7 @@ export type UnapprovedTransaction = {
 
 export type Transaction = {
     id: string,
-    actor: string,
+    actor: Actor,
     date: Date,
     amount: number,
     category: Category | undefined,
@@ -19,11 +20,22 @@ export type Transaction = {
     payee: string
 }
 
+export type Actor = {
+    name: string
+}
+
 export type AuditLog = {
+    id: string,
     date: Date,
-    oldTransaction: Transaction,
-    newTransaction: Transaction,
+    payee: string,
     executingActor: string
+    transactions: TransactionsByActor[],
+}
+
+export type TransactionsByActor = {
+    actor: string,
+    oldTransaction: Transaction
+    newTransaction: Transaction
 }
 
 export type Category = {
@@ -32,12 +44,23 @@ export type Category = {
     group?: string,
     balance?: number
 }
+export type ApprovalFor = {
+    actor: string | undefined,
+    splitApproval: boolean
+}
 
-export enum ApprovalOption {Undefined, Robin = "Robin", Sophie = "Sophie", Split = "Split"}
+export type ApprovalResult = {
+    success: boolean,
+    auditLogId?: string | undefined
+}
 
-export type ApprovalResult = {success: boolean}
+export type UndoApprovalResult = {
+    success: boolean,
+    message?: string | undefined
+}
 
 export type SplitTransactionRequest = {
+    executingActor: string
     categories: CategoryRequest[]
     split: SplitRequest[]
 }
@@ -50,4 +73,8 @@ export type CategoryRequest = {
 export type SplitRequest = {
     actor: String,
     split: number
+}
+
+export type UserSession = {
+    actor: string
 }

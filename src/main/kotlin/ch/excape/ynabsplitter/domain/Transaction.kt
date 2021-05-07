@@ -10,7 +10,7 @@ data class Transaction(
         val memo: String?,
         val isApproved: Boolean,
         val payee: String?,
-        val actor: Actor
+        val actor: SplitterActor
 ) {
     fun matches(other: Transaction): Boolean {
         return actor != other.actor && date == other.date && amount == other.amount

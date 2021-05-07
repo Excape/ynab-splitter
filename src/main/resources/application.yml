@@ -1,0 +1,48 @@
+ynabsplitter:
+  dry-run: true
+  host: http://localhost:${server.port}
+  notifications: # set in prod
+    public-key:
+    private-key:
+
+
+spring:
+  profiles:
+    active: dev
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: splitter
+      username: splitter_user
+      password: '12345' # overwrite this in prod
+  security:
+    oauth2:
+      client:
+        provider:
+          ynab-provider:
+            authorization-uri: https://app.youneedabudget.com/oauth/authorize
+            token-uri: https://app.youneedabudget.com/oauth/token
+            user-info-authentication-method: header
+            user-info-uri: https://api.youneedabudget.com/v1/user
+            user-name-attribute: data
+        registration:
+          ynab:
+            authorization-grant-type: authorization_code
+            client-id: cc3f5805948b05cb6d16927be7277455e6361efb6dbda6b7dcc72c08d6b7e1d9
+            client-secret: ${ynab.auth.client.secret}
+            provider: ynab-provider
+            redirect-uri: ${ynabsplitter.host}/login/oauth2/code/ynab
+  session:
+    store-type: mongodb
+    mongodb:
+      collection-name: sessions
+    timeout: 365d
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 365d
+

@@ -1,28 +1,33 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid, Loader} from "semantic-ui-react";
 import {UnapprovedTransaction} from "../types";
-import TransactionCard from "./TransactionCard";
+import TransactionCard from "./transaction_card/TransactionCard";
+import ReloadPageOnFail from './ReloadPageOnFail';
 
 const UnapprovedTransactions = () => {
-    const [isLoaded, setIsLoaded] = React.useState(false);
-    const [items, setItems] = React.useState([] as UnapprovedTransaction[]);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [loadingFailed, setLoadingFailed] = useState(false)
+    const [items, setItems] = useState([] as UnapprovedTransaction[]);
 
 
     useEffect(() => {
-        fetch("/api/v1/transactions")
+        fetch("/api/v1/transactions", {redirect: "error"})
             .then(result => result.json())
             .then(result => {
                     setItems(result);
                     setIsLoaded(true);
                 },
-                error => setIsLoaded(false)
+                error => setLoadingFailed(true)
             );
-    }, []);
+    }, [setItems, setIsLoaded]);
 
     function getTime(date?: Date) {
         return date != null ? new Date(date).getTime() : 0;
     }
 
+    if (loadingFailed) {
+        return (<ReloadPageOnFail message="Please reload to show transactions" />)
+    }
 
     if (!isLoaded) {
         return (<Loader active inline='centered' />)

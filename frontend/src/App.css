@@ -3,7 +3,7 @@
   box-shadow: 2px 2px 8px 0px rgba(0, 0, 50, 0.75);
 }
 
-.approveButtons {
+.buttonRow {
   display: flex;
   justify-content: space-evenly;
 }
@@ -30,4 +30,22 @@
 }
 .splitInput .right {
   margin-right: 18pt;
+}
+
+.category-item {
+  display: flex;
+}
+
+.category-item-name {
+ flex-basis: 75%
+}
+
+@media (max-width: 400px) {
+  .category-item {
+    flex-direction: column;
+  }
+
+  .category-item-name {
+    margin-bottom: .5em;
+  }
 }

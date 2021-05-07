@@ -13,10 +13,9 @@
 package ch.excape.ynabclient.model;
 
 import java.util.Objects;
-import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * BudgetSummaryResponse
@@ -25,9 +24,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2020-06-06T11:46:19.985416+02:00[Europe/Zurich]")
 public class BudgetSummaryResponse {
   @JsonProperty("data")
-  private Object data = null;
+  private BudgetSummaryWrapper data = null;
 
-  public BudgetSummaryResponse data(Object data) {
+  public BudgetSummaryResponse data(BudgetSummaryWrapper data) {
     this.data = data;
     return this;
   }
@@ -37,11 +36,11 @@ public class BudgetSummaryResponse {
    * @return data
   **/
   @Schema(required = true, description = "")
-  public Object getData() {
+  public BudgetSummaryWrapper getData() {
     return data;
   }
 
-  public void setData(Object data) {
+  public void setData(BudgetSummaryWrapper data) {
     this.data = data;
   }
 
