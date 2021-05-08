@@ -24,4 +24,4 @@ jobs:
         with:
           browser: chrome
           working-directory: frontend
-          start: ../gradlew bootRun --args='--spring.profiles.active=dev'
+          start: cd .. && ./gradlew bootRun --args='--spring.profiles.active=dev'
