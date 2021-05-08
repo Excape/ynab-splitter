@@ -25,3 +25,5 @@ jobs:
           browser: chrome
           working-directory: frontend
           start: npm run cy:start-server
+          wait-on: 'http://localhost:8080'
+          wait-on-timeout: 600
