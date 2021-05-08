@@ -24,4 +24,4 @@ jobs:
         with:
           browser: chrome
           working-directory: frontend
-          start: cd .. && ./gradlew bootRun --args='--spring.profiles.active=dev'
+          start: npm run cy:start-server
