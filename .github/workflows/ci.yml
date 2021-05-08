@@ -1,13 +1,15 @@
-name: Cypress E2E tests
+name: CI build / test
 
 on:
   push:
     branches:
       - master
-      - e2e-pipeline #TODO remove
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  cypress-run:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,10 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - uses: cypress-io/github-action@v2
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
         with:
-          browser: chrome
-          working-directory: frontend
-          start: npm run cy:start-server
-          wait-on: 'http://localhost:8080'
-          wait-on-timeout: 600
+          files: build/test-results/**/*.xml

@@ -1,10 +1,7 @@
-name: Docker Image CI
+name: Build / Push Docker image
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
     branches:
       - master
 
@@ -37,15 +34,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: build/test-results/**/*.xml
-
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
-        if: github.ref == 'refs/heads/master'
         with:
           name: excape/ynab-splitter/ynab-splitter
           username: ${{ github.actor }}
