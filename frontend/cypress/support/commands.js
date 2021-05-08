@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("visitWithBasicAuth", () => {
+    cy.visit("/", {
+        auth: {
+            username: "testuser",
+            password: ''
+        }
+    })
+})
+
+Cypress.Commands.add("login", (username) => {
+    cy.get('div.ui.fluid.buttons').contains(username).click()
+})
