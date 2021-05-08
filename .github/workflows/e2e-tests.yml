@@ -26,6 +26,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - uses: cypress-io/github-action@v2
         with:
           browser: chrome
