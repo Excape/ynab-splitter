@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - e2e-pipeline #TODO remove
 
 jobs:
   cypress-run:
