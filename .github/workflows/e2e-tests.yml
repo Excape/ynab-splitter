@@ -40,3 +40,10 @@ jobs:
           start: npm run cy:start-server
           wait-on: 'http://localhost:8080'
           wait-on-timeout: 600
+
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
