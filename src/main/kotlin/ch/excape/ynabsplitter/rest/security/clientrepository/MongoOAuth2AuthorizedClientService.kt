@@ -1,6 +1,7 @@
 package ch.excape.ynabsplitter.rest.security.clientrepository
 
 import ch.excape.ynabsplitter.rest.security.clientrepository.OAuth2AuthorizedClientEntity.AuthorizedClientId
+import org.springframework.context.annotation.Profile
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.Authentication
@@ -9,14 +10,17 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 
 class MongoOAuth2AuthorizedClientService(
-        private val crudRepository: OAuth2AuthorizedClientCrudRepository,
-        private val clientRepo: ClientRegistrationRepository
+    private val crudRepository: OAuth2AuthorizedClientCrudRepository,
+    private val clientRepo: ClientRegistrationRepository
 ) : OAuth2AuthorizedClientService {
 
-    override fun <T : OAuth2AuthorizedClient?> loadAuthorizedClient(clientRegistrationId: String?, principalName: String?): T? {
+    override fun <T : OAuth2AuthorizedClient?> loadAuthorizedClient(
+        clientRegistrationId: String?,
+        principalName: String?
+    ): T? {
         if (clientRegistrationId == null || principalName == null) return null
         val authorizedClient = crudRepository.findByIdOrNull(AuthorizedClientId(clientRegistrationId, principalName))
-                ?.toAuthorizedClient(clientRepo)
+            ?.toAuthorizedClient(clientRepo)
         return authorizedClient as T
     }
 
@@ -29,6 +33,7 @@ class MongoOAuth2AuthorizedClientService(
     }
 }
 
+@Profile("prod")
 interface OAuth2AuthorizedClientCrudRepository
     : CrudRepository<OAuth2AuthorizedClientEntity, AuthorizedClientId> {
 

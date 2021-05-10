@@ -7,6 +7,7 @@ import ch.excape.ynabclient.api.TransactionsApi
 import ch.excape.ynabclient.invoker.ApiClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
@@ -15,28 +16,29 @@ import org.springframework.web.context.annotation.RequestScope
 
 
 @Configuration
+@Profile("prod")
 class YnabServicesConfiguration(
-        private val userAccessTokenResolver: UserAccessTokenResolver
+    private val userAccessTokenResolver: UserAccessTokenResolver
 ) {
     @Bean
     @RequestScope
     fun ynabAccountsApi(clientService: OAuth2AuthorizedClientService): AccountsApi =
-            AccountsApi(apiClient())
+        AccountsApi(apiClient())
 
     @Bean
     @RequestScope
     fun ynabBudgetsApi(clientService: OAuth2AuthorizedClientService): BudgetsApi =
-            BudgetsApi(apiClient())
+        BudgetsApi(apiClient())
 
     @Bean
     @RequestScope
     fun ynabTransactionsApi(clientService: OAuth2AuthorizedClientService): TransactionsApi =
-            TransactionsApi(apiClient())
+        TransactionsApi(apiClient())
 
     @Bean
     @RequestScope
     fun ynabCategoriesApi(clientService: OAuth2AuthorizedClientService): CategoriesApi =
-            CategoriesApi(apiClient())
+        CategoriesApi(apiClient())
 
 
     private fun apiClient(): ApiClient {
@@ -47,7 +49,7 @@ class YnabServicesConfiguration(
         }
 
         val accessToken = userAccessTokenResolver.getAccessToken(authentication.name)
-                ?: throw IllegalStateException("Access token not available")
+            ?: throw IllegalStateException("Access token not available")
 
         return ApiClient().apply {
             getAuthentication("bearer")
