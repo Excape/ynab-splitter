@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - renovate/cypress**
 
 jobs:
   cypress-run:
