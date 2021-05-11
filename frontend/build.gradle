@@ -9,9 +9,6 @@ node {
     download = true
 }
 
-npmInstall {
-    args = ['--prod']
-}
 
 npm_run_build {
     inputs.files fileTree("public")
