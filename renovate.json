@@ -14,6 +14,12 @@
         "digest"
       ],
       "automerge": true
+    },
+    {
+      "matchPackagePatterns": [
+        "^@types"
+      ],
+      "groupName": "types"
     }
   ],
   "reviewers": [
