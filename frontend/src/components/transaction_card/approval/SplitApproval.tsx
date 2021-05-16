@@ -16,7 +16,7 @@ import {SessionContext} from '../../../session';
 type Props = {
     transaction: UnapprovedTransaction,
     onApprove: (result: ApprovalResult) => void,
-    presetCategories: Map<string, Category | undefined>
+    presetCategories: Map<string, Category | undefined>,
 }
 
 const SplitApproval = (props: Props) => {
