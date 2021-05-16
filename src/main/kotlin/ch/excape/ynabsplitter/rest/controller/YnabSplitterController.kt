@@ -1,6 +1,7 @@
 package ch.excape.ynabsplitter.rest.controller
 
-import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.RestAuditLogPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.RestAllAuditLogsPresenter
+import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.RestSingleAuditLogPresenter
 import ch.excape.ynabsplitter.adapter.presentation.rest.auditlog.document.AuditLogDocument
 import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.*
 import ch.excape.ynabsplitter.adapter.presentation.rest.transaction.document.*
@@ -13,6 +14,7 @@ import ch.excape.ynabsplitter.application.outbound_ports.presentation.ApproveTra
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadCategoriesRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.ReadTransactionsRepository
 import ch.excape.ynabsplitter.application.outbound_ports.ynab.SaveTransactionRepository
+import ch.excape.ynabsplitter.application.use_cases.auditlog.get_auditlog.GetAuditLog
 import ch.excape.ynabsplitter.application.use_cases.auditlog.list_auditlog.ListAuditLog
 import ch.excape.ynabsplitter.application.use_cases.auditlog.list_auditlog.ports.IListAuditLog
 import ch.excape.ynabsplitter.application.use_cases.transaction.approve_transaction.ApproveTransaction
@@ -43,11 +45,11 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/api/v1")
 class YnabSplitterController(
-        private val readCategoriesRepository: ReadCategoriesRepository,
-        private val readTransactionRepository: ReadTransactionsRepository,
-        private val saveTransactionRepository: SaveTransactionRepository,
-        private val auditLogRepository: AuditLogRepository,
-        private val userRepository: UserRepository
+    private val readCategoriesRepository: ReadCategoriesRepository,
+    private val readTransactionRepository: ReadTransactionsRepository,
+    private val saveTransactionRepository: SaveTransactionRepository,
+    private val auditLogRepository: AuditLogRepository,
+    private val userRepository: UserRepository
 ) {
     @GetMapping("/transactions")
     fun getTransactions(principal: Principal): List<UnapprovedTransactionDocument> {
@@ -55,7 +57,8 @@ class YnabSplitterController(
         val loggedInUser = getLoggedInUser(principal)
 
         val listUnapprovedTransactions: IListUnapprovedTransactions = ListUnapprovedTransactions(
-                readTransactionRepository, userRepository)
+            readTransactionRepository, userRepository
+        )
         val transactionPresenter = RestTransactionsListPresenter()
 
         val input = ListUnapprovedTransactionsInput(loggedInUser.userId)
@@ -80,11 +83,18 @@ class YnabSplitterController(
 
     @GetMapping("/auditlog")
     fun getAuditLog(): List<AuditLogDocument> {
-        val auditLogPresenter = RestAuditLogPresenter()
+        val auditLogPresenter = RestAllAuditLogsPresenter()
         val listAuditLogs: IListAuditLog = ListAuditLog(auditLogRepository)
 
         listAuditLogs.executeWith(auditLogPresenter)
         return auditLogPresenter.presentation!!
+    }
+
+    fun getSingleAuditLog(auditLogId: String): AuditLogDocument {
+        val presenter = RestSingleAuditLogPresenter()
+        GetAuditLog(auditLogRepository).executeWith(auditLogId, presenter)
+
+        return presenter.presentation!!
     }
 
     @GetMapping("/categories/{actor}")
@@ -100,19 +110,29 @@ class YnabSplitterController(
 
     @PostMapping("/transactions/{id}/approveSingle")
     fun approveSingleTransaction(
-            @PathVariable("id") transactionId: String,
-            @RequestBody request: SingleApprovalRequest,
-            principal: Principal
-    ): ApproveTransactionResult {
+        @PathVariable("id") transactionId: String,
+        @RequestBody request: SingleApprovalRequest,
+        principal: Principal
+    ): ApproveTransactionResultDocument {
 
         val loggedInUser = getLoggedInUser(principal)
 
         val matchedTransaction = executeGetMatchedTransaction(loggedInUser.userId, transactionId)
-        return executeApproveSingleTransaction(matchedTransaction, loggedInUser, request)
+        val approvalResult = executeApproveSingleTransaction(matchedTransaction, loggedInUser, request)
+        return attachAuditLog(approvalResult)
+    }
+
+    private fun attachAuditLog(approvalResult: ApproveTransactionResult): ApproveTransactionResultDocument {
+        var auditLog: AuditLogDocument? = null;
+        if (approvalResult.success) {
+            auditLog = getSingleAuditLog(approvalResult.auditLogId!!)
+        }
+        return ApproveTransactionResultDocument(approvalResult.success, auditLog)
     }
 
     private fun executeGetMatchedTransaction(userId: String, transactionId: String): MatchedTransactionDocument {
-        val getMatchedTransaction: IGetMatchedTransaction = GetMatchedTransaction(readTransactionRepository, userRepository)
+        val getMatchedTransaction: IGetMatchedTransaction =
+            GetMatchedTransaction(readTransactionRepository, userRepository)
         val getTransactionPresenter = RestMatchedTransactionPresenter()
         getMatchedTransaction.executeWith(GetMatchedTransactionInput(userId, transactionId), getTransactionPresenter)
 
@@ -120,57 +140,64 @@ class YnabSplitterController(
     }
 
     private fun executeApproveSingleTransaction(
-            matchedTransactionDocument: MatchedTransactionDocument, user: UserDocument,
-            request: SingleApprovalRequest) : ApproveTransactionResult {
+        matchedTransactionDocument: MatchedTransactionDocument, user: UserDocument,
+        request: SingleApprovalRequest
+    ): ApproveTransactionResult {
 
         val presenter = RestApproveTransactionPresenter()
 
         val forActor = request.actor
         val input = ApproveTransactionInput(
-                user.userId,
-                extractTransactionIds(matchedTransactionDocument),
-                request.executingActor,
-                TransactionSplit.allOnOne(forActor, user.settings.actors.map {it.name}),
-                CategoryPerActor(forActor to Category(request.categoryId)))
-        val approveTransaction: IApproveTransaction = ApproveTransaction(readTransactionRepository, saveTransactionRepository,
-                readCategoriesRepository, auditLogRepository, userRepository)
+            user.userId,
+            extractTransactionIds(matchedTransactionDocument),
+            request.executingActor,
+            TransactionSplit.allOnOne(forActor, user.settings.actors.map { it.name }),
+            CategoryPerActor(forActor to Category(request.categoryId))
+        )
+        val approveTransaction: IApproveTransaction = ApproveTransaction(
+            readTransactionRepository, saveTransactionRepository,
+            readCategoriesRepository, auditLogRepository, userRepository
+        )
 
         approveTransaction.executeWith(input, presenter)
         return presenter.presentation!!
     }
 
     private fun extractTransactionIds(matchedTransaction: MatchedTransactionDocument) =
-            MatchedTransactionIds(matchedTransaction.transactions.associate { it.actor.name to it.id })
+        MatchedTransactionIds(matchedTransaction.transactions.associate { it.actor.name to it.id })
 
     @PostMapping("/transactions/{id}/approveSplit")
     fun approveSplitTransaction(
-            request: HttpServletRequest,
-            @PathVariable("id") transactionId: String,
-            @RequestBody(required = true) splitRequest: SplitTransactionRequest,
-            principal: Principal
-    ): ApproveTransactionResult {
+        request: HttpServletRequest,
+        @PathVariable("id") transactionId: String,
+        @RequestBody(required = true) splitRequest: SplitTransactionRequest,
+        principal: Principal
+    ): ApproveTransactionResultDocument {
 
         val loggedInUser = getLoggedInUser(principal)
 
         val matchedTransaction = executeGetMatchedTransaction(loggedInUser.userId, transactionId)
-        return executeApproveSplitTransaction(matchedTransaction, loggedInUser.userId, splitRequest)
+        val approvalResult = executeApproveSplitTransaction(matchedTransaction, loggedInUser.userId, splitRequest)
+        return attachAuditLog(approvalResult)
     }
 
     private fun executeApproveSplitTransaction(
-            matchedTransactionDocument: MatchedTransactionDocument, userId: String,
-            splitRequest: SplitTransactionRequest
+        matchedTransactionDocument: MatchedTransactionDocument, userId: String,
+        splitRequest: SplitTransactionRequest
     ): ApproveTransactionResult {
         val presenter = RestApproveTransactionPresenter()
         val input = ApproveTransactionInput(
-                userId,
-                extractTransactionIds(matchedTransactionDocument),
-                splitRequest.executingActor,
-                splitRequest.split.toDomain(),
-                splitRequest.categories.toDomain()
+            userId,
+            extractTransactionIds(matchedTransactionDocument),
+            splitRequest.executingActor,
+            splitRequest.split.toDomain(),
+            splitRequest.categories.toDomain()
         )
 
-        val approveTransaction: IApproveTransaction = ApproveTransaction(readTransactionRepository,
-                saveTransactionRepository, readCategoriesRepository, auditLogRepository, userRepository)
+        val approveTransaction: IApproveTransaction = ApproveTransaction(
+            readTransactionRepository,
+            saveTransactionRepository, readCategoriesRepository, auditLogRepository, userRepository
+        )
 
         approveTransaction.executeWith(input, presenter)
         return presenter.presentation!!
@@ -178,8 +205,9 @@ class YnabSplitterController(
 
     @PostMapping("/auditlog")
     fun undoApproval(
-            @RequestBody(required = true) request: UndoApprovalRequest,
-            principal: Principal): UndoApprovalResultDocument {
+        @RequestBody(required = true) request: UndoApprovalRequest,
+        principal: Principal
+    ): UndoApprovalResultDocument {
 
         val loggedInUser = getLoggedInUser(principal)
         val presenter = RestUndoneApprovalPresenter()

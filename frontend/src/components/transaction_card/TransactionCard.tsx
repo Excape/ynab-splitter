@@ -7,6 +7,7 @@ import ApprovalButtons from './ApprovalButtons';
 import MonetaryAmount from '../MonetaryAmount';
 import UndoApproval from '../UndoApproval';
 import CategoryMatrix from './CategoryMatrix';
+import ApprovedCategoryMatrix from './ApprovedCategoryMatrix';
 
 type Props = {
     transaction: UnapprovedTransaction
@@ -64,7 +65,11 @@ const TransactionCard = ({transaction}: Props) => {
                     <strong><MonetaryAmount amount={transaction.amount}/></strong>
                 </Card.Description>
 
-                <CategoryMatrix transaction={transaction} />
+                {approvalResult?.success ? (
+                    <ApprovedCategoryMatrix auditLog={approvalResult!.auditLog!}/>
+                ) : (
+                    <CategoryMatrix transaction={transaction}/>
+                )}
 
             </Card.Content>
             {!approvalResult?.success && (
@@ -90,7 +95,7 @@ const TransactionCard = ({transaction}: Props) => {
                         <span>{approvalResult.success ? "Transaction successfully saved!" : "Transaction could not be saved"}</span>
                     </Card.Content>
                     <Card.Content extra fluid="true">
-                        <UndoApproval auditLogId={approvalResult.auditLogId!} onUndoApproval={onUndoApproval}/>
+                        <UndoApproval auditLogId={approvalResult.auditLog!.id!} onUndoApproval={onUndoApproval}/>
                     </Card.Content>
                 </Fragment>
             )}
