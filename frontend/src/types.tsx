@@ -15,7 +15,7 @@ export type Transaction = {
     actor: Actor,
     date: Date,
     amount: number,
-    category: Category | undefined,
+    category?: Category,
     memo: string,
     payee: string
 }
@@ -45,18 +45,18 @@ export type Category = {
     balance?: number
 }
 export type ApprovalFor = {
-    actor: string | undefined,
+    actor?: string,
     splitApproval: boolean
 }
 
 export type ApprovalResult = {
     success: boolean,
-    auditLogId?: string | undefined
+    auditLog?: AuditLog
 }
 
 export type UndoApprovalResult = {
     success: boolean,
-    message?: string | undefined
+    message?: string
 }
 
 export type SplitTransactionRequest = {
@@ -66,12 +66,12 @@ export type SplitTransactionRequest = {
 }
 
 export type CategoryRequest = {
-    actor: String,
-    categoryId: String
+    actor: string,
+    categoryId: string
 }
 
 export type SplitRequest = {
-    actor: String,
+    actor: string,
     split: number
 }
 

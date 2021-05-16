@@ -64,7 +64,7 @@ const TransactionCard = ({transaction}: Props) => {
                     <strong><MonetaryAmount amount={transaction.amount}/></strong>
                 </Card.Description>
 
-                <CategoryMatrix transaction={transaction} />
+                <CategoryMatrix transaction={transaction}/>
 
             </Card.Content>
             {!approvalResult?.success && (
@@ -90,7 +90,7 @@ const TransactionCard = ({transaction}: Props) => {
                         <span>{approvalResult.success ? "Transaction successfully saved!" : "Transaction could not be saved"}</span>
                     </Card.Content>
                     <Card.Content extra fluid="true">
-                        <UndoApproval auditLogId={approvalResult.auditLogId!} onUndoApproval={onUndoApproval}/>
+                        <UndoApproval auditLogId={approvalResult.auditLog!.id!} onUndoApproval={onUndoApproval}/>
                     </Card.Content>
                 </Fragment>
             )}
