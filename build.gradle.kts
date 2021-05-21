@@ -50,3 +50,8 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "11"
     }
 }
+
+// prevent jar ("plain") build, only build bootJar
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
