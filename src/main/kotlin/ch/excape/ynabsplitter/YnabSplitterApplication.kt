@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication
 @EnableConfigurationProperties(YnabSplitterProperties::class)
-//@EnableScheduling
+@EnableScheduling
 class YnabSplitterApplication
 
 fun main(args: Array<String>) {
