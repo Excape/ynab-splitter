@@ -1,7 +1,7 @@
 describe("navigation bar", () => {
     beforeEach(() => {
         cy.visitWithBasicAuth();
-        cy.login("Anusha");
+        cy.login("Sophie");
     })
     it("navigates to audit log", () => {
         cy.get('[href="/auditlog"]').click()

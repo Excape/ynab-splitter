@@ -1,5 +1,20 @@
-# Splitter for YNAB
+<h1 align="center">Welcome to Splitter for YNAB 👋</h1>
+<p>
+</p>
 
-## Useful links
- 
-- [React session management with useContext](https://www.jmfurlott.com/handling-user-session-react-context/)
+> Split YNAB transactions on the same account to different budgets
+
+
+### ✨ [Demo](ynab.robinsuter.ch)
+
+## Usage
+
+```sh
+./gradlew bootRun
+```
+
+## Run tests
+
+```sh
+./gradlew test
+```

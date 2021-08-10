@@ -1,12 +1,12 @@
 describe("Transaction approval", () => {
     beforeEach(() => {
         cy.visitWithBasicAuth();
-        cy.login("Anusha");
+        cy.login("Sophie");
     })
-    it("approves a transaction for Anusha", () => {
+    it("approves a transaction for Sophie", () => {
         cy.get('.ui.fluid.card')
             .get('button')
-            .contains('Anusha')
+            .contains('Sophie')
             .click()
         cy.get('.fluid > .search')
             .click()
@@ -21,7 +21,7 @@ describe("Transaction approval", () => {
     it('selects a category by typing', () => {
         cy.get('.ui.fluid.card')
             .get('button')
-            .contains('Bartholomew')
+            .contains('Robin')
             .click()
         cy.get('.fluid > .search').type('Groceries{enter}')
         cy.get('.approveBtn > button').click()

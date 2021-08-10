@@ -38,8 +38,8 @@ class InMemoryTransactionRepository : ReadTransactionsRepository, SaveTransactio
     }
 
     private fun createFakeTransactions(): MutableMap<String, Transaction> {
-        val aliceActor = SplitterActor(ActorName("Anusha"), "fake-budget", "fake-account")
-        val bobActor = SplitterActor(ActorName("Bartholomew"), "fake-budget", "fake-account")
+        val aliceActor = SplitterActor(ActorName("Sophie"), "fake-budget", "fake-account")
+        val bobActor = SplitterActor(ActorName("Robin"), "fake-budget", "fake-account")
         val transactionsAlice = listOf(
             Transaction(
                 "t0",

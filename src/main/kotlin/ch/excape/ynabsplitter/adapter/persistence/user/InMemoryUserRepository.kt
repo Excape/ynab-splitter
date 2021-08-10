@@ -11,8 +11,8 @@ class InMemoryUserRepository : UserRepository {
         return User(
                 userId = userId,
                 settings = UserSettings(listOf(
-                        SplitterActor(ActorName("Anusha"), "budget-id", "chase-id"),
-                        SplitterActor(ActorName("Bartholomew"), "other-budget-id", "chase-2-id")
+                        SplitterActor(ActorName("Sophie"), "budget-id", "chase-id"),
+                        SplitterActor(ActorName("Robin"), "other-budget-id", "chase-2-id")
                 ))
         )
     }

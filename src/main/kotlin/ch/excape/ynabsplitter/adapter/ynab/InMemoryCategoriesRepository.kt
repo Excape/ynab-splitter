@@ -5,7 +5,7 @@ import ch.excape.ynabsplitter.domain.Category
 import ch.excape.ynabsplitter.domain.SplitterActor
 
 class InMemoryCategoriesRepository : ReadCategoriesRepository {
-    private val categoriesAnusha = listOf(
+    private val categoriesSophie = listOf(
             Category("catGroceries", "Groceries", "Real expenses", 10500),
             Category("catCoffee", "Coffee", "Real expenses", 1534),
             Category("cat3", "Rent", "Real expenses", 40000),
@@ -23,16 +23,16 @@ class InMemoryCategoriesRepository : ReadCategoriesRepository {
 
     override fun getCategories(actor: SplitterActor): List<Category> {
         return when (actor.actorName.name) {
-            "Anusha" -> categoriesAnusha
-            "Bartholomew" -> categoriesBob
+            "Sophie" -> categoriesSophie
+            "Robin" -> categoriesBob
             else -> throw IllegalArgumentException("${actor.actorName} not known for in memory categories")
         }
     }
 
     override fun findCategory(actor: SplitterActor, categoryId: String): Category? {
         return when (actor.actorName.name) {
-            "Anusha" -> categoriesAnusha.find { it.id == categoryId }
-            "Bartholomew" -> categoriesBob.find { it.id == categoryId }
+            "Sophie" -> categoriesSophie.find { it.id == categoryId }
+            "Robin" -> categoriesBob.find { it.id == categoryId }
             else -> throw IllegalArgumentException("${actor.actorName} not known for in memory categories")
         }
     }
