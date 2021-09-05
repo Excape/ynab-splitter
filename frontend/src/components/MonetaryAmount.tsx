@@ -18,7 +18,8 @@ const displayStyleNeutral = {
 
 const MonetaryAmount = ({amount}: Props) => {
     const formatAmount = () => {
-        let rounded = Math.round(amount / 10) / 100;
+        const absolute = Math.abs(amount)
+        let rounded = Math.round(absolute / 10) / 100;
         return rounded.toFixed(2);
     }
 
