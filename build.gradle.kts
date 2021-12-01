@@ -27,7 +27,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("nl.martijndwars:web-push:5.1.1")
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.69")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
